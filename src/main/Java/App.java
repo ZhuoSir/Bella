@@ -1,5 +1,6 @@
-import com.creheart.bean.User;
-import com.creheart.service.UserService;
+import com.creheart.Jeneral.DBFactory;
+import com.creheart.bean.Member;
+import com.creheart.service.MemberService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -11,28 +12,49 @@ import java.util.List;
  */
 public class App {
 
+
+
     static String[] xmlPath = {
             "D:\\JAVA\\Bella\\src\\main\\resources\\applicationContext.xml",
             "D:\\JAVA\\Bella\\src\\main\\resources\\applicationContextMVC.xml"
     };
 
     public static void main(String[] args) throws Exception {
+//        testInsert();
+        testUpdate();
+    }
 
-//        DBFactory dbFactory = DBFactory.getInstance();
-//        dbFactory.createEntityFromDataBase();
+    public static void testQuery() {
+        ApplicationContext ctx     = new FileSystemXmlApplicationContext(xmlPath);
+        MemberService      service = (MemberService) ctx.getBean("memberService");
+        List<Member>       members = service.allMembers();
 
-        User user = new User();
-        user.setAccountID("user10001");
-        user.setNickName("chenzhuo");
-        user.setAccountName("wangzhe");
-        user.setAddTime(new Date());
-        user.setMobilePhone("18545461989");
+        System.out.println(members.toString());
+    }
 
+    public static void testInsert() {
+        ApplicationContext ctx     = new FileSystemXmlApplicationContext(xmlPath);
+        MemberService      service = (MemberService) ctx.getBean("memberService");
 
-        ApplicationContext context = new FileSystemXmlApplicationContext(xmlPath);
-        UserService service = (UserService) context.getBean("userService");
-//        service.save(user);
-//        List<User> ret = service.allUser();
-//        ret.forEach(user1 -> System.out.println(user.toString()));
+        Member member = new Member();
+        member.setAccountID("member0001");
+        member.setPassword("12345676");
+        member.setMobilePhone("18745695623");
+        member.setAddTime(new Date());
+        member.setEmail("2653468597@qq.com");
+
+        service.save(member);
+    }
+
+    public static void testUpdate() {
+        ApplicationContext ctx     = new FileSystemXmlApplicationContext(xmlPath);
+        MemberService      service = (MemberService) ctx.getBean("memberService");
+
+        Member member = service.queryMember("1");
+        member.setPassword("wertyierwwoo");
+        member.setEmail("111111@qq.com");
+        member.setNickName("小凤凰");
+
+        service.update(member);
     }
 }

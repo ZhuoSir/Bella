@@ -1,11 +1,13 @@
-package com.creheart.JeneralDB;
+package com.creheart.Jeneral;
 
 
 import java.lang.reflect.Field;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
+
+import static com.creheart.Jeneral.SqlBuilder.buildInsertSql;
+import static com.creheart.Jeneral.SqlBuilder.buildUpdateSql;
 
 /**
  * 数据库操作工具类
@@ -49,7 +51,6 @@ public class DBUtil {
     }
 
 
-
     public void closeConnection() throws SQLException {
         try {
             if (null != conn) {
@@ -80,7 +81,7 @@ public class DBUtil {
                 rs.close();
             if (null != stmt)
                 stmt.close();
-            if (null != conn && !AutoCommit)
+            if (null != conn && AutoCommit)
                 conn.close();
         }
 
@@ -111,7 +112,7 @@ public class DBUtil {
                 rs.close();
             if (null != statement)
                 statement.close();
-            if (null != conn && !AutoCommit)
+            if (null != conn && AutoCommit)
                 conn.close();
         }
 
@@ -424,71 +425,30 @@ public class DBUtil {
     }
 
 
-    public String buildInsertSql(Object obj)
-            throws IllegalAccessException {
-        return buildInsertSql(obj, null);
+    public int update(Object obj) throws Exception {
+        if (null == obj) {
+            throw new NullPointerException("更新对象不能为Null");
+        }
+
+        return this.execute(buildUpdateSql(obj));
     }
 
 
-    public String buildInsertSql(Object obj, String tableName)
-            throws IllegalAccessException {
-        StringBuilder columns = new StringBuilder(" insert into ");
-        StringBuilder values = new StringBuilder(" ) values (");
-
-        Class<?> t = obj.getClass();
-        Field[] fields = t.getDeclaredFields();
-        columns.append(null == tableName ? t.getSimpleName() : tableName);
-        columns.append(" ( ");
-
-        int size = fields.length, columnNum = 0;
-        for (Field field : fields) {
-            field.setAccessible(true);
-            String columnName = field.getName();
-            String columnType = field.getType().getTypeName();
-            Object value = field.get(obj);
-
-            if (null == value) {
-                continue;
-            }
-
-            columns.append(columnName);
-
-            addValueToValues(values, columnName, columnType, value);
-
-            if (columnNum++ < size - 1) {
-                columns.append(" ,");
-                values.append(" ,");
-            }
+    public int update(Object obj, String tableName) throws Exception {
+        if (null == obj) {
+            throw new NullPointerException("更新对象不能为Null");
         }
 
-        if (columns.charAt(columns.length() - 1) == ',') {
-            columns = columns.deleteCharAt(columns.length() - 1);
-        }
-
-        if (values.charAt(values.length() - 1) == ',') {
-            values = values.deleteCharAt(values.length() - 1);
-        }
-
-        values.append(" ) ");
-        columns.append(values);
-
-        return columns.toString();
+        return this.execute(buildUpdateSql(obj, tableName));
     }
 
 
-    private void addValueToValues(StringBuilder values, String columnName, String columnType, Object value) {
-        if ("java.lang.Boolean".equals(columnType)) {
-            values.append(value.toString());
-        } else if ("java.util.Date".equals(columnType)) {
-            SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            values.append("'");
-            values.append(ft.format(value));
-            values.append("'");
-        } else {
-            values.append("'");
-            values.append(value.toString());
-            values.append("'");
+    public int update(Connection conn, Object obj, String tableName) throws Exception {
+        if (null == obj) {
+            throw new NullPointerException("更新对象不能为Null");
         }
+
+        return this.execute(buildUpdateSql(obj, tableName),conn);
     }
 
 
@@ -519,6 +479,8 @@ public class DBUtil {
             f.set(t, (Character) value);
         } else if ("java.lang.Date".equals(n)) {
             f.set(t, new Date(((java.sql.Date) value).getTime()));
+        } else if ("java.util.Date".equals(n)) {
+            f.set(t, (Date)value);
         } else if ("java.lang.Timer".equals(n)) {
             f.set(t, new Time(((Time) value).getTime()));
         } else if ("java.sql.Timestamp".equals(n)) {

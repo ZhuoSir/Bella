@@ -1,6 +1,6 @@
-package com.creheart.JeneralDB;
+package com.creheart.Jeneral;
 
-import com.creheart.JeneralDB.filter.DataTableFilter;
+import com.creheart.Jeneral.filter.DataTableFilter;
 
 import java.lang.reflect.Field;
 import java.util.*;
