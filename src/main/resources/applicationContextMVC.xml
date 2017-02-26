@@ -19,7 +19,11 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <context:component-scan base-package="com.creheart.processor" >
+    <context:component-scan base-package="com.creheart.platform.processor" >
+        <!--<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />-->
+    </context:component-scan>
+
+    <context:component-scan base-package="com.creheart.web.processor" >
         <!--<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />-->
     </context:component-scan>
 
