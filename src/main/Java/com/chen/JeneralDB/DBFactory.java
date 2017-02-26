@@ -1,4 +1,4 @@
-package com.creheart.Jeneral;
+package com.chen.JeneralDB;
 
 import java.io.File;
 import java.io.IOException;
@@ -322,20 +322,19 @@ public class DBFactory {
     public DataTable getAllPKOfTable(String tableName)
             throws Exception {
         Properties p = getProperties();
-        DataTable dt = null;
         String sql = " SELECT\n" +
-                        "  t.TABLE_NAME,\n" +
-                        "  t.CONSTRAINT_TYPE,\n" +
-                        "  c.COLUMN_NAME,\n" +
-                        "  c.ORDINAL_POSITION\n" +
-                        " FROM\n" +
-                        "  INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS t,\n" +
-                        "  INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS c\n" +
-                        " WHERE\n" +
-                        "  t.TABLE_NAME = c.TABLE_NAME\n" +
-                        "  AND t.TABLE_SCHEMA = '" + p.getProperty("db_name") + "'\n" +
-                        "  AND t.CONSTRAINT_TYPE = 'PRIMARY KEY'" +
-                        "  AND t.TABLE_NAME = '" + tableName + "'";
+                "  t.TABLE_NAME,\n" +
+                "  t.CONSTRAINT_TYPE,\n" +
+                "  c.COLUMN_NAME,\n" +
+                "  c.ORDINAL_POSITION\n" +
+                " FROM\n" +
+                "  INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS t,\n" +
+                "  INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS c\n" +
+                " WHERE\n" +
+                "  t.TABLE_NAME = c.TABLE_NAME\n" +
+                "  AND t.TABLE_SCHEMA = '" + p.getProperty("db_name") + "'\n" +
+                "  AND t.CONSTRAINT_TYPE = 'PRIMARY KEY'" +
+                "  AND t.TABLE_NAME = '" + tableName + "'";
 
         return DBUtil.getInstance().queryDataTable(sql);
     }

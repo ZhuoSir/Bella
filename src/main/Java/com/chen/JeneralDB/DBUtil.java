@@ -1,13 +1,14 @@
-package com.creheart.Jeneral;
+package com.chen.JeneralDB;
 
+
+import com.chen.JeneralDB.jdbc.Query;
 
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
 
-import static com.creheart.Jeneral.SqlBuilder.buildInsertSql;
-import static com.creheart.Jeneral.SqlBuilder.buildUpdateSql;
+import static com.chen.JeneralDB.SqlBuilder.*;
 
 /**
  * 数据库操作工具类
@@ -264,6 +265,25 @@ public class DBUtil {
     }
 
 
+    public <T> List<T> queryBeanListByQuery(Query query, Class<T> beanClass)
+            throws Exception {
+        String tableName = beanClass.getSimpleName();
+        query.setTableName(tableName);
+        return queryByQuery(query).toBeanList(beanClass);
+    }
+
+
+    public DataTable queryByQuery(Query query)
+            throws Exception {
+        String sql = buildSelectSqlByQuery(query);
+        if (null != sql && !"".equals(sql)) {
+            return queryDataTable(sql);
+        }
+
+        return null;
+    }
+
+
     public ResultSetMetaData queryResultSetMetaData(String sql)
             throws Exception {
         checkConnect();
@@ -443,12 +463,41 @@ public class DBUtil {
     }
 
 
-    public int update(Connection conn, Object obj, String tableName) throws Exception {
+    public int update(Connection conn, Object obj, String tableName)
+            throws Exception {
         if (null == obj) {
             throw new NullPointerException("更新对象不能为Null");
         }
 
-        return this.execute(buildUpdateSql(obj, tableName),conn);
+        return this.execute(buildUpdateSql(obj, tableName), conn);
+    }
+
+
+    public int delete(Object obj) throws Exception {
+        if (null == obj) {
+            throw new NullPointerException("删除对象不能为Null");
+        }
+
+        return this.execute(buildDeleteSql(obj));
+    }
+
+
+    public int delete(Object obj, String tableName) throws Exception {
+        if (null == obj) {
+            throw new NullPointerException("删除对象不能为Null");
+        }
+
+        return this.execute(buildDeleteSql(obj, tableName));
+    }
+
+
+    public int delete(Connection conn, Object obj, String tableName)
+            throws Exception {
+        if (null == obj) {
+            throw new NullPointerException("删除的对象不能为Null");
+        }
+
+        return this.execute(buildDeleteSql(obj, tableName), conn);
     }
 
 
@@ -480,7 +529,7 @@ public class DBUtil {
         } else if ("java.lang.Date".equals(n)) {
             f.set(t, new Date(((java.sql.Date) value).getTime()));
         } else if ("java.util.Date".equals(n)) {
-            f.set(t, (Date)value);
+            f.set(t, (Date) value);
         } else if ("java.lang.Timer".equals(n)) {
             f.set(t, new Time(((Time) value).getTime()));
         } else if ("java.sql.Timestamp".equals(n)) {
@@ -525,6 +574,20 @@ public class DBUtil {
     public void transBegin() throws Exception {
         checkConnect();
 
+        conn.setAutoCommit(false);
+        this.AutoCommit = false;
+    }
+
+
+    /**
+     * 开启事物。若数据库连接尚未开启，开启之.
+     *
+     * @param isolationLevel 隔离等级
+     * */
+    public void transBegin(int isolationLevel) throws Exception {
+        checkConnect();
+
+        conn.setTransactionIsolation(isolationLevel);
         conn.setAutoCommit(false);
         this.AutoCommit = false;
     }
