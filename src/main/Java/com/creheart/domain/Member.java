@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class Member {
 
-	private long index;
+	private long ID;
 
 	private String accountID;
 
@@ -27,12 +27,12 @@ public class Member {
 
 	private String nickName;
 
-	public void setIndex(long index) {
-		this.index = index;
+	public void setID(long ID) {
+		this.ID = ID;
 	}
 
-	public long getIndex() {
-		return index;
+	public long getID() {
+		return ID;
 	}
 
 	public void setAccountID(String accountID) {
@@ -109,8 +109,8 @@ public class Member {
 
 	public String toString() {
 		StringBuffer string = new StringBuffer();
-		string.append("index = ");
-		string.append(this.index);
+		string.append("ID = ");
+		string.append(this.ID);
 		string.append(";");
 		string.append("accountID = ");
 		string.append(this.accountID);

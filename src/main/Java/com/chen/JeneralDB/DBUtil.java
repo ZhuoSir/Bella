@@ -2,9 +2,14 @@ package com.chen.JeneralDB;
 
 
 import com.chen.JeneralDB.jdbc.Query;
+import com.mysql.jdbc.*;
 
 import java.lang.reflect.Field;
 import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
 import java.util.*;
 import java.util.Date;
 
@@ -47,6 +52,7 @@ public class DBUtil {
                 properties.getProperty("db_username"),
                 properties.getProperty("db_password"));
         conn.setAutoCommit(AutoCommit);
+        conn.setTransactionIsolation(Integer.valueOf(properties.getProperty("db_transactionIsolation")));
 
         return conn;
     }
