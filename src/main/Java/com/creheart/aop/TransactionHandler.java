@@ -12,6 +12,11 @@ public class TransactionHandler {
 
     public void transBegin(JoinPoint joinpoint) {
         ((AbstractRepository) joinpoint.getTarget()).setDbUtil(DBUtil.getInstance());
+        try {
+            ((AbstractRepository) joinpoint.getTarget()).getDbUtil().transBegin();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void transRollBack(JoinPoint joinPoint) {

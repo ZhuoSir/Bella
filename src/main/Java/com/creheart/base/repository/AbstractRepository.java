@@ -26,8 +26,6 @@ public abstract class AbstractRepository<T> {
     }
 
     public int save(String tableName, T t) throws Exception {
-        dbUtil.transBegin();
-
         int ret = dbUtil.save(t, tableName);
         dbUtil.transCommit();
 
@@ -39,8 +37,6 @@ public abstract class AbstractRepository<T> {
     }
 
     public int update(String tableName, T t) throws Exception {
-        dbUtil.transBegin();
-
         int ret = dbUtil.update(t, tableName);
         dbUtil.transCommit();
 
@@ -52,21 +48,17 @@ public abstract class AbstractRepository<T> {
     }
 
     public int delete(String tableName, T t) throws Exception {
-        dbUtil.transBegin();
-
         int ret = dbUtil.delete(t, tableName);
         dbUtil.transCommit();
 
         return ret;
     }
 
-    public T queryBean(String sql, Class<T> t)
-            throws Exception {
-        return DBUtil.getInstance().queryBean(sql, t);
+    public T queryBean(String sql, Class<T> tClass) throws Exception {
+        return dbUtil.queryBean(sql, tClass);
     }
 
-    public List<T> queryBySql(String sql, Class<T> tClass)
-            throws Exception {
-        return DBUtil.getInstance().queryBeanList(sql, tClass);
+    public List<T> queryBeanList(String sql, Class<T> tClass) throws Exception {
+        return dbUtil.queryBeanList(sql, tClass);
     }
 }

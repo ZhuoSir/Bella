@@ -17,7 +17,7 @@ public class PlatRepository extends AbstractRepository<PlatFunc> {
 
     public List<PlatFunc> allPlatFunces() throws Exception {
         String sql = "select * from plat_func";
-        List<PlatFunc> ret = queryBySql(sql, PlatFunc.class);
+        List<PlatFunc> ret = queryBeanList(sql, PlatFunc.class);
         System.out.println(ret);
         return ret;
     }
