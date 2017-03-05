@@ -45,71 +45,37 @@
 							<i class="linecons-cog"></i>
 						</a>
 					</div>
-					
 								
 				</header>
 						
-				
-						
 				<ul id="main-menu" class="main-menu">
-					<!-- add class "multiple-expanded" to allow multiple submenus to open -->
-					<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-					<c:forEach var="Amenu" items="${platMenus}">
-						<li>
-							<a href="">
-								<i class="${Amenu.getPlatfunction().iconurl}"></i>
-								<span class="title">${Amenu.getPlatfunction().title}</span>
-								<!-- <span class="label label-purple pull-right hidden-collapsed">New Items</span> -->
-							</a>
-							<c:if test="${Amenu.getChildMenu().size()!=0}">
-								<ul>
-									<c:forEach var="Bmenu" items="${Amenu.getChildMenu()}">
-										<li>
-											<a href="${Bmenu.getPlatfunction().url}">
-												<i class="${Bmenu.getPlatfunction().iconurl}"></i>
-												<span class="title">${Bmenu.getPlatfunction().title}</span>
-											</a>
-											<c:if test="${Bmenu.getChildMenu().size()!=0}">
-												<ul>
-													<c:forEach var="Cmenu" items="${Bmenu.getChildMenu()}">
-														<li>
-															<a href="${Cmenu.getPlatfunction().url}">
-																<i class="${Cmenu.getPlatfunction().iconurl}"></i>
-																<span class="title">${Cmenu.getPlatfunction().title}</span>
-															</a>
-														</li>
-													</c:forEach>
-												</ul>
-											</c:if>
-										</li>
-									</c:forEach>
-								</ul>
-							</c:if>
-						</li>
-					</c:forEach>
+					<li>
+						<a href="">
+							<i class="linecons-cog"></i>
+							<span class="title">项目管理</span>
+						</a>
+						<ul>
+							<li>
+								<a href="javascript:void(0)" onclick="redirect('${ctx}/Admin/main/test.do')">
+									<i class=""></i>
+									<span class="title">项目列表</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)" onclick="redirect('${ctx}/Admin/main/404.do')">
+									<i class=""></i>
+									<span class="title">404</span>
+								</a>
+							</li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</div>
   </body>
   <script type="text/javascript" charset="UTF-8" src="${ctx}/assets/js/jquery-1.11.1.min.js"></script>
+
   <script>
-	  <%--var platMenus = JSON.parse(${platMenus});--%>
-//	  init();
-//	  function init() {
-//		  for (var i=0;i<platMenus.length;i++){
-//			  $("main-menu").append('<li>'
-//					  			+		'<a href="">'
-//			  					+			'<i class="'+ platMenus[i].platfunction.iconurl + '"></i>'
-//							  	+			'<span class="title">' + platMenus[i].platfunction.title + '</span>'
-//			  					+		'<a>'
-//			  					+	'<li>');
-////			  var classAMenu = platMenus[i];
-////			  var Achilds = classAMenu.childMenu;
-////			  if (Achilds.length>0){
-////
-////			  }
-//		  }
-//	  }
 
   </script>
 </html>
