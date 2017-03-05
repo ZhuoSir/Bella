@@ -26,10 +26,7 @@ public abstract class AbstractRepository<T> {
     }
 
     public int save(String tableName, T t) throws Exception {
-        int ret = dbUtil.save(t, tableName);
-        dbUtil.transCommit();
-
-        return ret;
+        return dbUtil.save(t, tableName);
     }
 
     public int update(T t) throws Exception {
@@ -37,10 +34,7 @@ public abstract class AbstractRepository<T> {
     }
 
     public int update(String tableName, T t) throws Exception {
-        int ret = dbUtil.update(t, tableName);
-        dbUtil.transCommit();
-
-        return ret;
+        return dbUtil.update(t, tableName);
     }
 
     public int delete(T t) throws Exception {
@@ -48,10 +42,7 @@ public abstract class AbstractRepository<T> {
     }
 
     public int delete(String tableName, T t) throws Exception {
-        int ret = dbUtil.delete(t, tableName);
-        dbUtil.transCommit();
-
-        return ret;
+        return dbUtil.delete(t, tableName);
     }
 
     public T queryBean(String sql, Class<T> tClass) throws Exception {

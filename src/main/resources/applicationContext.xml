@@ -40,6 +40,7 @@
         <aop:aspect id="transHandler" ref="transactionHandler">
             <aop:pointcut id="respoitory" expression="execution(* com.creheart.*.repository.*.*(..))"/>
             <aop:before method="transBegin" pointcut-ref="respoitory"/>
+            <aop:after-returning method="transCommit" pointcut-ref="respoitory"/>
             <aop:after-throwing method="transRollBack" pointcut-ref="respoitory"/>
         </aop:aspect>
     </aop:config>

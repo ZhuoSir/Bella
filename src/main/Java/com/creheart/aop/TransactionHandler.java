@@ -26,4 +26,12 @@ public class TransactionHandler {
             e.printStackTrace();
         }
     }
+
+    public void transCommit(JoinPoint joinPoint) {
+        try {
+            ((AbstractRepository) joinPoint.getTarget()).getDbUtil().transCommit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

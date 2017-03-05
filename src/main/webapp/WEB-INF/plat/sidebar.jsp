@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
-<c:set var="platMenus" value="${pageContext.session.getAttribute('PlatMenus')}" />
 <!DOCTYPE html>
 <html>
   
@@ -18,7 +17,7 @@
 					
 					<!-- logo -->
 					<div class="logo">
-						<a href="${ctx}/Main.do" class="logo-expanded">
+						<a href="${ctx}/Admin/main.do" class="logo-expanded">
 							<img src="${ctx}/assets/images/logo@2x.png" width="80" alt="" />
 						</a>
 						
@@ -49,26 +48,7 @@
 				</header>
 						
 				<ul id="main-menu" class="main-menu">
-					<li>
-						<a href="">
-							<i class="linecons-cog"></i>
-							<span class="title">项目管理</span>
-						</a>
-						<ul>
-							<li>
-								<a href="javascript:void(0)" onclick="redirect('${ctx}/Admin/main/test.do')">
-									<i class=""></i>
-									<span class="title">项目列表</span>
-								</a>
-							</li>
-							<li>
-								<a href="javascript:void(0)" onclick="redirect('${ctx}/Admin/main/404.do')">
-									<i class=""></i>
-									<span class="title">404</span>
-								</a>
-							</li>
-						</ul>
-					</li>
+					${mentHtml};
 				</ul>
 			</div>
 		</div>

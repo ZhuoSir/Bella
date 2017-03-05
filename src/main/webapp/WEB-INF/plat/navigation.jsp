@@ -87,11 +87,11 @@
         <li class="dropdown user-profile">
             <a href="#" data-toggle="dropdown">
                 <c:if test="${user.headPicUrl==null || user.headPicUrl=='' }">
-                    <img src="" alt="user" class="img-circle img-inline userpic-32"
+                    <img src="" alt="use" class="img-circle img-inline userpic-32"
                          width="28"/>
                 </c:if>
                 <c:if test="${user.headPicUrl!=null && user.headPicUrl != ''}">
-                    <img src="" alt="user" class="img-circle img-inline userpic-32"
+                    <img src="" alt="use" class="img-circle img-inline userpic-32"
                          width="28"/>
                 </c:if>
                 <span>

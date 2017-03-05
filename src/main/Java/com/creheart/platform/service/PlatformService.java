@@ -1,11 +1,13 @@
 package com.creheart.platform.service;
 
 import com.creheart.domain.PlatFunc;
+import com.creheart.platform.bean.PlatMenu;
 import com.creheart.platform.repository.PlatRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,14 +22,64 @@ public class PlatformService {
     @Autowired
     private PlatRepository platRepository;
 
-    public List<PlatFunc> allPlatFunces() {
+    public List<PlatMenu> menuList() {
+        PlatMenu root     = new PlatMenu();
+        PlatFunc platFunc = new PlatFunc();
+
+        platFunc.setFuncid(0);
+        root.setPlatFunc(platFunc);
+        List<PlatMenu> menus = null;
+
         try {
-            return platRepository.allPlatFunces();
+            menus = getMenuList(root);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e);
         }
 
-        return null;
+        return menus;
+    }
+
+    private List<PlatMenu> getMenuList(PlatMenu root)
+            throws Exception {
+        List<PlatFunc> platFuncs = null;
+        List<PlatMenu> platMenus = new ArrayList<>();
+
+        StringBuilder sqlBuilder = new StringBuilder(" select * from plat_func ");
+        if (null != root) {
+            sqlBuilder.append(" where parentFuncID = ");
+            sqlBuilder.append(root.getPlatFunc().getFuncid());
+            sqlBuilder.append(" and menuFlag = 1;");
+        }
+
+        platFuncs = platRepository.queryBeanList(sqlBuilder.toString(), PlatFunc.class);
+        if (null == platFuncs) {
+            return null;
+        }
+
+        for (PlatFunc func : platFuncs) {
+            PlatMenu singleMenu = new PlatMenu();
+            singleMenu.setPlatFunc(func);
+            platMenus.add(singleMenu);
+        }
+
+        for (PlatMenu menu : platMenus) {
+            menu.setChildMenus(getMenuList(menu));
+        }
+
+        return platMenus;
+    }
+
+    public List<PlatFunc> allPlatFunces() {
+        String sql = "select * from plat_func order by funcid";
+        List<PlatFunc> ret = null;
+        try {
+            ret = platRepository.queryBeanList(sql, PlatFunc.class);
+        } catch (Exception e) {
+            logger.error(e);
+            e.printStackTrace();
+        }
+
+        return ret;
     }
 }

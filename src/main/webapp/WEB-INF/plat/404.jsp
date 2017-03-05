@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
-<c:set var="title" value="${page.title}"/>
-<c:set var="Msg" value="${page.msg}"/>
+<%--<c:set var="title" value="${page.title}"/>--%>
+<%--<c:set var="Msg" value="${page.msg}"/>--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,9 +67,9 @@
 <script src="${ctx}/assets/js/common-toast.js"></script>
 </body>
 <script>
-    var type = "${Msg.getType()}";
-    var content = "${Msg.getContent()}";
-    ShowNotification(type, content);
+    <%--var type = "${Msg.getType()}";--%>
+    <%--var content = "${Msg.getContent()}";--%>
+    <%--ShowNotification(type, content);--%>
 </script>
 
 </html>
