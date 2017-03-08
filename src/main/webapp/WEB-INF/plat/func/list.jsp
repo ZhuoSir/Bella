@@ -28,29 +28,28 @@
     <!-- 查询panel -->
     <div class="panel-body" style="margin-left: -100px">
 
-        <form role="form" class="form-horizontal" action="${ctx}/Setting/search.do" method="post">
+        <form role="form" class="form-horizontal" action="${ctx}/Admin/func/query.do" method="post">
 
             <div class="form-group">
 
                 <label class="col-xs-2 control-label" for="pf-field">功能标题</label>
 
                 <div class="col-xs-2">
-                    <input type="text" class="form-control" id="pf-field" name="title" placeholder="功能标题" value="${conditionVo.title}">
+                    <input type="text" class="form-control" id="pf-field" name="funcName" placeholder="功能标题" value="${funcName}">
                 </div>
 
                 <label class="col-xs-2 control-label" for="fid-field">父节点ID</label>
 
                 <div class="col-xs-2">
-                    <input type="text" class="form-control" id="fid-field" name="fatherID" placeholder="父节点ID" value="${conditionVo.fatherID}">
+                    <input type="text" class="form-control" id="fid-field" name="parentFuncID" placeholder="父节点ID" value="${parentFuncID}">
                 </div>
 
                 <label class="col-xs-2 control-label">显示状态</label>
 
                 <div class="col-xs-2">
                     <select class="form-control" name="status" >
-                        <option value="-1">无</option>
-                        <option value="0">显示</option>
-                        <option value="1">隐藏</option>
+                        <option value="1" <c:if test="${status == 1}">selected</c:if>>显示</option>
+                        <option value="0" <c:if test="${status == 0}">selected</c:if>>隐藏</option>
                     </select>
                 </div>
 

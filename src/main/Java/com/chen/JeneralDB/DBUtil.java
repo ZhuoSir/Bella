@@ -290,6 +290,17 @@ public class DBUtil {
     }
 
 
+    public <T> List<T> queryByQuery(Query query, Class<T> beanClass)
+            throws Exception {
+        DataTable dt = queryByQuery(query);
+        if (null != dt) {
+            return dt.toBeanList(beanClass);
+        }
+
+        return null;
+    }
+
+
     public ResultSetMetaData queryResultSetMetaData(String sql)
             throws Exception {
         checkConnect();

@@ -3,11 +3,11 @@ package com.creheart.domain;
 import java.util.Date;
 
 /**
- * created by JeneralDB at 2017-02-26 01:28:42
+ * created by JeneralDB at 2017-03-07 09:15:40
  */
 public class PlatFunc {
 
-	private int funcid;
+	private long funcid;
 
 	private String funcName;
 
@@ -29,11 +29,13 @@ public class PlatFunc {
 
 	private Date addTime;
 
-	public void setFuncid(int funcid) {
+	private int status;
+
+	public void setFuncid(long funcid) {
 		this.funcid = funcid;
 	}
 
-	public int getFuncid() {
+	public long getFuncid() {
 		return funcid;
 	}
 
@@ -117,6 +119,14 @@ public class PlatFunc {
 		return addTime;
 	}
 
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
 	public String toString() {
 		StringBuffer string = new StringBuffer();
 		string.append("funcid = ");
@@ -151,6 +161,9 @@ public class PlatFunc {
 		string.append(";");
 		string.append("addTime = ");
 		string.append(this.addTime);
+		string.append(";");
+		string.append("status = ");
+		string.append(this.status);
 		string.append(";");
 		return string.toString();
 	}

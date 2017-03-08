@@ -1,5 +1,7 @@
 package com.creheart.platform.service;
 
+import com.chen.JeneralDB.jdbc.Query;
+import com.chen.StringUtil;
 import com.creheart.domain.PlatFunc;
 import com.creheart.platform.bean.PlatMenu;
 import com.creheart.platform.repository.PlatRepository;
@@ -49,7 +51,8 @@ public class PlatformService {
         if (null != root) {
             sqlBuilder.append(" where parentFuncID = ");
             sqlBuilder.append(root.getPlatFunc().getFuncid());
-            sqlBuilder.append(" and menuFlag = 1;");
+            sqlBuilder.append(" and menuFlag = 1 ");
+            sqlBuilder.append(" and status = 1; ");
         }
 
         platFuncs = platRepository.queryBeanList(sqlBuilder.toString(), PlatFunc.class);
@@ -81,5 +84,33 @@ public class PlatformService {
         }
 
         return ret;
+    }
+
+    public int addPlatFunc(PlatFunc platFunc) {
+        try {
+            return platRepository.save("plat_func", platFunc);
+        } catch (Exception e) {
+            logger.error(e);
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public List<PlatFunc> queryPlatFunces(String funcName, String parentFuncID, String status)
+            throws Exception {
+        Query query = new Query();
+        query.setTableName("plat_func");
+        query.equal("status", status);
+
+        if (StringUtil.isNotNullOrEmpty(funcName)) {
+            query.equal("funcName", "'" + funcName + "'");
+        }
+
+        if (StringUtil.isNotNullOrEmpty(parentFuncID)) {
+            query.equal("parentFuncID", parentFuncID);
+        }
+
+        return platRepository.queryByQuery(query);
     }
 }
