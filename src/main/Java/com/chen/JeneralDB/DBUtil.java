@@ -170,10 +170,10 @@ public class DBUtil {
                     try {
                         Object value = resultSet.getObject(name);
                         setValue(t, field, value);
+                    } catch (SQLException e) {
+
                     } catch (Exception e) {
                         e.printStackTrace();
-                    } finally {
-                        continue;
                     }
                 }
                 lists.add(t);
@@ -222,10 +222,10 @@ public class DBUtil {
                     try {
                         Object value = rs.getObject(name);
                         setValue(t, f, value);
+                    } catch (SQLException e) {
+
                     } catch (Exception e) {
                         e.printStackTrace();
-                    } finally {
-                        continue;
                     }
                 }
                 lists.add(t);
@@ -258,6 +258,12 @@ public class DBUtil {
     }
 
 
+    public DataTable queryDataTable(Query query)
+            throws Exception {
+        return queryDataTable(buildSelectSqlByQuery(query));
+    }
+
+
     public DataTable queryDataTable(String sql)
             throws Exception {
         List<Map<String, Object>> list = queryMapList(sql);
@@ -284,17 +290,6 @@ public class DBUtil {
         String sql = buildSelectSqlByQuery(query);
         if (null != sql && !"".equals(sql)) {
             return queryDataTable(sql);
-        }
-
-        return null;
-    }
-
-
-    public <T> List<T> queryByQuery(Query query, Class<T> beanClass)
-            throws Exception {
-        DataTable dt = queryByQuery(query);
-        if (null != dt) {
-            return dt.toBeanList(beanClass);
         }
 
         return null;

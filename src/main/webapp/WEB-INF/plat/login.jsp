@@ -14,7 +14,7 @@
     <meta name="description" content="Xenon Boostrap Admin Panel" />
     <meta name="author" content="" />
 
-    <title>个人项目管理系统</title>
+    <title>Bella</title>
 
     <%--<link rel="stylesheet" href="http://fonts.useso.com/css?family=Arimo:400,700,400italic">--%>
     <link rel="stylesheet" href="${ctx}/assets/css/fonts/linecons/css/linecons.css">
@@ -95,7 +95,7 @@
                             };
 
                             $.ajax({
-                                url: "${pageContext.request.contextPath}/login/submit.do",
+                                url: "${pageContext.request.contextPath}/Admin/admin/login.do",
                                 method: 'POST',
                                 dataType: 'json',
 //                                contentType: "application/json; charset=utf-8",
@@ -111,13 +111,10 @@
                                         finish: function(){
 
                                             // Redirect after successful login page (when progress bar reaches 100%)
-                                            if(data.Result == true)
-                                            {
-                                                window.location.href = '${pageContext.request.contextPath}/Main.do';
-                                            }
-                                            else
-                                            {
-                                                toastr.error(data.Message, '登陆错误 !', opts);
+                                            if(data.result == true) {
+                                                window.location.href = '${pageContext.request.contextPath}/Admin/main.do';
+                                            } else {
+                                                toastr.error(data.message, '登陆错误 !', opts);
                                                 $passwd.select();
                                             }
                                         }

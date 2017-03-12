@@ -21,7 +21,7 @@
 
 	<!-- Bottom Scripts -->
 	<script src="${ctx}/assets/js/jquery-validate/jquery.validate.min.js"></script>
-	<%--<script src="${ctx}/assets/js/jquery-1.11.1.min.js"></script>--%>
+	<script src="${ctx}/assets/js/jquery-1.11.1.min.js"></script>
 	<script src="${ctx}/assets/js/toastr/toastr.min.js"></script>
 	<script src="${ctx}/assets/js/datatables/js/jquery.dataTables.min.js"></script>
 

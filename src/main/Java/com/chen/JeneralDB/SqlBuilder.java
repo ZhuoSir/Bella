@@ -219,7 +219,7 @@ public final class SqlBuilder {
 
                 String key = (String) iterator.next();
                 String val = eq.get(key);
-                sql.append(key + " = " + val);
+                sql.append(key + " = '" + val + "'");
             }
         }
 
@@ -239,7 +239,7 @@ public final class SqlBuilder {
 
                 String key = (String) iterator.next();
                 String val = neq.get(key);
-                sql.append(key + " != " + val);
+                sql.append(key + " != '" + val + "'");
             }
         }
 
@@ -299,15 +299,15 @@ public final class SqlBuilder {
 
                 String key = (String) iterator.next();
                 Object[] val = In.get(key);
-                sql.append(key + " in ( ");
+                sql.append(key + " in ( '");
                 for (int i = 0; i < val.length; i++) {
                     if (i > 0) {
-                        sql.append(" , ");
+                        sql.append("' , '");
                     }
 
                     sql.append(val[i].toString());
                 }
-                sql.append(" ) ");
+                sql.append("' ) ");
             }
         }
 
@@ -327,15 +327,15 @@ public final class SqlBuilder {
 
                 String key = (String) iterator.next();
                 Object[] val = notIn.get(key);
-                sql.append(key + " not in ( ");
+                sql.append(key + " not in ( '");
                 for (int i = 0; i < val.length; i++) {
                     if (i > 0) {
-                        sql.append(" , ");
+                        sql.append("' , '");
                     }
 
                     sql.append(val[i].toString());
                 }
-                sql.append(" ) ");
+                sql.append("' ) ");
             }
         }
 

@@ -16,6 +16,12 @@ public class PlatRepository extends AbstractRepository<PlatFunc> {
 
     public List<PlatFunc> queryByQuery(Query query)
             throws Exception {
-        return dbUtil.queryByQuery(query, PlatFunc.class);
+        return dbUtil.queryBeanListByQuery(query, PlatFunc.class);
+    }
+
+    public List<PlatFunc> getAllParentFuncID()
+            throws Exception {
+        String sql = "select funcid , funcName from plat_func;";
+        return dbUtil.queryBeanList(sql, PlatFunc.class);
     }
 }

@@ -558,7 +558,14 @@ public class DataTable {
                     continue;
                 }
 
-                fields[j].set(t, value);
+                if (fields[j].getType().toString().equals("int")) {
+                    if (null != value)
+                        fields[j].set(t, value);
+                    else
+                        fields[j].set(t, 0);
+                } else {
+                    fields[j].set(t, value);
+                }
             }
 
             beanList.add(t);

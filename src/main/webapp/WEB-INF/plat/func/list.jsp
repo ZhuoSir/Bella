@@ -106,15 +106,15 @@
                         </c:choose>
                     </td>
                     <td style="text-align: center;">
-                        <c:if test="${func.menuFlag==1}">
+                        <c:if test="${func.status==1}">
                             <div class="label label-warning">显示</div>
                         </c:if>
-                        <c:if test="${func.menuFlag==0}">
+                        <c:if test="${func.status==0}">
                             <div class="label label-danger" >隐藏</div>
                         </c:if>
                     </td>
                     <td style="text-align: center;">
-                        <a href="" class="btn btn-secondary btn-sm btn-icon icon-left">
+                        <a href="javascript:void(0);" class="btn btn-secondary btn-sm btn-icon icon-left" onclick="update(${func.funcid})">
                             编辑
                         </a>
 
@@ -142,19 +142,31 @@
     </div>
 
 
-<!-- Bottom Scripts -->
-<jsp:include page="../commonjs.jsp"/>
-<link rel="stylesheet" href="${ctx}/assets/js/datatables/dataTables.bootstrap.css">
-<script src="${ctx}/assets/js/datatables/js/jquery.dataTables.min.js"></script>
+    <!-- Bottom Scripts -->
+    <jsp:include page="../commonjs.jsp"/>
+    <link rel="stylesheet" href="${ctx}/assets/js/datatables/dataTables.bootstrap.css">
+    <script src="${ctx}/assets/js/datatables/js/jquery.dataTables.min.js"></script>
 
-<!-- Imported scripts on this page -->
-<script src="${ctx}/assets/js/datatables/dataTables.bootstrap.js"></script>
-<script src="${ctx}/assets/js/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
-<script src="${ctx}/assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
+    <!-- Imported scripts on this page -->
+    <script src="${ctx}/assets/js/datatables/dataTables.bootstrap.js"></script>
+    <script src="${ctx}/assets/js/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
+    <script src="${ctx}/assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
 
-<!-- JavaScripts initializations and stuff -->
-<script src="${ctx}/assets/js/xenon-custom.js"></script>
-<script src="${ctx}/assets/js/common-toast.js"></script>
+    <!-- JavaScripts initializations and stuff -->
+    <script src="${ctx}/assets/js/xenon-custom.js"></script>
+    <script src="${ctx}/assets/js/common-toast.js"></script>
+
+    <script type="application/javascript">
+
+        $("#addFunc").click(function () {
+            window.location.href = "${ctx}/Admin/func/edit.do";
+        });
+
+        function update(id) {
+            window.location.href = "${ctx}/Admin/func/update.do?funcid=" + id;
+        }
+
+    </script>
 
 </body>
 </html>

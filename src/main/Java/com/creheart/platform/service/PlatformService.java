@@ -51,7 +51,6 @@ public class PlatformService {
         if (null != root) {
             sqlBuilder.append(" where parentFuncID = ");
             sqlBuilder.append(root.getPlatFunc().getFuncid());
-            sqlBuilder.append(" and menuFlag = 1 ");
             sqlBuilder.append(" and status = 1; ");
         }
 
@@ -104,7 +103,7 @@ public class PlatformService {
         query.equal("status", status);
 
         if (StringUtil.isNotNullOrEmpty(funcName)) {
-            query.equal("funcName", "'" + funcName + "'");
+            query.equal("funcName", funcName);
         }
 
         if (StringUtil.isNotNullOrEmpty(parentFuncID)) {
@@ -112,5 +111,27 @@ public class PlatformService {
         }
 
         return platRepository.queryByQuery(query);
+    }
+
+    /**
+     * 获取父节点ID
+     * */
+    public List<PlatFunc> allParentID() throws Exception {
+        return platRepository.getAllParentFuncID();
+    }
+
+    public int updatePlat(PlatFunc platFunc) {
+        try {
+            return platRepository.update("plat_func", platFunc);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e);
+        }
+        return -1;
+    }
+
+    public PlatFunc queryOneById(String funcID) throws Exception {
+        String sql = "select * from plat_func where funcid = " + funcID;
+        return platRepository.queryBean(sql, PlatFunc.class);
     }
 }
