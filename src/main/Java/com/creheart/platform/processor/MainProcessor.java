@@ -74,10 +74,4 @@ public class MainProcessor {
     public String notfound() {
         return "/plat/404";
     }
-
-    @RequestMapping("/test")
-    public String test() {
-        System.out.println("sucess");
-        return "/plat/test/test";
-    }
 }

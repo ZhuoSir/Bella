@@ -73,10 +73,10 @@ public class PlatformService {
     }
 
     public List<PlatFunc> allPlatFunces() {
-        String sql = "select * from plat_func order by funcid";
         List<PlatFunc> ret = null;
+
         try {
-            ret = platRepository.queryBeanList(sql, PlatFunc.class);
+            ret = platRepository.allPlatFuncs();
         } catch (Exception e) {
             logger.error(e);
             e.printStackTrace();
@@ -103,7 +103,7 @@ public class PlatformService {
         query.equal("status", status);
 
         if (StringUtil.isNotNullOrEmpty(funcName)) {
-            query.equal("funcName", funcName);
+            query.like("funcName", funcName);
         }
 
         if (StringUtil.isNotNullOrEmpty(parentFuncID)) {

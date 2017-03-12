@@ -14,6 +14,11 @@ import java.util.List;
 @Component
 public class PlatRepository extends AbstractRepository<PlatFunc> {
 
+    public List<PlatFunc> allPlatFuncs() throws Exception {
+        String sql = "select * from plat_func order by funcid";
+        return dbUtil.queryBeanList(sql, PlatFunc.class);
+    }
+
     public List<PlatFunc> queryByQuery(Query query)
             throws Exception {
         return dbUtil.queryBeanListByQuery(query, PlatFunc.class);
