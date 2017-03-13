@@ -259,7 +259,7 @@ public final class SqlBuilder {
 
                 String key = (String) iterator.next();
                 String val = like.get(key);
-                sql.append(key + " like '" + val + "'");
+                sql.append(key + " like '%" + val + "%'");
             }
         }
 
@@ -279,7 +279,7 @@ public final class SqlBuilder {
 
                 String key = (String) iterator.next();
                 String val = notLikes.get(key);
-                sql.append(key + " not like '" + val + "'");
+                sql.append(key + " not like '%" + val + "%'");
             }
         }
 

@@ -2,6 +2,7 @@ package com.chen.JeneralDB;
 
 
 import com.chen.JeneralDB.jdbc.Query;
+import com.chen.StringUtil;
 import com.mysql.jdbc.*;
 
 import java.lang.reflect.Field;
@@ -279,9 +280,12 @@ public class DBUtil {
 
     public <T> List<T> queryBeanListByQuery(Query query, Class<T> beanClass)
             throws Exception {
-        String tableName = beanClass.getSimpleName();
-        query.setTableName(tableName);
-        return queryByQuery(query).toBeanList(beanClass);
+        if (!StringUtil.isNotNullOrEmpty(query.getTableName())) {
+            String tableName = beanClass.getSimpleName();
+            query.setTableName(tableName);
+        }
+        DataTable dt = queryByQuery(query);
+        return null != dt ? dt.toBeanList(beanClass) : null;
     }
 
 
