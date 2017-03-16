@@ -51,7 +51,8 @@ public class PlatformService {
         if (null != root) {
             sqlBuilder.append(" where parentFuncID = ");
             sqlBuilder.append(root.getPlatFunc().getFuncid());
-            sqlBuilder.append(" and status = 1; ");
+            sqlBuilder.append(" and status = 1 ");
+            sqlBuilder.append(" order by orderNum; ");
         }
 
         platFuncs = platRepository.queryBeanList(sqlBuilder.toString(), PlatFunc.class);

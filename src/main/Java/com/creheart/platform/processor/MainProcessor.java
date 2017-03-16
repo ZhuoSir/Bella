@@ -43,26 +43,26 @@ public class MainProcessor {
     }
 
     private void genMenuLi(PlatMenu platMenu, StringBuilder html) {
-        html.append("<li>");
+        html.append("<li>\n");
         PlatFunc       theFunc    = platMenu.getPlatFunc();
         List<PlatMenu> childMenus = platMenu.getChildMenus();
         if (null != childMenus && !childMenus.isEmpty()) {
-            html.append("<a href=\"javascript:void(0)\">");
-            html.append("<i class=\"" + theFunc.getFuncIcon() + "\"></i>");
-            html.append("<span class=\"title\">" + theFunc.getFuncName() + "</span>");
-            html.append("</a>");
+            html.append("\t<a href=\"javascript:void(0)\">\n");
+            html.append("\t\t<i class=\"" + theFunc.getFuncIcon() + "\"></i>\n");
+            html.append("\t\t<span class=\"title\">" + theFunc.getFuncName() + "</span>\n");
+            html.append("\t</a>\n");
             for (int i = 0, size = childMenus.size(); i < size; i++) {
-                html.append("<ul>");
+                html.append("\t<ul>\n");
                 genMenuLi(childMenus.get(i), html);
-                html.append("</ul>");
+                html.append("\t</ul>\n");
             }
         } else {
-            html.append("<a href=\"javascript:void(0)\" onclick=\"redirect('/Bella/" + theFunc.getFuncUrl() + "')\">");
-            html.append("<i class=\"" + theFunc.getFuncIcon() + "\"></i>");
-            html.append("<span class=\"title\">" + theFunc.getFuncName() + "</span>");
-            html.append("</a>");
+            html.append("\t<a href=\"javascript:void(0)\" onclick=\"redirect('/Bella/" + theFunc.getFuncUrl() + "')\">\n");
+            html.append("\t\t<i class=\"" + theFunc.getFuncIcon() + "\"></i>\n");
+            html.append("\t\t<span class=\"title\">" + theFunc.getFuncName() + "</span>\n");
+            html.append("\t\t</a>\n");
         }
-        html.append("</li>");
+        html.append("</li>\n");
     }
 
     @RequestMapping("/welcome")

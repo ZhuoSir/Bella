@@ -158,6 +158,43 @@
 
     <script type="application/javascript">
 
+        jQuery(document).ready(function($)
+        {
+            $("#example-2").dataTable({
+                dom: "t" + "<'row'<'col-xs-6'i><'col-xs-6'p>>",
+                aoColumns: [
+                    {bSortable: false},
+                    {bSortable: true},
+                    {bSortable: false},
+                    {bSortable: true},
+                    {bSortable: true},
+                    {bSortable: false},
+                    {bSortable: false}
+                ],
+            });
+            // Replace checkboxes when they appear
+            var $state = $("#example-2 thead input[type='checkbox']");
+            $("#example-2").on('draw.dt', function()
+            {
+                cbr_replace();
+                $state.trigger('change');
+            });
+            // Script to select all checkboxes
+            $state.on('change', function(ev)
+            {
+                var $chcks = $("#example-2 tbody input[type='checkbox']");
+                if($state.is(':checked'))
+                {
+                    $chcks.prop('checked', true).trigger('change');
+                }
+                else
+                {
+                    $chcks.prop('checked', false).trigger('change');
+                }
+            });
+        });
+
+
         $("#addFunc").click(function () {
             window.location.href = "${ctx}/Admin/func/edit.do";
         });
