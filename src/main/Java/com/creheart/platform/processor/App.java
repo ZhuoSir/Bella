@@ -18,7 +18,7 @@ public class App {
         PlatformService service = (PlatformService) ctx.getBean("platformService");
         try {
             List<PlatMenu> platMenus = service.menuList();
-            System.out.println("success...");
+            System.out.println(platMenus);
         } catch (Exception e) {
             e.printStackTrace();
         }
