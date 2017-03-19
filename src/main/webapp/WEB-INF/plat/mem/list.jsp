@@ -8,7 +8,7 @@
 
     <jsp:include page="../commoncss.jsp"/>
 </head>
-<body>
+<body class="page-body">
 
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -24,103 +24,178 @@
             </a>
         </div>
     </div>
-    <div class="panel-body">
 
-        <script type="text/javascript">
-            jQuery(document).ready(function($)
-            {
-                $("#memberlist").dataTable({
-                    aLengthMenu: [
-                        [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
-                    ]
-                });
-            });
-        </script>
+    <!-- 查询panel -->
+    <div class="panel-body" style="margin-left: -100px">
 
-        <table id="memberlist" class="table table-striped table-bordered" cellspacing="0" width="100%" style="font-size: 13px">
+        <form role="form" class="form-horizontal" action="${ctx}/Admin/member/query.do" method="post">
+
+            <div class="form-group">
+
+                <label class="col-xs-2 control-label" for="queryBuilder">账户名</label>
+
+                <div class="col-xs-2">
+                    <input type="text" class="form-control" id="queryBuilder" name="queryBuilder" placeholder="查询条件" value="${queryBuilder}">
+                </div>
+
+                <label class="col-xs-2 control-label">账户状态</label>
+
+                <div class="col-xs-2">
+                    <select class="form-control" name="status" >
+                        <option value="0" <c:if test="${status == 0}">selected</c:if>>生效</option>
+                        <option value="1" <c:if test="${status == 1}">selected</c:if>>禁用</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-secondary" style="margin-left: 120px" type="submit">查询</button>
+
+                <button class="btn btn-purple" id="off" type="button" onclick="showAjaxModalForHidden()">禁用</button>
+
+                <button class="btn btn-info" id="on" type="button" onclick="showAjaxModalForShow()">生效</button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="panel-body" style="margin-top: -20px;">
+
+        <table class="table table-bordered table-striped" id="example-2" style="font-size: 13px">
             <thead>
             <tr>
                 <th class="no-sorting">
                     <input type="checkbox" class="cbr all">
                 </th>
-                <th hidden="hidden">ID</th>
-                <th>账户名</th>
-                <th>昵称</th>
-                <th>邮件</th>
-                <th>电话号码</th>
-                <th>账户状态</th>
-                <th>创建时间</th>
+                <th style="text-align: center;">ID</th>
+                <th style="text-align: center;">账户名</th>
+                <th style="text-align: center;">昵称</th>
+                <th style="text-align: center;">邮箱</th>
+                <th style="text-align: center;">手机号</th>
+                <th style="text-align: center;">账户状态</th>
+                <th style="text-align: center;">操作</th>
             </tr>
             </thead>
 
-            <%--<tfoot>--%>
-            <%--<tr>--%>
-                <%--<td>--%>
-
-                <%--</td>--%>
-                <%--<th hidden="hidden">ID</th>--%>
-                <%--<th>Name</th>--%>
-                <%--<th>Nick</th>--%>
-                <%--<th>Email</th>--%>
-                <%--<th>MobilePhone</th>--%>
-                <%--<th>Status</th>--%>
-                <%--<th>CreateTime</th>--%>
-            <%--</tr>--%>
-            <%--</tfoot>--%>
-
-            <tbody>
-
+            <tbody class="middle-align" id="plat-tbody">
             <c:forEach var="mem" items="${memberList}">
-                <tr>
+                <tr data-id="${mem.ID}">
                     <td>
                         <input type="checkbox" class="cbr single">
                     </td>
-                    <td hidden="hidden">${mem.ID}</td>
-                    <td>${mem.accountName}</td>
-                    <td>
-                        <a href="${ctx}/admin/other.do?aid=${mem.ID}">${mem.nickName}</a>
-                    </td>
-                    <td>${mem.email}</td>
-                    <td>${mem.mobilePhone}</td>
-                    <td>
-                        <c:if test="${mem.status==0}">
-                            <div class="label label-black">生效</div>
-                        </c:if>
+                    <td style="text-align: center;">${mem.ID}</td>
+                    <td style="text-align: center;" class="cid">${mem.accountName}</td>
+                    <td style="text-align: center;">${mem.nickName}</td>
+                    <td style="text-align: center;">${mem.email}</td>
+                    <td style="text-align: center;">${mem.mobilePhone}</td>
+                    <td style="text-align: center;">
                         <c:if test="${mem.status==1}">
-                            <div class="label label-orange">禁用</div>
+                            <div class="label label-warning">禁用</div>
+                        </c:if>
+                        <c:if test="${mem.status==0}">
+                            <div class="label label-danger" >生效</div>
                         </c:if>
                     </td>
-                    <td><fmt:formatDate value="${mem.addTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                    <td style="text-align: center;">
+                        <a href="javascript:void(0);" class="btn btn-secondary btn-sm btn-icon icon-left" onclick="update(${func.funcid})">
+                            编辑
+                        </a>
+
+                        <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-icon icon-left" onclick="showAjaxModal(${func.funcid})" >
+                            删除
+                        </a>
+
+                            <%--<c:if test="${func.status==1}">--%>
+                            <%--<a href="#" class="btn btn-info btn-sm btn-icon icon-left">--%>
+                            <%--显示--%>
+                            <%--</a>--%>
+                            <%--</c:if>--%>
+
+                            <%--<c:if test="${func.status==0}">--%>
+                            <%--<a href="#" class="btn btn-purple btn-sm btn-icon icon-left">--%>
+                            <%--隐藏--%>
+                            <%--</a>--%>
+                            <%--</c:if>--%>
+                    </td>
                 </tr>
             </c:forEach>
-
             </tbody>
         </table>
 
     </div>
 </div>
 
+<div class="modal fade" id="modal-2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">系统提示</h4>
+            </div>
+
+            <div class="modal-body">
+                确定禁用此用户吗？
+            </div>
+
+            <input value="" type="hidden" id="model_content2">
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-info" onclick="activeOrForbid()" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-3">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">系统提示</h4>
+            </div>
+
+            <div class="modal-body">
+                确定生效此用户吗？
+            </div>
+
+            <input value="" type="hidden" id="model_content3">
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-info" onclick="activeBtn()" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-<link rel="stylesheet" href="${ctx}/assets/js/datatables/dataTables.bootstrap.css">
-<script src="${ctx}/assets/js/datatables/js/jquery.dataTables.min.js"></script>
+    <!-- Bottom Scripts -->
+    <jsp:include page="../commonjs.jsp"/>
+    <link rel="stylesheet" href="${ctx}/assets/js/datatables/dataTables.bootstrap.css">
+    <script src="${ctx}/assets/js/datatables/js/jquery.dataTables.min.js"></script>
 
-<!-- Imported scripts on this page -->
-<script src="${ctx}/assets/js/datatables/dataTables.bootstrap.js"></script>
-<script src="${ctx}/assets/js/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
-<script src="${ctx}/assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
+    <!-- Imported scripts on this page -->
+    <script src="${ctx}/assets/js/datatables/dataTables.bootstrap.js"></script>
+    <script src="${ctx}/assets/js/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
+    <script src="${ctx}/assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
 
-<!-- JavaScripts initializations and stuff -->
-<script src="${ctx}/assets/js/xenon-custom.js"></script>
-<script src="${ctx}/assets/js/common-toast.js"></script>
+    <!-- JavaScripts initializations and stuff -->
+    <script src="${ctx}/assets/js/xenon-custom.js"></script>
+    <script src="${ctx}/assets/js/common-toast.js"></script>
 
-<!-- Bottom Scripts -->
-<jsp:include page="../commonjs.jsp"/>
 
-<script type="application/javascript">
-    jQuery(document).ready(function($)
+</body>
+
+<script type="text/javascript">
+
+    $(document).ready(function($)
     {
-        $("#memberlist").dataTable({
+        $("#example-2").dataTable({
             dom: "t" + "<'row'<'col-xs-6'i><'col-xs-6'p>>",
             aoColumns: [
                 {bSortable: false},
@@ -128,13 +203,14 @@
                 {bSortable: false},
                 {bSortable: true},
                 {bSortable: true},
+                {bSortable: true},
                 {bSortable: false},
                 {bSortable: false}
             ],
         });
         // Replace checkboxes when they appear
-        var $state = $("#memberlist thead input[type='checkbox']");
-        $("#memberlist").on('draw.dt', function()
+        var $state = $("#example-2 thead input[type='checkbox']");
+        $("#example-2").on('draw.dt', function()
         {
             cbr_replace();
             $state.trigger('change');
@@ -142,7 +218,7 @@
         // Script to select all checkboxes
         $state.on('change', function(ev)
         {
-            var $chcks = $("#memberlist tbody input[type='checkbox']");
+            var $chcks = $("#example-2 tbody input[type='checkbox']");
             if($state.is(':checked'))
             {
                 $chcks.prop('checked', true).trigger('change');
@@ -154,7 +230,57 @@
         });
     });
 
+    function showAjaxModalForHidden(){
+        var ids = "";
+        $("#plat-tbody").find("tr").each(function () {
+            if ($(this).find(".single").prop("checked")){
+                ids = $(this).data("id") + "," + ids;
+            }
+        });
+        ids = ids.substring(0,(ids.length-1));
+        if (ids==""){
+            toastr.warning("至少选择一个操作项！", "操作警告", warn);
+        } else {
+            $("#model_content2").val(ids);
+            $('#modal-2').modal('show', {backdrop: 'fade'});
+        }
+    }
+
+    function showAjaxModalForShow(){
+        var ids = "";
+        $("#plat-tbody").find("tr").each(function () {
+            if ($(this).find(".single").prop("checked")){
+                ids = $(this).data("id") + "," + ids;
+            }
+        });
+        ids = ids.substring(0,(ids.length-1));
+        if (ids==""){
+            toastr.warning("至少选择一个操作项！", "操作警告", warn);
+        } else {
+            $("#model_content3").val(ids);
+            $('#modal-3').modal('show', {backdrop: 'fade'});
+        }
+    }
+
+    function activeOrForbid(sta) {
+        $.ajax({
+            url: "${ctx}/Admin/member/activeOrforbid.do",
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                memberIDs : "",
+                status : sta
+            },
+            success: function(msg)
+            {
+                if (msg.result) {
+
+                }
+            }
+        });
+    }
+
 </script>
 
-</body>
+
 </html>

@@ -1,22 +1,31 @@
 package com.creheart.platform;
 
-import com.creheart.domain.PlatFunc;
-import com.creheart.platform.repository.PlatRepository;
-import com.creheart.platform.service.AdminService;
+import com.creheart.domain.Member;
+import com.creheart.platform.bean.Msg;
+import com.creheart.web.service.MemberService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.List;
+
 /**
+ *
  * Created by sunny-chen on 2017/3/5.
  */
 public class App {
 
     public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-        AdminService service = (AdminService) ctx.getBean("adminService");
-
-        if (service.isExistOfAdmin("chen")) {
-            System.out.println(service.validate("chen", "1111111"));
+        MemberService service = (MemberService) ctx.getBean("memberService");
+        Msg msg = new Msg();
+        try {
+            List<Member> result = service.fuzzyQuery("18456239658", 1);
+            msg.data = result;
+        } catch (Exception e) {
+            msg.error = e.toString();
+            e.printStackTrace();
         }
+
+        System.out.println(msg.toJson());
     }
 }

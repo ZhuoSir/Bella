@@ -25,14 +25,8 @@ public class MemberRepository extends AbstractRepository<Member> {
         return dbUtil.queryBeanListByQuery(query, Member.class);
     }
 
-    public int OnOrOffMember(int status, String[] memberIDs) throws Exception {
-        StringBuilder ids = new StringBuilder();
-        for (int i = 0; i < memberIDs.length; i++) {
-            if (i > 0) ids.append(",");
-            ids.append(memberIDs[i]);
-        }
-
+    public int OnOrOffMember(int status, String memberIDs) throws Exception {
         String sql = "update member set status = ? where memberid in (?)";
-        return dbUtil.execute(sql, status, ids.toString());
+        return dbUtil.execute(sql, status, memberIDs);
     }
 }

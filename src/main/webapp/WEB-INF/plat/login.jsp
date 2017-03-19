@@ -111,7 +111,7 @@
                                         finish: function(){
 
                                             // Redirect after successful login page (when progress bar reaches 100%)
-                                            if(data.result == true) {
+                                            if(data.result) {
                                                 window.location.href = '${pageContext.request.contextPath}/Admin/main.do';
                                             } else {
                                                 toastr.error(data.message, '登陆错误 !', opts);

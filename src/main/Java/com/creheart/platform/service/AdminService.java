@@ -1,6 +1,5 @@
 package com.creheart.platform.service;
 
-import com.chen.JeneralDB.jdbc.Query;
 import com.chen.StringUtil;
 import com.creheart.domain.PlatAdmin;
 import com.creheart.platform.repository.AdminRepository;
