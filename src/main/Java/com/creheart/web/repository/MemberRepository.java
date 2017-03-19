@@ -1,6 +1,7 @@
 package com.creheart.web.repository;
 
 import com.chen.JeneralDB.jdbc.Query;
+import com.chen.StringUtil;
 import com.creheart.base.repository.AbstractRepository;
 import com.creheart.domain.Member;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,10 @@ public class MemberRepository extends AbstractRepository<Member> {
     }
 
     public int OnOrOffMember(int status, String memberIDs) throws Exception {
-        String sql = "update member set status = ? where memberid in (?)";
+        if (!StringUtil.isNotNullOrEmpty(memberIDs))
+            return -1;
+
+        String sql = "update member set status = ? where ID in (?)";
         return dbUtil.execute(sql, status, memberIDs);
     }
 }

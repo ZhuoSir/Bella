@@ -106,18 +106,6 @@
                         <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-icon icon-left" onclick="showAjaxModal(${func.funcid})" >
                             删除
                         </a>
-
-                            <%--<c:if test="${func.status==1}">--%>
-                            <%--<a href="#" class="btn btn-info btn-sm btn-icon icon-left">--%>
-                            <%--显示--%>
-                            <%--</a>--%>
-                            <%--</c:if>--%>
-
-                            <%--<c:if test="${func.status==0}">--%>
-                            <%--<a href="#" class="btn btn-purple btn-sm btn-icon icon-left">--%>
-                            <%--隐藏--%>
-                            <%--</a>--%>
-                            <%--</c:if>--%>
                     </td>
                 </tr>
             </c:forEach>
@@ -137,14 +125,14 @@
             </div>
 
             <div class="modal-body">
-                确定禁用此用户吗？
+                确定禁用用户？
             </div>
 
             <input value="" type="hidden" id="model_content2">
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-info" onclick="activeOrForbid()" data-dismiss="modal">确定</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal" id="modal-cancel">取消</button>
+                <button type="button" class="btn btn-info" onclick="activeOrForbid(1)" data-dismiss="modal" id="modal-ok">确定</button>
             </div>
         </div>
     </div>
@@ -159,25 +147,25 @@
                 <h4 class="modal-title">系统提示</h4>
             </div>
 
-            <div class="modal-body">
-                确定生效此用户吗？
+            <div class="modal-body" id="modal-content">
+                确定生效用户？
             </div>
 
             <input value="" type="hidden" id="model_content3">
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-info" onclick="activeBtn()" data-dismiss="modal">确定</button>
+                <button type="button" class="btn btn-info" onclick="activeOrForbid(0)" data-dismiss="modal">确定</button>
             </div>
         </div>
     </div>
 </div>
 
-
     <!-- Bottom Scripts -->
     <jsp:include page="../commonjs.jsp"/>
     <link rel="stylesheet" href="${ctx}/assets/js/datatables/dataTables.bootstrap.css">
     <script src="${ctx}/assets/js/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="${ctx}/assets/js/bootstrap.min.js"></script>
 
     <!-- Imported scripts on this page -->
     <script src="${ctx}/assets/js/datatables/dataTables.bootstrap.js"></script>
@@ -242,7 +230,7 @@
             toastr.warning("至少选择一个操作项！", "操作警告", warn);
         } else {
             $("#model_content2").val(ids);
-            $('#modal-2').modal('show', {backdrop: 'fade'});
+            jQuery('#modal-2').modal('show', {backdrop: 'fade'});
         }
     }
 
@@ -258,23 +246,32 @@
             toastr.warning("至少选择一个操作项！", "操作警告", warn);
         } else {
             $("#model_content3").val(ids);
-            $('#modal-3').modal('show', {backdrop: 'fade'});
+            jQuery('#modal-3').modal('show', {backdrop: 'fade'});
         }
     }
 
     function activeOrForbid(sta) {
+        var memberIDs = "";
+        if (sta == 0) {
+            memberIDs = $("#model_content3").val();
+        } else {
+            memberIDs = $("#model_content2").val();
+        }
+
         $.ajax({
             url: "${ctx}/Admin/member/activeOrforbid.do",
             method: 'POST',
             dataType: 'json',
             data: {
-                memberIDs : "",
+                memberIDs : memberIDs,
                 status : sta
             },
             success: function(msg)
             {
                 if (msg.result) {
-
+                    window.location.reload();
+                } else {
+                    ShowNotification("error" , msg.error);
                 }
             }
         });
