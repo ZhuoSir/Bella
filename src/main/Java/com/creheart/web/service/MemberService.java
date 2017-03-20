@@ -1,7 +1,9 @@
 package com.creheart.web.service;
 
 import com.creheart.domain.Member;
+import com.creheart.domain.MemberInfo;
 import com.creheart.platform.Const.MemberConst;
+import com.creheart.platform.repository.MemberInfoRepository;
 import com.creheart.web.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +18,30 @@ import java.util.List;
 public class MemberService {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberRepository     memberRepository;
+
+    @Autowired
+    private MemberInfoRepository memberInfoRepository;
+
+    public Member queryMemberByID(int memberID) throws Exception {
+        String sql = "select * from member where ID = ?";
+        return memberRepository.queryBean(sql, Member.class, memberID);
+    }
+
+    public Member queryMemberByAccountName(String accountName) throws Exception {
+        String sql = "select * from member where accountName = ?";
+        return memberRepository.queryBean(sql, Member.class, accountName);
+    }
+
+    public MemberInfo queryMemberInfoByID(int memberID) throws Exception {
+        String sql = "select * from member_info where ID = ?";
+        return memberInfoRepository.queryBean(sql, MemberInfo.class, memberID);
+    }
+
+    public MemberInfo queryMemberInfoByAccountName(String accountName) throws Exception {
+        String sql = "select * from member_info where accountName = ?";
+        return memberInfoRepository.queryBean(sql, MemberInfo.class, accountName);
+    }
 
     public List<Member> allMembers() throws Exception {
         return memberRepository.allMembers();

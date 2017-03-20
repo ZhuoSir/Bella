@@ -278,6 +278,18 @@ public class DBUtil {
     }
 
 
+    public DataTable queryDataTable(String sql, Object... params) throws Exception {
+        List<Map<String, Object>> list = queryMapList(sql, params);
+        DataTable dataTable = null;
+
+        if (null != list && !list.isEmpty()) {
+            dataTable = new DataTable(list);
+        }
+
+        return dataTable;
+    }
+
+
     public <T> List<T> queryBeanListByQuery(Query query, Class<T> beanClass)
             throws Exception {
         if (!StringUtil.isNotNullOrEmpty(query.getTableName())) {

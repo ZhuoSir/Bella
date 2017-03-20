@@ -50,11 +50,23 @@ public abstract class AbstractRepository<T> {
         return dbUtil.queryBean(sql, tClass);
     }
 
+    public T queryBean(String sql, Class<T> tClass, Object... params) throws Exception {
+        return dbUtil.queryBean(sql, tClass, params);
+    }
+
     public List<T> queryBeanList(String sql, Class<T> tClass) throws Exception {
         return dbUtil.queryBeanList(sql, tClass);
     }
 
+    public List<T> queryBeanList(String sql, Class<T> tClass, Object... params) throws Exception {
+        return dbUtil.queryBeanList(sql, tClass, params);
+    }
+
     public DataTable query(String sql) throws Exception {
         return dbUtil.queryDataTable(sql);
+    }
+
+    public DataTable query(String sql, Object... params) throws Exception {
+        return dbUtil.queryDataTable(sql, params);
     }
 }
