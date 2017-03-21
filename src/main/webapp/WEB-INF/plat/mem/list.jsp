@@ -75,7 +75,6 @@
                 <th style="text-align: center;">邮箱</th>
                 <th style="text-align: center;">手机号</th>
                 <th style="text-align: center;">账户状态</th>
-                <th style="text-align: center;">操作</th>
             </tr>
             </thead>
 
@@ -86,7 +85,7 @@
                         <input type="checkbox" class="cbr single">
                     </td>
                     <td style="text-align: center;">${mem.ID}</td>
-                    <td style="text-align: center;" class="cid">${mem.accountName}</td>
+                    <td style="text-align: center;" class="cid"><a href="${ctx}/Admin/memInfo.do?n=${mem.accountName}">${mem.accountName}</a></td>
                     <td style="text-align: center;">${mem.nickName}</td>
                     <td style="text-align: center;">${mem.email}</td>
                     <td style="text-align: center;">${mem.mobilePhone}</td>
@@ -97,15 +96,6 @@
                         <c:if test="${mem.status==0}">
                             <div class="label label-danger" >生效</div>
                         </c:if>
-                    </td>
-                    <td style="text-align: center;">
-                        <a href="javascript:void(0);" class="btn btn-secondary btn-sm btn-icon icon-left" onclick="update(${func.funcid})">
-                            编辑
-                        </a>
-
-                        <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-icon icon-left" onclick="showAjaxModal(${func.funcid})" >
-                            删除
-                        </a>
                     </td>
                 </tr>
             </c:forEach>
@@ -192,7 +182,6 @@
                 {bSortable: true},
                 {bSortable: true},
                 {bSortable: true},
-                {bSortable: false},
                 {bSortable: false}
             ],
         });
