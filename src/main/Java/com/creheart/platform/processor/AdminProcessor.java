@@ -1,6 +1,5 @@
 package com.creheart.platform.processor;
 
-import com.alibaba.fastjson.JSON;
 import com.creheart.platform.bean.Msg;
 import com.creheart.platform.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,6 @@ public class AdminProcessor {
     public
     @ResponseBody String login(String username, String pwd, ModelMap modelMap) {
         Msg msg = new Msg();
-        msg.result = false;
 
         if (adminService.isExistOfAdmin(username)) {
             String validate = adminService.validate(username, pwd);
@@ -46,7 +44,7 @@ public class AdminProcessor {
             msg.message = "用户不存在！";
         }
 
-        return JSON.toJSONString(msg);
+        return msg.toJson();
     }
 
 }

@@ -17,7 +17,7 @@ public class MemberRepository extends AbstractRepository<Member> {
 
     public List<Member> allMembers()
             throws Exception {
-        String sql = "select * from member ";
+        String sql = " select * from member ";
         return dbUtil.queryBeanList(sql, Member.class);
     }
 

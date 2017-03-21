@@ -25,22 +25,22 @@ public class MemberService {
 
     public Member queryMemberByID(int memberID) throws Exception {
         String sql = "select * from member where ID = ?";
-        return memberRepository.queryBean(sql, Member.class, memberID);
+        return memberRepository.query(sql, Member.class, memberID);
     }
 
     public Member queryMemberByAccountName(String accountName) throws Exception {
         String sql = "select * from member where accountName = ?";
-        return memberRepository.queryBean(sql, Member.class, accountName);
+        return memberRepository.query(sql, Member.class, accountName);
     }
 
     public MemberInfo queryMemberInfoByID(int memberID) throws Exception {
         String sql = "select * from member_info where ID = ?";
-        return memberInfoRepository.queryBean(sql, MemberInfo.class, memberID);
+        return memberInfoRepository.query(sql, MemberInfo.class, memberID);
     }
 
     public MemberInfo queryMemberInfoByAccountName(String accountName) throws Exception {
         String sql = "select * from member_info where accountName = ?";
-        return memberInfoRepository.queryBean(sql, MemberInfo.class, accountName);
+        return memberInfoRepository.query(sql, MemberInfo.class, accountName);
     }
 
     public List<Member> allMembers() throws Exception {
@@ -76,6 +76,6 @@ public class MemberService {
         sqlBuilder.append(" or nickName like '%" + queryBuilder +"%'");
         sqlBuilder.append(" );");
 
-        return memberRepository.queryBeanList(sqlBuilder.toString(), Member.class);
+        return memberRepository.queryList(sqlBuilder.toString(), Member.class);
     }
 }

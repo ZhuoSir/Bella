@@ -55,7 +55,7 @@ public class PlatformService {
             sqlBuilder.append(" order by orderNum; ");
         }
 
-        platFuncs = platRepository.queryBeanList(sqlBuilder.toString(), PlatFunc.class);
+        platFuncs = platRepository.queryList(sqlBuilder.toString(), PlatFunc.class);
         if (null == platFuncs) {
             return null;
         }
