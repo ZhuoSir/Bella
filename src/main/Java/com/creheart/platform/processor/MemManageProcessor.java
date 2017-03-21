@@ -1,6 +1,5 @@
 package com.creheart.platform.processor;
 
-import com.alibaba.fastjson.JSON;
 import com.creheart.domain.Member;
 import com.creheart.platform.Const.MemberConst;
 import com.creheart.platform.bean.Msg;
@@ -21,9 +20,9 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/Admin/member")
-public class MemManagProcessor {
+public class MemManageProcessor {
 
-    private Logger logger = Logger.getLogger(MemManagProcessor.class);
+    private Logger logger = Logger.getLogger(MemManageProcessor.class);
 
     @Autowired
     private MemberService memberService;

@@ -30,7 +30,7 @@ public class MemberService {
     }
 
     public Member queryMemberByAccountName(String accountName) throws Exception {
-        if (StringUtil.isNotNullOrEmpty(accountName))
+        if (!StringUtil.isNotNullOrEmpty(accountName))
             return null;
 
         String sql = "select * from member where accountName = ?";
@@ -47,14 +47,14 @@ public class MemberService {
     }
 
     public int forbiddenMember(String memberID) throws Exception {
-        if (StringUtil.isNotNullOrEmpty(memberID))
+        if (!StringUtil.isNotNullOrEmpty(memberID))
             return -1;
 
         return memberRepository.OnOrOffMember(MemberConst.forbidden, memberID);
     }
 
     public int activeMember(String memberID) throws Exception {
-        if (StringUtil.isNotNullOrEmpty(memberID))
+        if (!StringUtil.isNotNullOrEmpty(memberID))
             return -1;
 
         return memberRepository.OnOrOffMember(MemberConst.activate, memberID);
