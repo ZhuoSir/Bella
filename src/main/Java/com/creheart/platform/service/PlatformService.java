@@ -133,6 +133,6 @@ public class PlatformService {
 
     public PlatFunc queryOneById(String funcID) throws Exception {
         String sql = "select * from plat_func where funcid = " + funcID;
-        return platRepository.queryBean(sql, PlatFunc.class);
+        return platRepository.query(sql, PlatFunc.class);
     }
 }

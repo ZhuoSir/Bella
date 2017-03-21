@@ -46,7 +46,7 @@ public abstract class AbstractRepository<T> {
         return dbUtil.delete(t, tableName);
     }
 
-    public T queryBean(String sql, Class<T> tClass) throws Exception {
+    public T query(String sql, Class<T> tClass) throws Exception {
         return dbUtil.queryBean(sql, tClass);
     }
 
