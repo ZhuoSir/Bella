@@ -1,5 +1,6 @@
 package com.creheart.web.service;
 
+import com.chen.StringUtil;
 import com.creheart.domain.Member;
 import com.creheart.domain.MemberInfo;
 import com.creheart.platform.Const.MemberConst;
@@ -23,24 +24,22 @@ public class MemberService {
     @Autowired
     private MemberInfoRepository memberInfoRepository;
 
-    public Member queryMemberByID(int memberID) throws Exception {
+    public Member queryMemberByID(long memberID) throws Exception {
         String sql = "select * from member where ID = ?";
         return memberRepository.query(sql, Member.class, memberID);
     }
 
     public Member queryMemberByAccountName(String accountName) throws Exception {
+        if (StringUtil.isNotNullOrEmpty(accountName))
+            return null;
+
         String sql = "select * from member where accountName = ?";
         return memberRepository.query(sql, Member.class, accountName);
     }
 
-    public MemberInfo queryMemberInfoByID(int memberID) throws Exception {
-        String sql = "select * from member_info where ID = ?";
+    public MemberInfo queryMemberInfoByID(long memberID) throws Exception {
+        String sql = "select * from member_info where MemberID = ?";
         return memberInfoRepository.query(sql, MemberInfo.class, memberID);
-    }
-
-    public MemberInfo queryMemberInfoByAccountName(String accountName) throws Exception {
-        String sql = "select * from member_info where accountName = ?";
-        return memberInfoRepository.query(sql, MemberInfo.class, accountName);
     }
 
     public List<Member> allMembers() throws Exception {
@@ -48,10 +47,16 @@ public class MemberService {
     }
 
     public int forbiddenMember(String memberID) throws Exception {
+        if (StringUtil.isNotNullOrEmpty(memberID))
+            return -1;
+
         return memberRepository.OnOrOffMember(MemberConst.forbidden, memberID);
     }
 
     public int activeMember(String memberID) throws Exception {
+        if (StringUtil.isNotNullOrEmpty(memberID))
+            return -1;
+
         return memberRepository.OnOrOffMember(MemberConst.activate, memberID);
     }
 

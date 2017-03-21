@@ -23,10 +23,14 @@ public class MemInfoProcessor {
     private MemberService memberService;
 
     @RequestMapping
-    public String showInfoPage(String accountName, ModelMap modelMap) {
+    public String showInfoPage(String n, ModelMap modelMap) {
         try {
-            Member     member     = memberService.queryMemberByAccountName(accountName);
-            MemberInfo memberInfo = memberService.queryMemberInfoByAccountName(accountName);
+            Member member = memberService.queryMemberByAccountName(n);
+            if (null == member)
+                return "redirect:/Admin/admin/list.do";
+
+            MemberInfo memberInfo = memberService.queryMemberInfoByID(member.getID());
+            member.setPassword(null);
 
             modelMap.addAttribute("member", member);
             modelMap.addAttribute("memberInfo", memberInfo);
