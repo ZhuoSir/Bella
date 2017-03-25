@@ -1,8 +1,10 @@
 package com.creheart.platform.processor;
 
+import com.chen.JeneralDB.cache.CacheManager;
 import com.creheart.domain.PlatFunc;
 import com.creheart.platform.bean.PlatMenu;
 import com.creheart.platform.service.PlatformService;
+import com.creheart.util.SessonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -57,7 +59,8 @@ public class MainProcessor {
                 html.append("\t</ul>\n");
             }
         } else {
-            html.append("\t<a href=\"javascript:void(0)\" onclick=\"redirect('/Bella/" + theFunc.getFuncUrl() + "')\">\n");
+            String direct = (null != theFunc.getFuncUrl() && !theFunc.getFuncUrl().isEmpty()) ? theFunc.getFuncUrl() : "Admin/main/blank.do";
+            html.append("\t<a href=\"javascript:void(0)\" onclick=\"redirect('/Bella/" + direct + "')\">\n");
             html.append("\t\t<i class=\"" + theFunc.getFuncIcon() + "\"></i>\n");
             html.append("\t\t<span class=\"title\">" + theFunc.getFuncName() + "</span>\n");
             html.append("\t\t</a>\n");
@@ -73,5 +76,22 @@ public class MainProcessor {
     @RequestMapping("/404")
     public String notfound() {
         return "/plat/404";
+    }
+
+    @RequestMapping("/clearCache")
+    public String clearCache() {
+        CacheManager.getInstance().clearAll();
+        return "redirect:/Admin/main.do";
+    }
+
+    @RequestMapping("/clearSession")
+    public String clearSession() {
+        SessonUtil.clearAllAttrInSession();
+        return "redirect:/Admin/main.do";
+    }
+
+    @RequestMapping("/blank")
+    public String blank() {
+        return "/plat/blank";
     }
 }
