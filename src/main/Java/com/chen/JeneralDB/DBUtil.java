@@ -312,6 +312,35 @@ public class DBUtil {
     }
 
 
+    public Object querySingleOne(String sql)
+            throws Exception {
+        return querySingleOne(sql, null);
+    }
+
+    public Object querySingleOne(String sql, Object... params)
+            throws Exception {
+        DataTable dt = null;
+
+        if (null != params)
+            dt = queryDataTable(sql, params);
+        else
+            dt = queryDataTable(sql);
+
+        if (null == dt)
+            return null;
+        else
+            return dt.getObjectAtCoordinate(0,0);
+    }
+
+
+    public Object querySingleOne(Query query)
+            throws Exception {
+        String sql = buildSelectSqlByQuery(query);
+
+        return querySingleOne(sql);
+    }
+
+
     public ResultSetMetaData queryResultSetMetaData(String sql)
             throws Exception {
         checkConnect();

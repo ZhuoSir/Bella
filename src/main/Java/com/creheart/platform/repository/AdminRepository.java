@@ -28,10 +28,6 @@ public class AdminRepository extends AbstractRepository<PlatAdmin> {
         query.setFields(field);
         query.equal("adminName", adminName);
 
-        DataTable dt = dbUtil.queryByQuery(query);
-        if (null != dt)
-            return (String) dt.getObjectAtCoordinate(0,0);
-        else
-            return null;
+        return dbUtil.querySingleOne(query).toString();
     }
 }

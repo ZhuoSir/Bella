@@ -69,4 +69,12 @@ public abstract class AbstractRepository<T> {
     public DataTable query(String sql, Object... params) throws Exception {
         return dbUtil.queryDataTable(sql, params);
     }
+
+    public Object querySingleOne(String sql) throws Exception {
+        return dbUtil.querySingleOne(sql);
+    }
+
+    public Object querySingleOne(String sql, Object... params) throws Exception {
+        return dbUtil.querySingleOne(sql, params);
+    }
 }
