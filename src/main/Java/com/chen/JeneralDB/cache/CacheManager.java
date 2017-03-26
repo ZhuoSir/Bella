@@ -11,25 +11,24 @@ public class CacheManager {
 
     private static HashMap cacheMap = new HashMap();
 
+    private static final long defaultDt = 10000000L;
+
     private CacheManager() {
     }
 
 
-    public static synchronized CacheManager newInstance() {
+    public static synchronized CacheManager getInstance() {
         if (null == cacheManager) {
             cacheManager = new CacheManager();
         }
 
         return cacheManager;
     }
-//
-//    public static boolean getSimpleFalg(String key) {
-//        try {
-//            return (boolean) cacheMap.containsKey(key);
-//        } catch (NullPointerException e) {
-//            return false;
-//        }
-//    }
+
+
+    public synchronized boolean isExisted(String key) {
+        return cacheMap.containsKey(key);
+    }
 
 
     public synchronized Cache getCache(String key) {
@@ -37,7 +36,12 @@ public class CacheManager {
     }
 
 
-    public synchronized boolean hashCache(String key) {
+    public synchronized Object getCacheValue(String key) {
+        return getCache(key).getValue();
+    }
+
+
+    public synchronized boolean hasCache(String key) {
         return cacheMap.containsKey(key);
     }
 
@@ -77,7 +81,7 @@ public class CacheManager {
 
 
     public synchronized Cache getCacheInfo(String key) {
-        if (hashCache(key)) {
+        if (hasCache(key)) {
             Cache cache = getCache(key);
             if (cacheExpired(cache)) {
                 cache.setExpired(true);
@@ -106,6 +110,11 @@ public class CacheManager {
         cache.setTimeOut(dt + System.currentTimeMillis());
         cache.setValue(obj);
         cacheMap.put(key, cache);
+    }
+
+
+    public synchronized void putCacheInfo(String key, Object obj) {
+        putCacheInfo(key, obj, defaultDt);
     }
 
 
