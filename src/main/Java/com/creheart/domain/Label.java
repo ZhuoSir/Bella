@@ -1,7 +1,7 @@
 package com.creheart.domain;
 
 /**
- * created by JeneralDB at 2017-03-26 03:47:54
+ * created by JeneralDB at 2017-03-26 09:13:44
  */
 public class Label {
 

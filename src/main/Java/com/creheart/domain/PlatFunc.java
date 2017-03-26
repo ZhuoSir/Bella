@@ -3,7 +3,7 @@ package com.creheart.domain;
 import java.util.Date;
 
 /**
- * created by JeneralDB at 2017-03-07 09:15:40
+ * created by JeneralDB at 2017-03-26 09:13:44
  */
 public class PlatFunc {
 

@@ -3,7 +3,7 @@ package com.creheart.domain;
 import java.util.Date;
 
 /**
- * created by JeneralDB at 2017-03-26 03:47:54
+ * created by JeneralDB at 2017-03-26 09:13:44
  */
 public class Post {
 
@@ -13,13 +13,19 @@ public class Post {
 
 	private long authorID;
 
-	private Date createTime;
-
 	private String content;
 
 	private int readTimes;
 
 	private int replyTimes;
+
+	private int status;
+
+	private long lastReplyMemberID;
+
+	private Date createTime;
+
+	private Date lastReplyTime;
 
 	public void setPostID(long postID) {
 		this.postID = postID;
@@ -43,14 +49,6 @@ public class Post {
 
 	public long getAuthorID() {
 		return authorID;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
 	}
 
 	public void setContent(String content) {
@@ -77,6 +75,38 @@ public class Post {
 		return replyTimes;
 	}
 
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setLastReplyMemberID(long lastReplyMemberID) {
+		this.lastReplyMemberID = lastReplyMemberID;
+	}
+
+	public long getLastReplyMemberID() {
+		return lastReplyMemberID;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setLastReplyTime(Date lastReplyTime) {
+		this.lastReplyTime = lastReplyTime;
+	}
+
+	public Date getLastReplyTime() {
+		return lastReplyTime;
+	}
+
 	public String toString() {
 		StringBuffer string = new StringBuffer();
 		string.append("postID = ");
@@ -88,9 +118,6 @@ public class Post {
 		string.append("authorID = ");
 		string.append(this.authorID);
 		string.append(";");
-		string.append("createTime = ");
-		string.append(this.createTime);
-		string.append(";");
 		string.append("content = ");
 		string.append(this.content);
 		string.append(";");
@@ -99,6 +126,18 @@ public class Post {
 		string.append(";");
 		string.append("replyTimes = ");
 		string.append(this.replyTimes);
+		string.append(";");
+		string.append("status = ");
+		string.append(this.status);
+		string.append(";");
+		string.append("lastReplyMemberID = ");
+		string.append(this.lastReplyMemberID);
+		string.append(";");
+		string.append("createTime = ");
+		string.append(this.createTime);
+		string.append(";");
+		string.append("lastReplyTime = ");
+		string.append(this.lastReplyTime);
 		string.append(";");
 		return string.toString();
 	}

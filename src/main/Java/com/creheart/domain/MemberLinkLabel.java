@@ -5,28 +5,28 @@ import java.util.Date;
 /**
  * created by JeneralDB at 2017-03-26 09:13:44
  */
-public class PostRelateLabel {
+public class MemberLinkLabel {
 
-	private int rid;
+	private long RID;
 
-	private long postID;
+	private long memberID;
 
 	private long labelID;
 
-	public void setRid(int rid) {
-		this.rid = rid;
+	public void setRID(long RID) {
+		this.RID = RID;
 	}
 
-	public int getRid() {
-		return rid;
+	public long getRID() {
+		return RID;
 	}
 
-	public void setPostID(long postID) {
-		this.postID = postID;
+	public void setMemberID(long memberID) {
+		this.memberID = memberID;
 	}
 
-	public long getPostID() {
-		return postID;
+	public long getMemberID() {
+		return memberID;
 	}
 
 	public void setLabelID(long labelID) {
@@ -39,11 +39,11 @@ public class PostRelateLabel {
 
 	public String toString() {
 		StringBuffer string = new StringBuffer();
-		string.append("rid = ");
-		string.append(this.rid);
+		string.append("RID = ");
+		string.append(this.RID);
 		string.append(";");
-		string.append("postID = ");
-		string.append(this.postID);
+		string.append("memberID = ");
+		string.append(this.memberID);
 		string.append(";");
 		string.append("labelID = ");
 		string.append(this.labelID);

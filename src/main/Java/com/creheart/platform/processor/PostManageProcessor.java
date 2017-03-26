@@ -32,5 +32,4 @@ public class PostManageProcessor {
         }
         return "/plat/post/list";
     }
-
 }

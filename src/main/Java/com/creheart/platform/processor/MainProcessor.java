@@ -81,7 +81,7 @@ public class MainProcessor {
     @RequestMapping("/clearCache")
     public String clearCache() {
         CacheManager.getInstance().clearAll();
-        return "redirect:/Admin/main.do";
+        return "redirect:/Admin/main/blank.do";
     }
 
     @RequestMapping("/clearSession")

@@ -22,6 +22,13 @@ public class StringUtil {
         return null != str && !"".equals(str);
     }
 
+    /**
+     * 检查字符串是否为null或者空
+     *
+     * */
+    public static boolean isNullOrEmpty(String str) {
+        return !isNotNullOrEmpty(str);
+    }
 
     /**
      * 颠倒字符串

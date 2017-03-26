@@ -13,16 +13,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class AdminRepository extends AbstractRepository<PlatAdmin> {
 
-    public PlatAdmin queryAdminByName(String name)
+    public PlatAdmin queryAdminByName(final String name)
             throws Exception {
         String sql = "select * from plat_admin where adminName = '" + name + "'";
         return dbUtil.queryBean(sql, PlatAdmin.class);
     }
 
 
-    public String queryPwdofAdmin(String adminName)
+    public String queryPwdofAdmin(final String adminName)
             throws Exception {
         Query query = new Query();
+
         query.setTableName("plat_admin");
         String[] field = {"password"};
         query.setFields(field);
