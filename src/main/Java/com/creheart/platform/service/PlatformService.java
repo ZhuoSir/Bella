@@ -1,5 +1,6 @@
 package com.creheart.platform.service;
 
+import com.chen.JeneralDB.cache.CacheManager;
 import com.chen.JeneralDB.jdbc.Query;
 import com.chen.StringUtil;
 import com.creheart.domain.PlatFunc;
@@ -21,10 +22,17 @@ public class PlatformService {
 
     private Logger logger = Logger.getLogger(PlatformService.class);
 
+    private CacheManager cacheManager = CacheManager.getInstance();
+
     @Autowired
     private PlatRepository platRepository;
 
+    @SuppressWarnings("unchecked")
     public List<PlatMenu> menuList() {
+        if (cacheManager.hasCache("platMenus")) {
+            return (List<PlatMenu>) cacheManager.getCacheValue("platMenus");
+        }
+
         PlatMenu root     = new PlatMenu();
         PlatFunc platFunc = new PlatFunc();
 
@@ -34,6 +42,7 @@ public class PlatformService {
 
         try {
             menus = getMenuList(root);
+            cacheManager.putCacheInfo("platMenus", menus);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e);

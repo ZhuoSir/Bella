@@ -1,9 +1,7 @@
 package com.creheart.domain;
 
-import java.util.Date;
-
 /**
- * created by JeneralDB at 2017-03-26 12:48:53
+ * created by JeneralDB at 2017-03-26 03:47:54
  */
 public class Label {
 
@@ -15,7 +13,7 @@ public class Label {
 
 	private String description;
 
-	private String linkCount;
+	private long linkCount;
 
 	public void setLabelID(long labelID) {
 		this.labelID = labelID;
@@ -49,11 +47,11 @@ public class Label {
 		return description;
 	}
 
-	public void setLinkCount(String linkCount) {
+	public void setLinkCount(long linkCount) {
 		this.linkCount = linkCount;
 	}
 
-	public String getLinkCount() {
+	public long getLinkCount() {
 		return linkCount;
 	}
 
