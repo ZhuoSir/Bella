@@ -6,6 +6,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.EnumMap;
+import java.util.Enumeration;
 
 /**
  *
@@ -43,6 +45,18 @@ public class SessonUtil {
             HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
             HttpSession session = request.getSession();
             session.removeAttribute(attrName);
+        }
+    }
+
+    public static void clearAllAttrInSession() {
+        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+        if (requestAttributes != null) {
+            HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+            HttpSession session = request.getSession();
+            Enumeration<String> enumeration = session.getAttributeNames();
+            while (enumeration.hasMoreElements()) {
+                removeAttributeInCurrentSession(enumeration.nextElement());
+            }
         }
     }
 }
