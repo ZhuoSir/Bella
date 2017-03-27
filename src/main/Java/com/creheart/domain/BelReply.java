@@ -3,9 +3,9 @@ package com.creheart.domain;
 import java.util.Date;
 
 /**
- * created by JeneralDB at 2017-03-26 09:21:03
+ * created by JeneralDB at 2017-03-27 08:44:56
  */
-public class ReplyInPost {
+public class BelReply {
 
 	private long replyID;
 
@@ -15,9 +15,9 @@ public class ReplyInPost {
 
 	private String replyContent;
 
-	private Date replyTime;
-
 	private int status;
+
+	private Date replyTime;
 
 	public void setReplyID(long replyID) {
 		this.replyID = replyID;
@@ -51,20 +51,20 @@ public class ReplyInPost {
 		return replyContent;
 	}
 
-	public void setReplyTime(Date replyTime) {
-		this.replyTime = replyTime;
-	}
-
-	public Date getReplyTime() {
-		return replyTime;
-	}
-
 	public void setStatus(int status) {
 		this.status = status;
 	}
 
 	public int getStatus() {
 		return status;
+	}
+
+	public void setReplyTime(Date replyTime) {
+		this.replyTime = replyTime;
+	}
+
+	public Date getReplyTime() {
+		return replyTime;
 	}
 
 	public String toString() {
@@ -81,11 +81,11 @@ public class ReplyInPost {
 		string.append("replyContent = ");
 		string.append(this.replyContent);
 		string.append(";");
-		string.append("replyTime = ");
-		string.append(this.replyTime);
-		string.append(";");
 		string.append("status = ");
 		string.append(this.status);
+		string.append(";");
+		string.append("replyTime = ");
+		string.append(this.replyTime);
 		string.append(";");
 		return string.toString();
 	}
