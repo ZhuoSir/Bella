@@ -1,7 +1,9 @@
 package com.creheart.platform.processor;
 
+import com.creheart.domain.PlatAdmin;
 import com.creheart.platform.bean.Msg;
 import com.creheart.platform.service.AdminService;
+import com.creheart.util.SessonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -47,4 +49,9 @@ public class AdminProcessor {
         return msg.toJson();
     }
 
+    @RequestMapping(value = "/logout")
+    public String logout() {
+        SessonUtil.removeAttributeInCurrentSession("platAdmin");
+        return "redirect:/Admin/main.do";
+    }
 }

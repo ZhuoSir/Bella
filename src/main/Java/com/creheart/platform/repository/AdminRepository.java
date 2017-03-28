@@ -15,20 +15,14 @@ public class AdminRepository extends AbstractRepository<PlatAdmin> {
 
     public PlatAdmin queryAdminByName(final String name)
             throws Exception {
-        String sql = "select * from plat_admin where adminName = '" + name + "'";
-        return dbUtil.queryBean(sql, PlatAdmin.class);
+        String sql = "select * from plat_admin where adminName = ?";
+        return dbUtil.queryBean(sql, PlatAdmin.class, name);
     }
 
 
     public String queryPwdofAdmin(final String adminName)
             throws Exception {
-        Query query = new Query();
-
-        query.setTableName("plat_admin");
-        String[] field = {"password"};
-        query.setFields(field);
-        query.equal("adminName", adminName);
-
-        return dbUtil.querySingleOne(query).toString();
+        String sql = "select password from plat_admin where adminName = ?";
+        return dbUtil.querySingleOne(sql, adminName).toString();
     }
 }

@@ -26,6 +26,7 @@ public class AdminService {
             SessonUtil.setAttributeInSession("platAdmin", admin);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e);
         }
     }
 
@@ -47,12 +48,13 @@ public class AdminService {
         boolean ret = false;
 
         try {
-            String sql = "select count(ID) from plat_admin where adminName = '" + userName + "'";
-            long count = (long) adminRepository.query(sql).getObjectAtCoordinate(0,0);
+            String sql = "select count(ID) from plat_admin where adminName = ?";
+            long count = (long) adminRepository.querySingleOne(sql, userName);
 
             ret = count > 0;
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e);
         }
 
         return ret;
@@ -63,7 +65,7 @@ public class AdminService {
             String vPwd = adminRepository.queryPwdofAdmin(userName);
             if (StringUtil.isNotNullOrEmpty(vPwd)
                     && StringUtil.isNotNullOrEmpty(pwd)) {
-                if (vPwd.equals(pwd)) {
+                if (vPwd.equals(StringUtil.EncodeByMD5(pwd))) {
                     return "success";
                 } else {
                     return "fail";

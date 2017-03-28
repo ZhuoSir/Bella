@@ -71,15 +71,20 @@ public class MemberService {
     public List<Member> fuzzyQuery(String queryBuilder, int status) throws Exception {
         StringBuilder sqlBuilder = new StringBuilder(" select ID, accountID, accountName," +
                 " email, addTime, status, mobilePhone, nickName from member ");
-        sqlBuilder.append(" where `status` = " + status);
-        sqlBuilder.append(" and ID in ( ");
+        sqlBuilder.append(" where ID in ( ");
         sqlBuilder.append(" select ID from member where ID like '%" + queryBuilder + "%'");
         sqlBuilder.append(" or accountID like '%" + queryBuilder +"%'");
         sqlBuilder.append(" or accountName like '%" + queryBuilder +"%'");
         sqlBuilder.append(" or email like '%" + queryBuilder +"%'");
         sqlBuilder.append(" or mobilePhone like '%" + queryBuilder +"%'");
         sqlBuilder.append(" or nickName like '%" + queryBuilder +"%'");
-        sqlBuilder.append(" );");
+        sqlBuilder.append(" )");
+
+        if (status != -1) {
+            sqlBuilder.append(" and `status` = " + status + ";");
+        } else {
+            sqlBuilder.append(";");
+        }
 
         return memberRepository.queryList(sqlBuilder.toString(), Member.class);
     }

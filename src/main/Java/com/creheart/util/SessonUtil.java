@@ -33,8 +33,7 @@ public class SessonUtil {
         if (requestAttributes != null) {
             HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
             HttpSession session = request.getSession();
-            Object object = session.getAttribute(attrName);
-            return object;
+            return session.getAttribute(attrName);
         }
         return null;
     }

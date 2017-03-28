@@ -1,6 +1,6 @@
 package com.creheart.platform.processor;
 
-import com.creheart.domain.Post;
+import com.creheart.domain.BelPost;
 import com.creheart.platform.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ public class PostManageProcessor {
     @RequestMapping("/list")
     public String list(ModelMap modelMap) {
         try {
-            List<Post> postList = postService.postsInRecentOneMonth();
+            List<BelPost> postList = postService.postsInRecentOneMonth();
 
             modelMap.addAttribute("postList", postList);
         } catch (Exception e) {

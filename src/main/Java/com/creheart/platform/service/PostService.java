@@ -3,7 +3,7 @@ package com.creheart.platform.service;
 import com.chen.DateUtil;
 import com.chen.JeneralDB.jdbc.Query;
 import com.chen.StringUtil;
-import com.creheart.domain.Post;
+import com.creheart.domain.BelPost;
 import com.creheart.platform.repository.PostRepository;
 import com.creheart.platform.repository.ReplyPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,10 @@ public class PostService {
      * 近一个月内所有帖子
      *
      * */
-    public List<Post> postsInRecentOneMonth()
+    public List<BelPost> postsInRecentOneMonth()
             throws Exception {
         Query query = new Query();
-        query.setTableName("post");
+        query.setTableName("bel_post");
         query.between("createTime",
                 DateUtil.coupleOfMonthsAgo(1, "yyyy-MM-dd"),
                 DateUtil.tomorrow("yyyy-MM-dd"));

@@ -30,7 +30,7 @@ public class MemberRepository extends AbstractRepository<Member> {
         if (!StringUtil.isNotNullOrEmpty(memberIDs))
             return -1;
 
-        String sql = "update member set status = ? where ID in (?)";
-        return dbUtil.execute(sql, status, memberIDs);
+        String sql = "update member set status = ? where ID in (" + memberIDs +")";
+        return dbUtil.execute(sql, status);
     }
 }

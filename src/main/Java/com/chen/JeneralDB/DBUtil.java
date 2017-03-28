@@ -109,12 +109,14 @@ public class DBUtil {
             statement = conn.prepareStatement(sql);
 
             for (int i = 0; i < params.length; i++) {
-                statement.setObject(i + 1, params[i]);
+                statement.setString(i + 1, params[i].toString());
             }
 
-            rs = statement.getResultSet();
+            rs = statement.executeQuery();
             genDataFromResultSet(rs, lists);
             print("执行sql: " + sql);
+        } catch (Exception e) {
+              e.printStackTrace();
         } finally {
             if (null != rs)
                 rs.close();

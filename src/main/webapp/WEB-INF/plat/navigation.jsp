@@ -126,7 +126,7 @@
                     </a>
                 </li>
                 <li class="last">
-                    <a href="${ctx}/Main/logout.do">
+                    <a href="${ctx}/Admin/admin/logout.do">
                         <i class="fa-lock"></i>
                         登出
                     </a>

@@ -1,7 +1,7 @@
 package com.creheart.platform.repository;
 
 import com.creheart.base.repository.AbstractRepository;
-import com.creheart.domain.ReplyInPost;
+import com.creheart.domain.BelReply;
 import com.creheart.platform.Const.Constance;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * Created by sunny on 2017/3/26.
  */
 @Component
-public class ReplyPostRepository extends AbstractRepository<ReplyInPost> {
+public class ReplyPostRepository extends AbstractRepository<BelReply> {
 
     private final String updateReplyPostSql = " update reply_in_post set status = ? ";
 

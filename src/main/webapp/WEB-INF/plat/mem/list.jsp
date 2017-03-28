@@ -42,6 +42,7 @@
 
                 <div class="col-xs-2">
                     <select class="form-control" name="status" >
+                        <option value="-1">/</option>
                         <option value="0" <c:if test="${status == 0}">selected</c:if>>生效</option>
                         <option value="1" <c:if test="${status == 1}">selected</c:if>>禁用</option>
                     </select>
