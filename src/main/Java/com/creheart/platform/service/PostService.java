@@ -4,6 +4,7 @@ import com.chen.DateUtil;
 import com.chen.JeneralDB.jdbc.Query;
 import com.chen.StringUtil;
 import com.creheart.domain.BelPost;
+import com.creheart.platform.Const.Constance;
 import com.creheart.platform.repository.PostRepository;
 import com.creheart.platform.repository.ReplyPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,6 @@ public class PostService {
             return;
 
         replyPostRepository.deleteReplyByPostID(postIDs);
-        postRepository.deletePost(postIDs);
+        postRepository.modifyStatus(postIDs, Constance.PostStatusDel);
     }
 }
