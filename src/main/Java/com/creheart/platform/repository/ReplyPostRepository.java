@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReplyPostRepository extends AbstractRepository<BelReply> {
 
-    private final String updateReplyPostSql = " update reply_in_post set status = ? ";
+    private final String updateReplyPostSql = " update bel_reply set status = ? ";
 
     public int deleteReply(final String replyIDs)
             throws Exception {

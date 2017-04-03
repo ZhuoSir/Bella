@@ -18,10 +18,11 @@ import java.util.List;
 public class App {
 
     public static void main(String[] args) {
-        String[] tables = {"plat_func"};
+//        String[] tables = {"post", "label", "post_relate_label"};
 
         try {
-            DBFactory.getInstance().createEntitysByTableNames(Arrays.asList(tables));
+//            DBFactory.getInstance().createEntitysByTableNames(Arrays.asList(tables));
+            DBFactory.getInstance().createEntityFromDataBase();
         } catch (Exception e) {
             e.printStackTrace();
         }

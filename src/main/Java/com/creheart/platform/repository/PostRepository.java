@@ -7,7 +7,6 @@ import com.creheart.domain.BelPost;
 import com.creheart.platform.Const.Constance;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,15 +22,17 @@ public class PostRepository extends AbstractRepository<BelPost> {
         return null != dt ? dt.toBeanList(BelPost.class) : null;
     }
 
+
     /**
-     * 假删除：删除帖子
+     * 修改帖子状态
      *
-     * post.status = -9;
+     * @param postID 帖子ID(可以包含多个id,id之间用`,`分割开； 例：10001,10002,10003)
+     * @param status 状态值
      * */
-    public int deletePost(final String postID)
+    public int modifyStatus(final String postID, int status)
             throws Exception {
         StringBuilder sql = new StringBuilder("update bel_post set status = ? where postID in (");
         sql.append(postID).append(")");
-        return dbUtil.execute(sql.toString(), Constance.PostStatusDel);
+        return dbUtil.execute(sql.toString(), status);
     }
 }

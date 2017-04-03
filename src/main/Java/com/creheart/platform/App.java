@@ -1,8 +1,7 @@
 package com.creheart.platform;
 
-import com.creheart.domain.Member;
-import com.creheart.platform.bean.Msg;
-import com.creheart.web.service.MemberService;
+import com.creheart.domain.BelPost;
+import com.creheart.platform.service.PostService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -16,16 +15,12 @@ public class App {
 
     public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-        MemberService service = (MemberService) ctx.getBean("memberService");
-        Msg msg = new Msg();
+        PostService postService = (PostService) ctx.getBean("postService");
         try {
-            List<Member> result = service.fuzzyQuery("18456239658", 1);
-            msg.data = result;
+            List<BelPost> posts = postService.postsInRecentOneMonth();
+            System.out.println(posts);
         } catch (Exception e) {
-            msg.error = e.toString();
             e.printStackTrace();
         }
-
-        System.out.println(msg.toJson());
     }
 }

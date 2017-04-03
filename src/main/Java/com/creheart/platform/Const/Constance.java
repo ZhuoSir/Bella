@@ -11,6 +11,9 @@ public interface Constance {
     /** 帖子删除状态*/
     int PostStatusDel     = -9;
 
+    /** 帖子禁止回复*/
+    int PostStatusNoReply = -8;
+
     /** 回复正常状态*/
     int ReplyStatusNormal = 0;
 
