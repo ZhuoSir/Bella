@@ -30,6 +30,7 @@ public class StringUtil {
         return !isNotNullOrEmpty(str);
     }
 
+
     /**
      * 颠倒字符串
      * */
