@@ -8,6 +8,8 @@ import java.io.*;
  */
 public class FileUtil {
 
+    private FileUtil() {}
+
     /**
      * 读取文本文件内容
      * @param pathAndName 带有完整绝对路径的文件名

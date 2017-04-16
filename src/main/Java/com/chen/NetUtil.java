@@ -12,6 +12,8 @@ import java.util.Map;
  */
 public class NetUtil {
 
+    private NetUtil() {}
+
     /** 连接超时时间*/
     private static final int    DEF_CONN_TIMEOUT = 30000;
 

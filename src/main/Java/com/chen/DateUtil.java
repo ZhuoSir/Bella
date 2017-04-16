@@ -11,6 +11,8 @@ import java.util.Date;
  */
 public class DateUtil {
 
+    private DateUtil() {}
+
     /**
      * 默认时间格式
      * */

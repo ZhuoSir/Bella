@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
  */
 public class StringUtil {
 
+    private StringUtil() {}
+
     /**
      * 检查字符串是否为null或者空
      *
