@@ -32,7 +32,7 @@
 
             <div class="form-group">
 
-                <label class="col-xs-2 control-label" for="queryBuilder">账户名</label>
+                <label class="col-xs-2 control-label" for="queryBuilder">查询</label>
 
                 <div class="col-xs-2">
                     <input type="text" class="form-control" id="queryBuilder" name="queryBuilder" placeholder="查询条件" value="${queryBuilder}">

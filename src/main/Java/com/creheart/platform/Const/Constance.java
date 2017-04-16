@@ -8,6 +8,9 @@ public interface Constance {
     /** 帖子正常状态*/
     int PostStatusNormal  = 0;
 
+    /** 帖子隐藏状态*/
+    int PostStatusHidden  = -1;
+
     /** 帖子删除状态*/
     int PostStatusDel     = -9;
 
