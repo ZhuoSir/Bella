@@ -108,8 +108,9 @@ public class DBUtil {
         try {
             statement = conn.prepareStatement(sql);
 
-            for (int i = 0; i < params.length; i++) {
-                statement.setString(i + 1, params[i].toString());
+            for (int i = 0, j = 1; i < params.length; i++) {
+                if (null == params[i]) continue;
+                statement.setString(j++, params[i].toString());
             }
 
             rs = statement.executeQuery();
@@ -282,7 +283,7 @@ public class DBUtil {
 
     public DataTable queryDataTable(String sql, Object... params) throws Exception {
         List<Map<String, Object>> list = queryMapList(sql, params);
-        DataTable dataTable = null;
+        DataTable dataTable = new DataTable();
 
         if (null != list && !list.isEmpty()) {
             dataTable = new DataTable(list);

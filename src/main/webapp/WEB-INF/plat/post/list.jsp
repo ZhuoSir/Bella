@@ -48,8 +48,10 @@
 
                 <div class="col-xs-2">
                     <select class="form-control" name="status" >
-                        <option value="1" <c:if test="${status == 1}">selected</c:if>>显示</option>
-                        <option value="0" <c:if test="${status == 0}">selected</c:if>>隐藏</option>
+                        <option value="0" <c:if test="${status == 0}">selected</c:if>>显示</option>
+                        <option value="-1" <c:if test="${status == -1}">selected</c:if>>隐藏</option>
+                        <option value="-9" <c:if test="${status == -9}">selected</c:if>>删除</option>
+                        <option value="-8" <c:if test="${status == -8}">selected</c:if>>禁止回复</option>
                     </select>
                 </div>
 
