@@ -22,4 +22,13 @@ public interface Constance {
 
     /** 回复删除状态*/
     int ReplyStatusDel    = -9;
+
+    /** 导航显示状态*/
+    int NaviStatusShow    = 0;
+
+    /** 导航隐藏状态*/
+    int NaviStatusHidden  = -1;
+
+    /** 导航删除状态*/
+    int NaviStatusDelete  = -9;
 }

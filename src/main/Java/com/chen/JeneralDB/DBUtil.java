@@ -207,8 +207,9 @@ public class DBUtil {
         try {
             preStmt = conn.prepareStatement(sql);
 
-            for (int i = 0; i < params.length; i++) {
-                preStmt.setObject(i + 1, params[i]);
+            for (int i = 0, j = 1; i < params.length; i++) {
+                if (null == params[i]) continue;
+                preStmt.setObject(j++, params[i]);
             }
 
             rs = preStmt.executeQuery();
