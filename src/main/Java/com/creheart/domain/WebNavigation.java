@@ -7,8 +7,6 @@ import java.util.Date;
  */
 public class WebNavigation {
 
-    public final String tableName = "web_navigation";
-
 	private int id;
 
 	private String title;
@@ -74,5 +72,13 @@ public class WebNavigation {
 		string.append(this.managerID);
 		string.append(";");
 		return string.toString();
+	}
+
+	public WebNavigation() {}
+
+	public WebNavigation(String title, int managerID, int status) {
+		this.title = title;
+		this.managerID = managerID;
+		this.status = status;
 	}
 }

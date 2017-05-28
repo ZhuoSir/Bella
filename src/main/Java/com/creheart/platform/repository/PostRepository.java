@@ -18,7 +18,7 @@ public class PostRepository extends AbstractRepository<BelPost> {
 
     public List<BelPost> queryByQuery(final Query query)
             throws Exception {
-        DataTable dt = dbUtil.queryByQuery(query);
+        DataTable dt = getDbUtil().queryByQuery(query);
         return null != dt ? dt.toBeanList(BelPost.class) : null;
     }
 
@@ -33,6 +33,6 @@ public class PostRepository extends AbstractRepository<BelPost> {
             throws Exception {
         StringBuilder sql = new StringBuilder("update bel_post set status = ? where postID in (");
         sql.append(postID).append(")");
-        return dbUtil.execute(sql.toString(), status);
+        return getDbUtil().execute(sql.toString(), status);
     }
 }

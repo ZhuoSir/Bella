@@ -16,17 +16,17 @@ public class PlatRepository extends AbstractRepository<PlatFunc> {
 
     public List<PlatFunc> allPlatFuncs() throws Exception {
         String sql = "select * from plat_func order by funcid";
-        return dbUtil.queryBeanList(sql, PlatFunc.class);
+        return getDbUtil().queryBeanList(sql, PlatFunc.class);
     }
 
     public List<PlatFunc> queryByQuery(final Query query)
             throws Exception {
-        return dbUtil.queryBeanListByQuery(query, PlatFunc.class);
+        return getDbUtil().queryBeanListByQuery(query, PlatFunc.class);
     }
 
     public List<PlatFunc> getAllParentFuncID()
             throws Exception {
         String sql = "select funcid , funcName from plat_func;";
-        return dbUtil.queryBeanList(sql, PlatFunc.class);
+        return getDbUtil().queryBeanList(sql, PlatFunc.class);
     }
 }

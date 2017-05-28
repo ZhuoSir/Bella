@@ -7,8 +7,6 @@ import java.util.Date;
  */
 public class WebInfo {
 
-    public final String tableName = "web_info";
-
     private int id;
 
 	private String webName;

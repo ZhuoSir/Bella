@@ -13,13 +13,22 @@ import java.util.List;
 @Component
 public class WebNaviRepository extends AbstractRepository<WebNavigation> {
 
-    private final String allNavi = " select * from web_navigation ";
+    private final String queryNaviAll = " select * from web_navigation ";
+
+    private final String deleteNavi   = " delete from web_navigation ";
 
     public List<WebNavigation> getNavigationsInStatus(int status) throws Exception {
-        StringBuilder sql = new StringBuilder(allNavi);
+        StringBuilder sql = new StringBuilder(queryNaviAll);
         sql.append(" where status = ");
         sql.append(status);
 
         return queryList(sql.toString(), WebNavigation.class);
+    }
+
+    public int delete(int id) throws Exception {
+        StringBuilder sql = new StringBuilder(deleteNavi);
+        sql.append(" where id = ?");
+
+        return execute(sql.toString(), id);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public abstract class AbstractRepository<T> {
 
-    public DBUtil dbUtil = null;
+    private DBUtil dbUtil = null;
 
     public void setDbUtil(DBUtil dbUtil) {
         this.dbUtil = dbUtil;
@@ -20,6 +20,14 @@ public abstract class AbstractRepository<T> {
 
     public DBUtil getDbUtil() {
         return dbUtil;
+    }
+
+    public int execute(String sql) throws Exception {
+        return dbUtil.execute(sql);
+    }
+
+    public int execute(String sql, Object... params) throws Exception {
+        return dbUtil.execute(sql, params);
     }
 
     public int save(T t) throws Exception {

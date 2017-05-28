@@ -18,12 +18,12 @@ public class MemberRepository extends AbstractRepository<Member> {
     public List<Member> allMembers()
             throws Exception {
         String sql = " select * from member ";
-        return dbUtil.queryBeanList(sql, Member.class);
+        return getDbUtil().queryBeanList(sql, Member.class);
     }
 
     public List<Member> queryMembers(Query query)
             throws Exception {
-        return dbUtil.queryBeanListByQuery(query, Member.class);
+        return getDbUtil().queryBeanListByQuery(query, Member.class);
     }
 
     public int OnOrOffMember(int status, String memberIDs) throws Exception {
@@ -31,6 +31,6 @@ public class MemberRepository extends AbstractRepository<Member> {
             return -1;
 
         String sql = "update member set status = ? where ID in (" + memberIDs +")";
-        return dbUtil.execute(sql, status);
+        return getDbUtil().execute(sql, status);
     }
 }
