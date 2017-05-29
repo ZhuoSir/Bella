@@ -1,4 +1,4 @@
-package com.creheart.platform.bean.VO;
+package com.creheart.platform.bean.vo;
 
 import com.creheart.domain.BelPost;
 
