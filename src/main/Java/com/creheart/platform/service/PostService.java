@@ -67,17 +67,6 @@ public class PostService {
     public List<BelPostVo> query(String title, String author, Integer status)
             throws Exception {
         StringBuilder sql = new StringBuilder(belPostVoSql);
-//        sql.append(" where bp.title like ? and m.accountName like ? and bp.status = ?;");
-////
-////        DataTable dt = postRepository.query(sql.toString(), title, author, status);
-////        sql.append(" where 1 = 1 ");
-//        if (StringUtil.isNullOrEmpty(title)) {
-//            title = "%%";
-//        }
-//
-//        if (StringUtil.isNullOrEmpty(author)) {
-//            author = "%%";
-//        }
         sql.append(" where 1 = 1 ");
 
         if (StringUtil.isNotNullOrEmpty(title)) {

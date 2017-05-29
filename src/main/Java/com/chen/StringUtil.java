@@ -77,8 +77,7 @@ public class StringUtil {
      * @return 加密结果
      */
     public static String EncodeByMD5(String str) {
-        MessageDigest md5;
-        md5 = null;
+        MessageDigest md5 = null;
 
         try {
             md5 = MessageDigest.getInstance("MD5");
