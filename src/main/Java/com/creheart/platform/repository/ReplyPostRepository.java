@@ -1,10 +1,14 @@
 package com.creheart.platform.repository;
 
+import com.chen.JeneralDB.DataTable;
 import com.chen.StringUtil;
 import com.creheart.base.repository.AbstractRepository;
 import com.creheart.domain.BelReply;
 import com.creheart.platform.Const.Constance;
+import com.creheart.platform.bean.vo.BelReplyVo;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  *
@@ -14,6 +18,8 @@ import org.springframework.stereotype.Component;
 public class ReplyPostRepository extends AbstractRepository<BelReply> {
 
     private final String updateReplyPostSql = " update bel_reply set status = ? ";
+
+    private final String belReplyVoSql = " select br.*, m.accountName, m.nickName from bel_reply br left join member m on br.memberID = m.ID ";
 
     public int deleteReply(final String replyIDs)
             throws Exception {
@@ -48,5 +54,15 @@ public class ReplyPostRepository extends AbstractRepository<BelReply> {
         sql.append(" where memberID in (").append(memberIDs).append(");");
 
         return getDbUtil().execute(sql.toString(), Constance.ReplyStatusDel);
+    }
+
+    public List<BelReplyVo> queryReplysOfPost(int postID, int status) throws Exception {
+        StringBuilder sql = new StringBuilder(belReplyVoSql);
+        sql.append(" where br.postID = ?");
+        sql.append(" and br.status = ?;");
+
+        DataTable dt = query(sql.toString(), postID, status);
+
+        return null != dt ? dt.toBeanList(BelReplyVo.class) : null;
     }
 }

@@ -2,6 +2,7 @@ package com.creheart.platform.repository;
 
 import com.chen.JeneralDB.DataTable;
 import com.chen.JeneralDB.jdbc.Query;
+import com.chen.StringUtil;
 import com.creheart.base.repository.AbstractRepository;
 import com.creheart.domain.BelPost;
 import com.creheart.platform.Const.Constance;
@@ -31,8 +32,12 @@ public class PostRepository extends AbstractRepository<BelPost> {
      * */
     public int modifyStatus(final String postID, int status)
             throws Exception {
+        if (StringUtil.isNullOrEmpty(postID))
+            throw new IllegalArgumentException("postID不能为空");
+
         StringBuilder sql = new StringBuilder("update bel_post set status = ? where postID in (");
         sql.append(postID).append(")");
+
         return getDbUtil().execute(sql.toString(), status);
     }
 }

@@ -1,6 +1,5 @@
 package com.creheart.platform.service;
 
-import com.chen.DateUtil;
 import com.chen.JeneralDB.jdbc.Query;
 import com.chen.StringUtil;
 import com.creheart.domain.WebInfo;
@@ -57,7 +56,7 @@ public class WebManageService {
         if (StringUtil.isNullOrEmpty(webInfo.getVersion()))
             return -1;
 
-        return webInfoRepository.save("WebInfo", webInfo);
+        return webInfoRepository.save(WebInfo, webInfo);
     }
 
     /**
