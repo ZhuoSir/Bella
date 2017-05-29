@@ -2,6 +2,7 @@ package com.creheart.base.repository;
 
 import com.chen.JeneralDB.DBUtil;
 import com.chen.JeneralDB.DataTable;
+import com.chen.JeneralDB.jdbc.Query;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -84,5 +85,15 @@ public abstract class AbstractRepository<T> {
 
     public Object querySingleOne(String sql, Object... params) throws Exception {
         return dbUtil.querySingleOne(sql, params);
+    }
+
+    public T queryByQuery(Query query, Class<T> tClass) throws Exception {
+        List<T> list = queryListByQuery(query, tClass);
+        return null != list ? list.get(0) : null;
+    }
+
+    public List<T> queryListByQuery(Query query, Class<T> tClass) throws Exception {
+        DataTable dt = dbUtil.queryByQuery(query);
+        return null != dt ? dt.toBeanList(tClass) : null;
     }
 }
