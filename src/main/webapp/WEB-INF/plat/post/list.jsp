@@ -12,7 +12,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">功能列表</h3>
+        <h3 class="panel-title">帖子列表</h3>
 
         <div class="panel-options">
             <a href="#" data-toggle="panel">

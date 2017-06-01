@@ -1,0 +1,12 @@
+2017-05-27 17:38:58  [ http-nio-8080-exec-7:14815 ] - [ ERROR ]  com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2017-05-27 17:39:01  [ http-nio-8080-exec-1:18204 ] - [ ERROR ]  com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2017-05-27 17:39:11  [ http-nio-8080-exec-8:28361 ] - [ ERROR ]  com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2017-05-27 17:39:20  [ http-nio-8080-exec-9:37525 ] - [ ERROR ]  com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.

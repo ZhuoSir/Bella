@@ -74,4 +74,13 @@ public class BelLabel {
 		string.append(";");
 		return string.toString();
 	}
+
+	public BelLabel() {
+	}
+
+    public BelLabel(String labelName, String iconUrl, String description) {
+        this.labelName = labelName;
+        this.iconUrl = iconUrl;
+        this.description = description;
+    }
 }
