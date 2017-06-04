@@ -5,6 +5,7 @@ import com.chen.JeneralDB.DataTable;
 import com.chen.JeneralDB.jdbc.Query;
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,6 +30,10 @@ public abstract class AbstractRepository<T> {
 
     public int execute(String sql, Object... params) throws Exception {
         return dbUtil.execute(sql, params);
+    }
+
+    public int[] executeBatch(String... sqls) throws Exception {
+        return dbUtil.executeAsBatch(Arrays.asList(sqls));
     }
 
     public int save(T t) throws Exception {
