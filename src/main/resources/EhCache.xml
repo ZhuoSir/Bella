@@ -11,9 +11,9 @@
         </eh:expiry>
     </eh:cache-template>
 
-    <eh:cache alias="postCache" uses-template="DefaultTemplate">
+    <eh:cache alias="belPostCache" uses-template="DefaultTemplate">
         <eh:key-type>java.lang.Long</eh:key-type>
-        <eh:value-type>com.creheart.domain.Post</eh:value-type>
+        <eh:value-type>com.creheart.platform.bean.vo.BelPostVo</eh:value-type>
         <eh:heap unit="entries">500</eh:heap>
     </eh:cache>
 
