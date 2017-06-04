@@ -8,4 +8,14 @@ public interface MemberConst {
     int forbidden = 1;
 
     int activate  = 0;
+
+    int SUPERADMIN = 1;
+
+    int ADMIN = 3;
+
+    int NORMALSTATUS = 1;
+
+    int FORBIDDENSTAUTS = 2;
+
+    int DELETESTATUS = 3;
 }

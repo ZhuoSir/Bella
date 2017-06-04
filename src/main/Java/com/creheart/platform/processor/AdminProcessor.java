@@ -1,6 +1,5 @@
 package com.creheart.platform.processor;
 
-import com.creheart.domain.PlatAdmin;
 import com.creheart.platform.bean.Msg;
 import com.creheart.platform.service.AdminService;
 import com.creheart.util.SessonUtil;

@@ -102,4 +102,14 @@ public class PlatAdmin {
 		string.append(";");
 		return string.toString();
 	}
+
+	public PlatAdmin() {}
+
+	public PlatAdmin(String adminName, String password, int adminType, int status, int creatorID) {
+		this.adminName = adminName;
+		this.password = password;
+		this.adminType = adminType;
+		this.status = status;
+		this.creatorID = creatorID;
+	}
 }
