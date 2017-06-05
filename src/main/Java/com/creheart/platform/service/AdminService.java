@@ -3,6 +3,7 @@ package com.creheart.platform.service;
 import com.chen.StringUtil;
 import com.creheart.domain.PlatAdmin;
 import com.creheart.platform.exception.PlatformException;
+import com.creheart.platform.exception.ServiceException;
 import com.creheart.platform.repository.AdminRepository;
 import com.creheart.util.SessonUtil;
 import org.apache.log4j.Logger;
@@ -64,20 +65,31 @@ public class AdminService {
         return adminRepository.save(admin);
     }
 
-    public boolean isExistOfAdmin(String userName) {
-        boolean ret = false;
-
+    public boolean isExistOfAdmin(final int id) {
         try {
-            String sql = "select count(ID) from plat_admin where adminName = ?";
-            long count = (long) adminRepository.querySingleOne(sql, userName);
-
-            ret = count > 0;
+            String sql = "select exists (select ID from plat_admin where ID = ?);";
+            return (long) adminRepository.querySingleOne(sql, id) > 0;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e);
         }
 
-        return ret;
+        return false;
+    }
+
+    public boolean isExistOfAdmin(final String userName) throws ServiceException {
+        if (StringUtil.isNullOrEmpty(userName))
+            throw new ServiceException("userName 不能为空");
+
+        try {
+            String sql = "select exists (select ID from plat_admin where adminName = ?);";
+            return (long) adminRepository.querySingleOne(sql, userName) > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e);
+        }
+
+        return false;
     }
 
     public String validate(String userName, String pwd) {

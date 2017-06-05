@@ -5,14 +5,15 @@ package com.creheart.platform.exception;
  */
 public class PlatformException extends Exception {
 
+
     public PlatformException() {
     }
 
     public PlatformException(String message) {
-        super(message);
+        super("PlatformException: " + message);
     }
 
     public PlatformException(String message, Throwable cause) {
-        super(message, cause);
+        super("PlatformException: " + message, cause);
     }
 }
