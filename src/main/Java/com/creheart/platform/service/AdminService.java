@@ -25,7 +25,7 @@ public class AdminService {
     @Autowired
     private AdminRepository adminRepository;
 
-    public void loginService(String userName) {
+    public void loginService(final String userName) {
         try {
             PlatAdmin admin = adminRepository.queryAdminByName(userName);
             SessonUtil.setAttributeInSession("platAdmin", admin);
@@ -36,10 +36,10 @@ public class AdminService {
     }
 
     public void addAdmin(final String adminName,
-                    final String pwd,
-                    final int adminType,
-                    final int status,
-                    final int creatorID) throws PlatformException {
+                         final String pwd,
+                         final int adminType,
+                         final int status,
+                         final int creatorID) throws PlatformException {
         if (StringUtil.isNullOrEmpty(adminName))
             throw new PlatformException("管理员名不能为空");
 
@@ -66,6 +66,7 @@ public class AdminService {
     }
 
     public boolean isExistOfAdmin(final int id) {
+
         try {
             String sql = "select exists (select ID from plat_admin where ID = ?);";
             return (long) adminRepository.querySingleOne(sql, id) > 0;
@@ -92,17 +93,12 @@ public class AdminService {
         return false;
     }
 
-    public String validate(String userName, String pwd) {
+    public String validate(final String userName, final String pwd) {
         try {
             String vPwd = adminRepository.queryPwdofAdmin(userName);
             if (StringUtil.isNotNullOrEmpty(vPwd)
                     && StringUtil.isNotNullOrEmpty(pwd)) {
-                if (vPwd.equals(StringUtil.EncodeByMD5(pwd))) {
-                    return "success";
-                } else {
-                    return "fail";
-                }
-
+                return vPwd.equals(StringUtil.EncodeByMD5(pwd)) ? "success" : "fail";
             } else {
                 return "密码输入异常";
             }
