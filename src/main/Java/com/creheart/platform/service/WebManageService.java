@@ -46,17 +46,17 @@ public class WebManageService {
      * 创建新的web版本信息
      *
      * */
-    public int createNewWebInfo(WebInfo webInfo) throws Exception {
+    public void createNewWebInfo(WebInfo webInfo) throws Exception {
         if (null == webInfo)
-            return -1;
+            return ;
 
         if (null == webInfo.getStartTime())
             webInfo.setStartTime(new Date());
 
         if (StringUtil.isNullOrEmpty(webInfo.getVersion()))
-            return -1;
+            return ;
 
-        return webInfoRepository.save(WebInfo, webInfo);
+        webInfoRepository.save(WebInfo, webInfo);
     }
 
     /**
@@ -115,18 +115,18 @@ public class WebManageService {
      * 创建新的web前端导航
      *
      * */
-    public int createNewNavigation(String title, int manageID, int status) throws Exception {
+    public void createNewNavigation(String title, int manageID, int status) throws Exception {
         WebNavigation navi = new WebNavigation(title, manageID, status);
         navi.setCreateTime(new Date());
 
-        return webNaviRepository.save(WebNavigation, navi);
+        webNaviRepository.save(WebNavigation, navi);
     }
 
     /**
      * 创建新的web前端导航
      *
      * */
-    public int createNewNavigation(WebNavigation navigation) throws Exception {
+    public void createNewNavigation(WebNavigation navigation) throws Exception {
         if (null == navigation)
             throw new NullPointerException("WebNavigation不能为Null");
 
@@ -136,7 +136,7 @@ public class WebManageService {
         if (StringUtil.isNullOrEmpty(navigation.getTitle()))
             throw new IllegalArgumentException("WebNavigation的title不能为空");
 
-        return webNaviRepository.save(WebNavigation, navigation);
+        webNaviRepository.save(WebNavigation, navigation);
     }
 
     /**
@@ -145,22 +145,22 @@ public class WebManageService {
      * @param naviID 导航ID
      *
      * */
-    public int deleteNavigation(int naviID) throws Exception {
-        return webNaviRepository.delete(naviID);
+    public void deleteNavigation(int naviID) throws Exception {
+        webNaviRepository.delete(naviID);
     }
 
     /**
      * 修改web前段导航
      *
      * */
-    public int modifyNavigation(WebNavigation navigation) throws Exception {
+    public void modifyNavigation(WebNavigation navigation) throws Exception {
         if (null == navigation)
             throw new NullPointerException("WebNavigation不能为Null");
 
         if (StringUtil.isNullOrEmpty(navigation.getTitle()))
             throw new IllegalArgumentException("WebNavigation的title不能为空");
 
-        return webNaviRepository.update(WebNavigation, navigation);
+        webNaviRepository.update(WebNavigation, navigation);
     }
 
     /**

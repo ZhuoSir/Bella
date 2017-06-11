@@ -29,10 +29,9 @@ public class PlatformService {
 
     @SuppressWarnings("unchecked")
     public List<PlatMenu> menuList() {
-        if (cacheManager.hasCache("platMenus")) {
-            return (List<PlatMenu>) cacheManager.getCacheValue("platMenus");
-        }
-
+//        if (cacheManager.hasCache("platMenus")) {
+//            return (List<PlatMenu>) cacheManager.getCacheValue("platMenus");
+//        }
         PlatMenu root     = new PlatMenu();
         PlatFunc platFunc = new PlatFunc();
 
@@ -42,7 +41,7 @@ public class PlatformService {
 
         try {
             menus = getMenuList(root);
-            cacheManager.putCacheInfo("platMenus", menus);
+//            cacheManager.putCacheInfo("platMenus", menus);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e);
@@ -97,7 +96,7 @@ public class PlatformService {
 
     public int addPlatFunc(PlatFunc platFunc) {
         try {
-            return platRepository.save("plat_func", platFunc);
+            return platRepository.save(platFunc);
         } catch (Exception e) {
             logger.error(e);
             e.printStackTrace();
@@ -132,7 +131,7 @@ public class PlatformService {
 
     public int updatePlat(PlatFunc platFunc) {
         try {
-            return platRepository.update("plat_func", platFunc);
+            return platRepository.update(platFunc);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e);

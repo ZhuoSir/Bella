@@ -2,6 +2,7 @@ package com.creheart.platform.repository;
 
 import com.creheart.base.repository.AbstractRepository;
 import com.creheart.domain.WebNavigation;
+import com.creheart.platform.Const.Constance;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,22 +14,36 @@ import java.util.List;
 @Component
 public class WebNaviRepository extends AbstractRepository<WebNavigation> {
 
+    private final String tableName = "web_navigation";
+
     private final String queryNaviAll = " select * from web_navigation ";
 
-    private final String deleteNavi   = " delete from web_navigation ";
-
-    public List<WebNavigation> getNavigationsInStatus(int status) throws Exception {
-        StringBuilder sql = new StringBuilder(queryNaviAll);
-        sql.append(" where status = ");
-        sql.append(status);
-
-        return queryList(sql.toString(), WebNavigation.class);
+    @Override
+    public int save(WebNavigation navigation) throws Exception {
+        return super.save(tableName, navigation);
     }
 
-    public int delete(int id) throws Exception {
-        StringBuilder sql = new StringBuilder(deleteNavi);
-        sql.append(" where id = ?");
+    @Override
+    public int update(WebNavigation navigation) throws Exception {
+        return super.update(tableName, navigation);
+    }
 
-        return execute(sql.toString(), id);
+    public List<WebNavigation> getNavigationsInStatus(int status) throws Exception {
+        String sql = queryNaviAll + " where status = " + status;
+        return queryList(sql, WebNavigation.class);
+    }
+
+    public int delete(final int id) throws Exception {
+        return updateStatus(id, Constance.PostStatusDel);
+    }
+
+    public int updateStatus(final int id, final int status) throws Exception {
+        String sql = "update web_navigation wn set wn.status = ? where id  = ?;";
+        return execute(sql, status, id);
+    }
+
+    public WebNavigation getNavigation(final String title) throws Exception {
+        String sql = queryNaviAll + " where title = ?;";
+        return query(sql, WebNavigation.class);
     }
 }

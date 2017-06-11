@@ -58,7 +58,7 @@ public class AdminService {
 
     @Deprecated
     public int addAdmin(PlatAdmin admin) throws Exception {
-            // 对密码进行md5加密；
+        // 对密码进行md5加密；
         String mdPwd = StringUtil.EncodeByMD5(admin.getPassword());
         admin.setPassword(mdPwd);
 
