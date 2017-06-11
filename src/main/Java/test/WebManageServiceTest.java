@@ -35,7 +35,7 @@ public class WebManageServiceTest extends BaseJunit {
     public void createNewNavi() {
         try {
             PlatAdmin admin = adminRepository.queryAdminByName("chen");
-            System.out.println(webManageService.createNewNavigation("Java", admin.getID(), Constance.NaviStatusShow));
+//            System.out.println(webManageService.createNewNavigation("Java", admin.getID(), Constance.NaviStatusShow));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ public class WebManageServiceTest extends BaseJunit {
             navi.setTitle("Python");
             navi.setStatus(Constance.NaviStatusHidden);
 
-            System.out.println(webManageService.createNewNavigation(navi));
+//            System.out.println(webManageService.createNewNavigation(navi));
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class WebManageServiceTest extends BaseJunit {
     @Test
     public void deleteNavi() {
         try {
-            System.out.println(webManageService.deleteNavigation(2));
+//            System.out.println(webManageService.deleteNavigation(2));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,7 +73,7 @@ public class WebManageServiceTest extends BaseJunit {
         try {
             WebNavigation navi = webManageService.queryWebNaviById(2);
             navi.setTitle("军事");
-            System.out.println(webManageService.modifyNavigation(navi));
+//            System.out.println(webManageService.modifyNavigation(navi));
         } catch (Exception e) {
             e.printStackTrace();
         }

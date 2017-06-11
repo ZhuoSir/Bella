@@ -1,7 +1,6 @@
 package com.creheart.platform.processor;
 
-import com.creheart.domain.BelPost;
-import com.creheart.platform.bean.VO.BelPostVo;
+import com.creheart.platform.bean.vo.BelPostVo;
 import com.creheart.platform.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
