@@ -31,7 +31,7 @@ public class LabelManageService {
 
     public int createLabel(String labelName, String description, String iconUrl) throws Exception {
         BelLabel label = new BelLabel(labelName, iconUrl, description);
-        return labelRepository.saveBelLabel(label);
+        return labelRepository.save(label);
     }
 
     public void deleteLabel(int id) throws Exception {
