@@ -1,14 +1,20 @@
 package com.creheart.domain;
 
+import com.chen.JeneralDB.annotation.Column;
+import com.chen.JeneralDB.annotation.Table;
 /**
- * created by JeneralDB at 2017-03-27 08:44:56
+ * created by JeneralDB at 2017-06-21 10:26:47
  */
+@Table("post_relate_label")
 public class PostRelateLabel {
 
+	@Column(value = "rid", index = Column.index.PRIMARYKEY)
 	private int rid;
 
+	@Column(value = "postID")
 	private long postID;
 
+	@Column(value = "labelID")
 	private long labelID;
 
 	public void setRid(int rid) {

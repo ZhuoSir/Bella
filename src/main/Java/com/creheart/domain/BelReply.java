@@ -1,22 +1,31 @@
 package com.creheart.domain;
 
+import com.chen.JeneralDB.annotation.Column;
+import com.chen.JeneralDB.annotation.Table;
 import java.util.Date;
 
 /**
- * created by JeneralDB at 2017-03-27 08:44:56
+ * created by JeneralDB at 2017-06-21 10:26:46
  */
+@Table("bel_reply")
 public class BelReply {
 
+	@Column(value = "replyID", index = Column.index.PRIMARYKEY)
 	private long replyID;
 
+	@Column(value = "postID", index = Column.index.PRIMARYKEY)
 	private long postID;
 
+	@Column(value = "memberID")
 	private long memberID;
 
+	@Column("replyContent")
 	private String replyContent;
 
+	@Column("status")
 	private int status;
 
+	@Column("replyTime")
 	private Date replyTime;
 
 	public void setReplyID(long replyID) {

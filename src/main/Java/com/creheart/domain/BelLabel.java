@@ -1,18 +1,26 @@
 package com.creheart.domain;
 
+import com.chen.JeneralDB.annotation.Column;
+import com.chen.JeneralDB.annotation.Table;
 /**
- * created by JeneralDB at 2017-03-27 08:44:56
+ * created by JeneralDB at 2017-06-21 10:26:46
  */
+@Table("bel_label")
 public class BelLabel {
 
+	@Column(value = "labelID", index = Column.index.PRIMARYKEY)
 	private long labelID;
 
+	@Column("labelName")
 	private String labelName;
 
+	@Column("iconUrl")
 	private String iconUrl;
 
+	@Column("description")
 	private String description;
 
+	@Column("linkCount")
 	private long linkCount;
 
 	public void setLabelID(long labelID) {
@@ -74,13 +82,4 @@ public class BelLabel {
 		string.append(";");
 		return string.toString();
 	}
-
-	public BelLabel() {
-	}
-
-    public BelLabel(String labelName, String iconUrl, String description) {
-        this.labelName = labelName;
-        this.iconUrl = iconUrl;
-        this.description = description;
-    }
 }

@@ -56,7 +56,7 @@ public class WebManageService {
         if (StringUtil.isNullOrEmpty(webInfo.getVersion()))
             return ;
 
-        webInfoRepository.save(WebInfo, webInfo);
+        webInfoRepository.save(webInfo);
     }
 
     /**
@@ -119,7 +119,7 @@ public class WebManageService {
         WebNavigation navi = new WebNavigation(title, manageID, status);
         navi.setCreateTime(new Date());
 
-        webNaviRepository.save(WebNavigation, navi);
+        webNaviRepository.save(navi);
     }
 
     /**
@@ -136,7 +136,7 @@ public class WebManageService {
         if (StringUtil.isNullOrEmpty(navigation.getTitle()))
             throw new IllegalArgumentException("WebNavigation的title不能为空");
 
-        webNaviRepository.save(WebNavigation, navigation);
+        webNaviRepository.save(navigation);
     }
 
     /**
@@ -160,7 +160,7 @@ public class WebManageService {
         if (StringUtil.isNullOrEmpty(navigation.getTitle()))
             throw new IllegalArgumentException("WebNavigation的title不能为空");
 
-        webNaviRepository.update(WebNavigation, navigation);
+        webNaviRepository.update(navigation);
     }
 
     /**

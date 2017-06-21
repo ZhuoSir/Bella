@@ -18,12 +18,12 @@ public class PlatRepository extends AbstractRepository<PlatFunc> {
 
     @Override
     public int save(PlatFunc platFunc) throws Exception {
-        return super.save(tableName, platFunc);
+        return super.save(platFunc);
     }
 
     @Override
     public int update(PlatFunc platFunc) throws Exception {
-        return super.update(tableName, platFunc);
+        return super.update(platFunc);
     }
 
     public List<PlatFunc> allPlatFuncs() throws Exception {

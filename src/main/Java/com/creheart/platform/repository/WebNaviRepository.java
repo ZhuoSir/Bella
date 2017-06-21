@@ -20,12 +20,12 @@ public class WebNaviRepository extends AbstractRepository<WebNavigation> {
 
     @Override
     public int save(WebNavigation navigation) throws Exception {
-        return super.save(tableName, navigation);
+        return super.save(navigation);
     }
 
     @Override
     public int update(WebNavigation navigation) throws Exception {
-        return super.update(tableName, navigation);
+        return super.update(navigation);
     }
 
     public List<WebNavigation> getNavigationsInStatus(int status) throws Exception {

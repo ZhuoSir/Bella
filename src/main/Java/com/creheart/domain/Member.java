@@ -1,30 +1,43 @@
 package com.creheart.domain;
 
+import com.chen.JeneralDB.annotation.Column;
+import com.chen.JeneralDB.annotation.Table;
 import java.util.Date;
 
 /**
- * created by JeneralDB at 2017-03-27 08:44:56
+ * created by JeneralDB at 2017-06-21 10:26:46
  */
+@Table("member")
 public class Member {
 
+	@Column(value = "ID", index = Column.index.PRIMARYKEY)
 	private long ID;
 
+	@Column(value = "accountID", index = Column.index.PRIMARYKEY)
 	private String accountID;
 
+	@Column(value = "accountName", index = Column.index.PRIMARYKEY)
 	private String accountName;
 
+	@Column("password")
 	private String password;
 
+	@Column(value = "email", index = Column.index.PRIMARYKEY)
 	private String email;
 
+	@Column("addTime")
 	private Date addTime;
 
+	@Column("status")
 	private int status;
 
+	@Column("headPicFileURL")
 	private String headPicFileURL;
 
+	@Column("mobilePhone")
 	private String mobilePhone;
 
+	@Column("nickName")
 	private String nickName;
 
 	public void setID(long ID) {

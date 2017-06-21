@@ -1,30 +1,43 @@
 package com.creheart.domain;
 
+import com.chen.JeneralDB.annotation.Column;
+import com.chen.JeneralDB.annotation.Table;
 import java.util.Date;
 
 /**
- * created by JeneralDB at 2017-03-27 08:44:56
+ * created by JeneralDB at 2017-06-21 10:26:46
  */
+@Table("bel_post")
 public class BelPost {
 
+	@Column(value = "postID", index = Column.index.PRIMARYKEY)
 	private long postID;
 
+	@Column("title")
 	private String title;
 
+	@Column(value = "authorID")
 	private long authorID;
 
+	@Column("content")
 	private String content;
 
+	@Column("readTimes")
 	private int readTimes;
 
+	@Column("replyTimes")
 	private int replyTimes;
 
+	@Column("status")
 	private int status;
 
+	@Column(value = "lastReplyMemberID")
 	private long lastReplyMemberID;
 
+	@Column("createTime")
 	private Date createTime;
 
+	@Column("lastReplyTime")
 	private Date lastReplyTime;
 
 	public void setPostID(long postID) {

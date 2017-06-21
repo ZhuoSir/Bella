@@ -5,6 +5,10 @@ import sun.misc.BASE64Encoder;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,5 +98,21 @@ public class StringUtil {
         }
 
         return newStr;
+    }
+
+
+    /**
+     * 将字符串分割成数组
+     *
+     * @param separator 分割符号
+     * @param str 被分割字符串
+     *
+     * @return 返回数组
+     * */
+    public static ArrayList<String> strToArrayList(final String str, final String separator) {
+        ArrayList<String> ret = new ArrayList<>();
+        String[] array = str.split(separator);
+        Collections.addAll(ret, array);
+        return ret;
     }
 }

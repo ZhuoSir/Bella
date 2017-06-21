@@ -14,7 +14,7 @@ import java.util.Properties;
  * 负责根据数据库创建持久层代码的工厂类
  *
  * @author 陈卓
- * @version 1.0.0
+ * @version 1.1.0
  */
 public class DBFactory {
 
@@ -32,7 +32,16 @@ public class DBFactory {
 
     private boolean sqlPack = false;
 
+    private boolean decimalPack = false;
+
+    private String database;
+
     private DBFactory() {
+        try {
+            this.database = getProperty("db_name");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -75,19 +84,16 @@ public class DBFactory {
      */
     public void createEntitysByTableNames(List<String> tableNames, String directoryPath, String packageName)
             throws Exception {
-        if (null == directoryPath) {
+        if (null == directoryPath)
             directoryPath = getProperties().getProperty("packageOutPath");
-        }
 
-        if (null == packageName) {
+        if (null == packageName)
             packageName = getProperties().getProperty("packageSimplepath");
-        }
 
         File directory = new File(directoryPath);
         if (!directory.exists()
-                && Boolean.valueOf(getProperties().getProperty("autoCreateDir"))) {
+                && Boolean.valueOf(getProperties().getProperty("autoCreateDir")))
             directory.mkdirs();
-        }
 
         for (String tableName : tableNames) {
             parseToJava(tableName, directory.getAbsolutePath(), packageName);
@@ -111,23 +117,21 @@ public class DBFactory {
 
         int size = resultSet.getColumnCount();
         String[] columnNames = new String[size];
-        String[] columnType = new String[size];
-        int[] columnSize = new int[size];
+        String[] columnType  = new String[size];
 
+        utilPack = false; sqlPack = false; decimalPack = false;
         for (int i = 0; i < size; i++) {
             columnNames[i] = resultSet.getColumnName(i + 1);
-            columnType[i] = resultSet.getColumnTypeName(i + 1);
-            columnSize[i] = resultSet.getColumnDisplaySize(i + 1);
+            columnType[i]  = resultSet.getColumnTypeName(i + 1);
 
-            if (columnType[i].equalsIgnoreCase("datetime")
-                    || columnType[i].equalsIgnoreCase("timestamp")) {
+            if ("datetime,timestamp,date,year".contains(columnType[i].toLowerCase()))
                 utilPack = true;
-            }
 
-            if (columnType[i].equalsIgnoreCase("image")
-                    || columnType[i].equalsIgnoreCase("text")) {
+            if ("image,text".contains(columnType[i].toLowerCase()))
                 sqlPack = true;
-            }
+
+            if ("decimal,real,numeric,money,smallmoney".contains(columnType[i].toLowerCase()))
+                decimalPack = true;
         }
 
         String content = parse(allTableName, packageName, columnNames, columnType);
@@ -149,13 +153,17 @@ public class DBFactory {
         buffer.append("\r\n");
         buffer.append("\r\n");
 
-        if (utilPack) {
-            buffer.append("import java.util.Date;\r\n\r\n");
-        }
+        buffer.append("import com.chen.JeneralDB.annotation.Column;\r\n");
+        buffer.append("import com.chen.JeneralDB.annotation.Table;\r\n");
 
-        if (sqlPack) {
+        if (utilPack)
+            buffer.append("import java.util.Date;\r\n\r\n");
+
+        if (sqlPack)
             buffer.append("import java.sql.*;\r\n\r\n");
-        }
+
+        if (decimalPack)
+            buffer.append("import java.math.BigDecimal;\r\n\r\n");
 
         buffer.append("/**\r\n");
         buffer.append(" * created by JeneralDB at ");
@@ -164,10 +172,11 @@ public class DBFactory {
         buffer.append(" */");
         buffer.append("\r\n");
 
+        buffer.append("@Table(\"").append(allTableName).append("\")\r\n");
         buffer.append("public class " + formatClassName(allTableName) + " {\r\n");
         buffer.append("\r\n");
 
-        processAllAttrs(buffer, columnNames, columnType);
+        processAllAttrs(buffer, allTableName, columnNames, columnType);
 
         processAllMethod(buffer, columnNames, columnType);
 
@@ -179,6 +188,10 @@ public class DBFactory {
     }
 
 
+    /**
+     * 生成toString()方法
+     *
+     * */
     private void processToString(StringBuffer buffer, String[] columnNames, String[] columnType) {
         buffer.append("\tpublic String toString() {\n");
         buffer.append("\t\tStringBuffer string = new StringBuffer();\n");
@@ -201,6 +214,10 @@ public class DBFactory {
     }
 
 
+    /**
+     * 生成所有get set 方法
+     *
+     * */
     private void processAllMethod(StringBuffer buffer, String[] colnames, String[] colTypes) {
         for (int i = 0; i < colnames.length; i++) {
             buffer.append("\tpublic void set" + initCap(colnames[i]) + "(" + sqlType2JavaType(colTypes[i]) + " " +
@@ -216,8 +233,27 @@ public class DBFactory {
     }
 
 
-    private void processAllAttrs(StringBuffer buffer, String[] columnNames, String[] columnTypes) {
+    /**
+     * 生成所有属性
+     *
+     * */
+    private void processAllAttrs(StringBuffer buffer, String tableName, String[] columnNames, String[] columnTypes) {
         for (int i = 0; i < columnNames.length; i++) {
+            String indexType = getIndexOfcolumn(columnNames[i], tableName);
+            if (null != indexType) {
+                buffer.append("\t@Column(value = \"").append(columnNames[i]).append("\"");
+                if ("PRIMARY".equals(indexType)) {
+                    buffer.append(", index = Column.index.PRIMARYKEY");
+                } else if ("UNIQUE".equals(indexType)) {
+                    buffer.append(", index = Column.index.UNIQUE");
+                } else if ("FULLTEXT".equals(indexType)) {
+                    buffer.append(", index = Column.index.FULLTEXT");
+                }
+            } else {
+                buffer.append("\t@Column(\"").append(columnNames[i]).append("\"");
+            }
+
+            buffer.append(")\r\n");
             buffer.append("\tprivate ");
             buffer.append(sqlType2JavaType(columnTypes[i]));
             buffer.append(" ");
@@ -228,40 +264,83 @@ public class DBFactory {
     }
 
 
-    private String sqlType2JavaType(String sqlType) {
-        if (sqlType.equalsIgnoreCase("bit")) {
-            return "Boolean";
-        } else if (sqlType.equalsIgnoreCase("tinyint")) {
-            return "byte";
-        } else if (sqlType.equalsIgnoreCase("smallint")) {
-            return "short";
-        } else if (sqlType.equalsIgnoreCase("int") || sqlType.equalsIgnoreCase("integer")) {
-            return "int";
-        } else if (sqlType.equalsIgnoreCase("bigint") || sqlType.equalsIgnoreCase("int unsigned")) {
-            return "long";
-        } else if (sqlType.equalsIgnoreCase("float")) {
-            return "float";
-        } else if (sqlType.equalsIgnoreCase("decimal") || sqlType.equalsIgnoreCase("numeric")
-                || sqlType.equalsIgnoreCase("real") || sqlType.equalsIgnoreCase("money")
-                || sqlType.equalsIgnoreCase("smallmoney")) {
-            return "double";
-        } else if (sqlType.equalsIgnoreCase("varchar") || sqlType.equalsIgnoreCase("char")
-                || sqlType.equalsIgnoreCase("nvarchar") || sqlType.equalsIgnoreCase("nchar")
-                || sqlType.equalsIgnoreCase("text")) {
-            return "String";
-        } else if (sqlType.equalsIgnoreCase("datetime") || sqlType.equalsIgnoreCase("timestamp")) {
-            return "Date";
-        } else if (sqlType.equalsIgnoreCase("image")) {
-            return "Blod";
-        } else if (sqlType.equalsIgnoreCase("double")) {
-            return "double";
-        } else if (sqlType.equalsIgnoreCase("longblob")) {
-            return "byte[]";
+    private String getIndexOfcolumn(String columnName, String tableName) {
+        String sql = "show index from " + tableName + " where Column_name = ?;";
+        try {
+            DataTable dt = DBUtil.getInstance().queryDataTable(sql, columnName);
+            return !dt.isEmpty() ? dt.getObjectByColumnNameInRow("Key_name", 0).toString() : null;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return null;
     }
 
 
+    private String sqlType2JavaType(String sqlType) {
+        String ret = null;
+
+        switch (sqlType.toLowerCase()) {
+            case "bit":
+                ret = "Boolean";
+                break;
+            case "tinyint":
+                ret = "byte";
+                break;
+            case "smallint":
+                ret = "short";
+                break;
+            case "float":
+                ret = "float";
+                break;
+            case "int":
+            case "integer":
+                ret = "int";
+                break;
+            case "bigint":
+            case "int unsigned":
+                ret = "long";
+                break;
+            case "decimal":
+            case "numeric":
+            case "real":
+            case "money":
+            case "smallmoney":
+                ret = "BigDecimal";
+                break;
+            case "varchar":
+            case "char":
+            case "nvarchar":
+            case "nchar":
+            case "text":
+                ret = "String";
+                break;
+            case "datetime":
+            case "timestamp":
+            case "date":
+            case "year":
+                ret = "Date";
+                break;
+            case "image":
+                ret = "Blod";
+                break;
+            case "double":
+                ret = "double";
+                break;
+            case "longblob":
+                ret = "byte[]";
+            default:
+                break;
+        }
+
+        return ret;
+    }
+
+
+    /**
+     * 根据表名格式化生成类名
+     *
+     * */
     private String formatClassName(String allTableName) {
         if (null == allTableName || allTableName.isEmpty()) {
             return allTableName;
@@ -285,8 +364,10 @@ public class DBFactory {
     }
 
 
-
-
+    /**
+     * 将表中名的第一个字符大写
+     *
+     * */
     private String initCap(String allTableName) {
         if (null == allTableName || allTableName.isEmpty()) {
             return allTableName;
@@ -303,11 +384,11 @@ public class DBFactory {
 
     /**
      * 获取所有数据库中的所有表名
+     *
      */
     public String[] getAllTableNamesOfDataBase()
             throws Exception {
-        Properties p = getProperties();
-        String sql = String.format(allTableNameSql, p.getProperty("db_name"), p.getProperty("db_type"));
+        String sql = String.format(allTableNameSql, getProperty("db_name"), getProperty("db_type"));
         Object[] allTableNames = DBUtil.getInstance().queryDataTable(sql).getObjectsByColumnName("TABLE_NAME");
         String[] result = new String[allTableNames.length];
 
@@ -319,31 +400,25 @@ public class DBFactory {
     }
 
 
-    public DataTable getAllPKOfTable(String tableName)
+    /**　
+     * 获取表的所有主键
+     *
+     * */
+    private DataTable getAllPKOfTable(String tableName)
             throws Exception {
-        Properties p = getProperties();
-        String sql = " SELECT\n" +
-                "  t.TABLE_NAME,\n" +
-                "  t.CONSTRAINT_TYPE,\n" +
-                "  c.COLUMN_NAME,\n" +
-                "  c.ORDINAL_POSITION\n" +
-                " FROM\n" +
-                "  INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS t,\n" +
-                "  INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS c\n" +
-                " WHERE\n" +
-                "  t.TABLE_NAME = c.TABLE_NAME\n" +
-                "  AND t.TABLE_SCHEMA = '" + p.getProperty("db_name") + "'\n" +
-                "  AND t.CONSTRAINT_TYPE = 'PRIMARY KEY'" +
-                "  AND t.TABLE_NAME = '" + tableName + "'";
-
+        String sql = "show index from " + tableName + " where key_name = 'PRIMARY';";
         return DBUtil.getInstance().queryDataTable(sql);
     }
 
 
+    /**
+     * 获取表中所有主键的名称
+     *
+     * */
     public String[] getAllPkNamesOfTable(String tableName)
             throws Exception {
         DataTable dt = getAllPKOfTable(tableName);
-        Object[] objs = dt.getObjectsByColumnName("COLUMN_NAME");
+        Object[] objs = dt.getObjectsByColumnName("Column_name");
 
         String[] ret = new String[objs.length];
         for (int i = 0; i < objs.length; i++) {
@@ -356,6 +431,7 @@ public class DBFactory {
 
     /**
      * 获取相应的配置文件信息
+     *
      */
     public static Properties getProperties()
             throws IOException {
@@ -370,6 +446,7 @@ public class DBFactory {
 
     /**
      * 获取配置文件中的基本属性
+     *
      */
     public static String getProperty(String key)
             throws IOException {
@@ -379,6 +456,7 @@ public class DBFactory {
 
     /**
      * 将字符串写进java文件，如果没有文件创建之
+     *
      */
     private void writeToJavaFile(String content, String directory)
             throws IOException {

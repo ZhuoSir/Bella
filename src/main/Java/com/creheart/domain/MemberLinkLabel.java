@@ -1,16 +1,20 @@
 package com.creheart.domain;
 
-import java.util.Date;
-
+import com.chen.JeneralDB.annotation.Column;
+import com.chen.JeneralDB.annotation.Table;
 /**
- * created by JeneralDB at 2017-03-27 08:44:56
+ * created by JeneralDB at 2017-06-21 10:26:46
  */
+@Table("member_link_label")
 public class MemberLinkLabel {
 
+	@Column(value = "RID", index = Column.index.PRIMARYKEY)
 	private long RID;
 
+	@Column(value = "memberID")
 	private long memberID;
 
+	@Column(value = "labelID")
 	private long labelID;
 
 	public void setRID(long RID) {

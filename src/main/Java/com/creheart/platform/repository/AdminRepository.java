@@ -21,7 +21,7 @@ public class AdminRepository extends AbstractRepository<PlatAdmin> {
 
     @Override
     public int save(PlatAdmin platAdmin) throws Exception {
-        return super.save(tableName, platAdmin);
+        return super.save(platAdmin);
     }
 
     public PlatAdmin queryAdminByName(final String name)

@@ -1,23 +1,43 @@
 package com.creheart.domain;
 
+import com.chen.JeneralDB.annotation.Column;
+import com.chen.JeneralDB.annotation.Table;
 import java.util.Date;
 
 /**
- * created by JeneralDB at 2017-05-27 06:27:43
+ * created by JeneralDB at 2017-06-21 10:26:47
  */
+@Table("web_info")
 public class WebInfo {
 
-    private int id;
+	@Column(value = "id", index = Column.index.PRIMARYKEY)
+	private int id;
 
+	@Column("webName")
 	private String webName;
 
-	private Date startTime;
+	@Column("version")
+	private String version;
 
-	private String description;
+	@Column("descrption")
+	private String descrption;
 
+	@Column("logoPath")
 	private String logoPath;
 
-	private String version;
+	@Column("startTime")
+	private Date startTime;
+
+	@Column("status")
+	private int status;
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
+	}
 
 	public void setWebName(String webName) {
 		this.webName = webName;
@@ -27,20 +47,20 @@ public class WebInfo {
 		return webName;
 	}
 
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
-	public Date getStartTime() {
-		return startTime;
+	public String getVersion() {
+		return version;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescrption(String descrption) {
+		this.descrption = descrption;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDescrption() {
+		return descrption;
 	}
 
 	public void setLogoPath(String logoPath) {
@@ -51,35 +71,44 @@ public class WebInfo {
 		return logoPath;
 	}
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
 
-    public String getVersion() {
-        return version;
-    }
+	public Date getStartTime() {
+		return startTime;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public int getStatus() {
+		return status;
+	}
 
-    public String toString() {
+	public String toString() {
 		StringBuffer string = new StringBuffer();
+		string.append("id = ");
+		string.append(this.id);
+		string.append(";");
 		string.append("webName = ");
 		string.append(this.webName);
+		string.append(";");
+		string.append("version = ");
+		string.append(this.version);
+		string.append(";");
+		string.append("descrption = ");
+		string.append(this.descrption);
+		string.append(";");
+		string.append("logoPath = ");
+		string.append(this.logoPath);
 		string.append(";");
 		string.append("startTime = ");
 		string.append(this.startTime);
 		string.append(";");
-		string.append("description = ");
-		string.append(this.description);
-		string.append(";");
-		string.append("logoPath = ");
-		string.append(this.logoPath);
+		string.append("status = ");
+		string.append(this.status);
 		string.append(";");
 		return string.toString();
 	}

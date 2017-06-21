@@ -38,12 +38,12 @@ public class LabelRepository extends AbstractRepository<BelLabel> {
 
     @Override
     public int save(BelLabel label) throws Exception {
-        return super.save(labelTable, label);
+        return super.save(label);
     }
 
     @Override
     public int update(BelLabel label) throws Exception {
-        return super.update(labelTable, label);
+        return super.update(label);
     }
 
     public int[] deletBellabel(int id) throws Exception {

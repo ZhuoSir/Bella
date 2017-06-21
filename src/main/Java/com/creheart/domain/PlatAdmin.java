@@ -1,24 +1,34 @@
 package com.creheart.domain;
 
+import com.chen.JeneralDB.annotation.Column;
+import com.chen.JeneralDB.annotation.Table;
 import java.util.Date;
 
 /**
- * created by JeneralDB at 2017-03-27 08:44:56
+ * created by JeneralDB at 2017-06-21 10:26:46
  */
+@Table("plat_admin")
 public class PlatAdmin {
 
+	@Column(value = "ID", index = Column.index.PRIMARYKEY)
 	private int ID;
 
+	@Column("adminName")
 	private String adminName;
 
+	@Column("password")
 	private String password;
 
+	@Column("adminType")
 	private int adminType;
 
+	@Column("status")
 	private int status;
 
+	@Column("creatorID")
 	private int creatorID;
 
+	@Column("addTime")
 	private Date addTime;
 
 	public void setID(int ID) {
@@ -101,15 +111,5 @@ public class PlatAdmin {
 		string.append(this.addTime);
 		string.append(";");
 		return string.toString();
-	}
-
-	public PlatAdmin() {}
-
-	public PlatAdmin(String adminName, String password, int adminType, int status, int creatorID) {
-		this.adminName = adminName;
-		this.password = password;
-		this.adminType = adminType;
-		this.status = status;
-		this.creatorID = creatorID;
 	}
 }

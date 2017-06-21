@@ -2,15 +2,9 @@ package com.chen.JeneralDB;
 
 
 import com.chen.JeneralDB.jdbc.Query;
-import com.chen.StringUtil;
-import com.mysql.jdbc.*;
 
 import java.lang.reflect.Field;
 import java.sql.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
 import java.util.*;
 import java.util.Date;
 
@@ -20,13 +14,13 @@ import static com.chen.JeneralDB.SqlBuilder.*;
  * 数据库操作工具类
  *
  * @author 陈卓
- * @version 1.0.0
+ * @version 1.1.0
  */
 public class DBUtil {
 
     private Connection conn = null;
 
-    private static DBUtil dbUtil;
+    private static volatile DBUtil dbUtil;
 
     private static boolean AutoCommit = true;
 
@@ -34,31 +28,54 @@ public class DBUtil {
     }
 
 
-    public static synchronized DBUtil getInstance() {
+    public static DBUtil getInstance() {
         if (null == dbUtil) {
-            dbUtil = new DBUtil();
+            synchronized (DBUtil.class) {
+                if (null == dbUtil) {
+                    dbUtil = new DBUtil();
+                }
+            }
         }
+
         return dbUtil;
     }
 
 
+    /**
+     * Connection配置
+     *
+     * */
+    public void setConnection(Connection conn) {
+        this.conn = conn;
+    }
+
+
+    /**
+     * 打开数据连接方法<br>
+     * <P>连接数据在JeneralDB-config.properties中</P>
+     *
+     * */
     public Connection openConnection()
             throws Exception {
         Properties properties = new Properties();
         properties.load(DBUtil.class.getResourceAsStream("/JeneralDB-config.properties"));
         Class.forName(properties.getProperty("db_driver"));
 
-        conn = DriverManager.getConnection(
+        Connection conn = DriverManager.getConnection(
                 properties.getProperty("db_url"),
                 properties.getProperty("db_username"),
                 properties.getProperty("db_password"));
-        conn.setAutoCommit(AutoCommit);
         conn.setTransactionIsolation(Integer.valueOf(properties.getProperty("db_transactionIsolation")));
+        conn.setAutoCommit(AutoCommit);
 
         return conn;
     }
 
 
+    /**
+     * 关闭数据库连接方法
+     *
+     * */
     public void closeConnection() throws SQLException {
         try {
             if (null != conn) {
@@ -71,6 +88,13 @@ public class DBUtil {
     }
 
 
+    /**
+     * Map对象查询方法
+     *
+     * @param sql 查询语句
+     * @return 查询结果Map
+     * */
+    @Deprecated
     public List<Map<String, Object>> queryMapList(String sql)
             throws Exception {
         checkConnect();
@@ -97,6 +121,15 @@ public class DBUtil {
     }
 
 
+    /**
+     * Map对象查询方法
+     *
+     * @param sql 查询语句
+     * @param params sql参数
+     *
+     * @return 查询结果Map
+     * */
+    @Deprecated
     public List<Map<String, Object>> queryMapList(String sql, Object... params)
             throws Exception {
         checkConnect();
@@ -108,16 +141,16 @@ public class DBUtil {
         try {
             statement = conn.prepareStatement(sql);
 
-            for (int i = 0, j = 1; i < params.length; i++) {
-                if (null == params[i]) continue;
-                statement.setString(j++, params[i].toString());
+            if (null != params) {
+                for (int i = 0, j = 1; i < params.length; i++) {
+                    if (null == params[i]) continue;
+                    statement.setObject(j++, params[i]);
+                }
             }
 
             rs = statement.executeQuery();
             genDataFromResultSet(rs, lists);
             print("执行sql: " + sql);
-        } catch (Exception e) {
-              e.printStackTrace();
         } finally {
             if (null != rs)
                 rs.close();
@@ -131,6 +164,12 @@ public class DBUtil {
     }
 
 
+    /**
+     * 从结果集ResultSet中获取数据
+     *
+     * @param rs 结果集
+     * @param lists 返回Map数组
+     * */
     private void genDataFromResultSet(ResultSet rs, List<Map<String, Object>> lists)
             throws SQLException {
         ResultSetMetaData metaData = rs.getMetaData();
@@ -149,67 +188,44 @@ public class DBUtil {
     }
 
 
+    /**
+     * 查询JavaBean数组方法
+     *
+     * @param sql 查询sql
+     * @param beanClass 转换Javabean对象Class
+     *
+     * @return 结果数组
+     * */
     public <T> List<T> queryBeanList(String sql, Class<T> beanClass)
             throws Exception {
-        checkConnect();
-
-        List<T> lists = new ArrayList<T>();
-        Statement stmt = null;
-        ResultSet resultSet = null;
-
-        try {
-            stmt = conn.createStatement();
-            resultSet = stmt.executeQuery(sql);
-            print("执行sql: " + sql);
-            Field[] fields = beanClass.getDeclaredFields();
-
-            for (Field field : fields) {
-                field.setAccessible(true);
-            }
-
-            while (null != resultSet && resultSet.next()) {
-                T t = beanClass.newInstance();
-                for (Field field : fields) {
-                    String name = field.getName();
-                    try {
-                        Object value = resultSet.getObject(name);
-                        setValue(t, field, value);
-                    } catch (SQLException e) {
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                lists.add(t);
-            }
-
-        } finally {
-            if (null != resultSet)
-                resultSet.close();
-            if (null != stmt)
-                stmt.close();
-            if (null != conn && AutoCommit)
-                conn.close();
-        }
-
-        return lists;
+        return queryBeanList(sql, beanClass, null);
     }
 
 
+    /**
+     * 查询JavaBean数组方法
+     *
+     * @param sql 查询sql
+     * @param beanClass 转换Javabean对象Class
+     * @param params sql 查询参数
+     *
+     * @return 结果数组
+     * */
     public <T> List<T> queryBeanList(String sql, Class<T> beanClass, Object... params)
             throws Exception {
         checkConnect();
 
-        List<T> lists = new ArrayList<T>();
+        List<T> lists = new ArrayList<>();
         PreparedStatement preStmt = null;
         ResultSet rs = null;
 
         try {
             preStmt = conn.prepareStatement(sql);
 
-            for (int i = 0, j = 1; i < params.length; i++) {
-                if (null == params[i]) continue;
-                preStmt.setObject(j++, params[i]);
+            if (null != params) {
+                for (int i = 0; i < params.length; i++) {
+                    preStmt.setObject(i + 1, params[i]);
+                }
             }
 
             rs = preStmt.executeQuery();
@@ -249,6 +265,74 @@ public class DBUtil {
     }
 
 
+    /**
+     * 查询JavaBean数组方法(新方法)
+     *
+     * @param sql 查询sql
+     * @param beanClass 转换Javabean对象Class
+     *
+     * @return 结果数组
+     * */
+    public <T> List<T> queryBeanListNew(Class<T> beanClass, String sql, Object... params)
+            throws Exception {
+        checkConnect();
+
+        List<T>           lists     = new ArrayList<T>();
+        PreparedStatement preStmt   = null;
+        ResultSet         resultSet = null;
+        try {
+            preStmt = conn.prepareStatement(sql); {
+                if (null != params) {
+                    for (int i = 0; i < params.length; i++) {
+                        preStmt.setObject(i + 1, params[i]);
+                    }
+                }
+            }
+
+            resultSet = preStmt.executeQuery();
+            ResultSetMetaData data = resultSet.getMetaData();
+
+            String[] columnArr = new String[data.getColumnCount()];
+            for (int i = 1; i <= data.getColumnCount(); i++) {
+                columnArr[i-1] = data.getColumnLabel(i);
+            }
+
+            while (resultSet.next()) {
+                T t = beanClass.newInstance();
+                for (int i = 0; i < columnArr.length; i++) {
+                    try {
+                        Field field = beanClass.getDeclaredField(columnArr[i]);
+                        field.setAccessible(true);
+                        Object value = resultSet.getObject(columnArr[i]);
+                        setValue(t, field, value);
+                    } catch (NoSuchFieldException e) {
+                        print(beanClass.getSimpleName() + "没有" + columnArr[i] + "此属性;");
+                    }
+                }
+
+                lists.add(t);
+            }
+        } finally {
+            if (null != preStmt)
+                preStmt.close();
+            if (null != resultSet)
+                resultSet.close();
+            if (null != conn && AutoCommit)
+                conn.close();
+        }
+
+        return lists;
+    }
+
+
+    /**
+     * 查询单独JavaBean方法
+     *
+     * @param sql 查询sql
+     * @param beanClass 转换Javabean对象Class
+     *
+     * @return 结果对象
+     * */
     public <T> T queryBean(String sql, Class<T> beanClass)
             throws Exception {
         List<T> lists = queryBeanList(sql, beanClass);
@@ -256,6 +340,15 @@ public class DBUtil {
     }
 
 
+    /**
+     * 查询单独JavaBean方法
+     *
+     * @param sql 查询sql
+     * @param beanClass 转换Javabean对象Class
+     * @param params 查询参数
+     *
+     * @return 结果对象
+     * */
     public <T> T queryBean(String sql, Class<T> beanClass, Object... params)
             throws Exception {
         List<T> lists = queryBeanList(sql, beanClass, params);
@@ -263,25 +356,27 @@ public class DBUtil {
     }
 
 
-    public DataTable queryDataTable(Query query)
-            throws Exception {
-        return queryDataTable(buildSelectSqlByQuery(query));
-    }
-
-
+    /**
+     * 查询DataTable方法
+     *
+     * @param sql 查询sql
+     *
+     * @return 结果DataTable
+     * */
     public DataTable queryDataTable(String sql)
             throws Exception {
-        List<Map<String, Object>> list = queryMapList(sql);
-        DataTable dataTable = null;
-
-        if (null != list && !list.isEmpty()) {
-            dataTable = new DataTable(list);
-        }
-
-        return dataTable;
+        return queryDataTable(sql, null);
     }
 
 
+    /**
+     * 查询DataTable方法
+     *
+     * @param sql 查询sql
+     * @param params 参数
+     *
+     * @return 结果DataTable
+     * */
     public DataTable queryDataTable(String sql, Object... params) throws Exception {
         List<Map<String, Object>> list = queryMapList(sql, params);
         DataTable dataTable = new DataTable();
@@ -294,12 +389,29 @@ public class DBUtil {
     }
 
 
+    /**
+     * 查询DataTable方法,Query方式
+     *
+     * @param query Query对象
+     *
+     * @return 结果DataTable
+     * */
+    public DataTable queryDataTable(Query query)
+            throws Exception {
+        return queryDataTable(buildSelectSqlByQuery(query));
+    }
+
+
+    /**
+     * 根据Query查询bean集合
+     *
+     * @param query 查询query
+     * @param beanClass 查询类class
+     *
+     * @return 返回集合
+     * */
     public <T> List<T> queryBeanListByQuery(Query query, Class<T> beanClass)
             throws Exception {
-        if (!StringUtil.isNotNullOrEmpty(query.getTableName())) {
-            String tableName = beanClass.getSimpleName();
-            query.setTableName(tableName);
-        }
         DataTable dt = queryByQuery(query);
         return null != dt ? dt.toBeanList(beanClass) : null;
     }
@@ -321,10 +433,10 @@ public class DBUtil {
         return querySingleOne(sql, null);
     }
 
-    
+
     public Object querySingleOne(String sql, Object... params)
             throws Exception {
-        DataTable dt = null;
+        DataTable dt;
 
         if (null != params)
             dt = queryDataTable(sql, params);
@@ -344,7 +456,6 @@ public class DBUtil {
 
         return querySingleOne(sql);
     }
-
 
     public ResultSetMetaData queryResultSetMetaData(String sql)
             throws Exception {
@@ -480,30 +591,12 @@ public class DBUtil {
     }
 
 
-    public int save(Object obj, String tableName) throws Exception {
-        if (null == obj) {
-            throw new NullPointerException("保存对象不能为Null");
-        }
-
-        return this.execute(buildInsertSql(obj, tableName));
-    }
-
-
     public int save(Connection conn, Object obj) throws Exception {
         if (null == obj) {
             throw new NullPointerException("保存对象不能为Null");
         }
 
         return this.execute(buildInsertSql(obj), conn);
-    }
-
-
-    public int save(Connection conn, Object obj, String tableName) throws Exception {
-        if (null == obj) {
-            throw new NullPointerException("保存对象不能为Null");
-        }
-
-        return this.execute(buildInsertSql(obj, tableName), conn);
     }
 
 
@@ -516,23 +609,15 @@ public class DBUtil {
     }
 
 
-    public int update(Object obj, String tableName) throws Exception {
-        if (null == obj) {
-            throw new NullPointerException("更新对象不能为Null");
-        }
-
-        return this.execute(buildUpdateSql(obj, tableName));
-    }
-
-
-    public int update(Connection conn, Object obj, String tableName)
+    public int update(Connection conn, Object obj)
             throws Exception {
         if (null == obj) {
             throw new NullPointerException("更新对象不能为Null");
         }
 
-        return this.execute(buildUpdateSql(obj, tableName), conn);
+        return this.execute(buildUpdateSql(obj), conn);
     }
+
 
 
     public int delete(Object obj) throws Exception {
@@ -544,22 +629,13 @@ public class DBUtil {
     }
 
 
-    public int delete(Object obj, String tableName) throws Exception {
-        if (null == obj) {
-            throw new NullPointerException("删除对象不能为Null");
-        }
-
-        return this.execute(buildDeleteSql(obj, tableName));
-    }
-
-
-    public int delete(Connection conn, Object obj, String tableName)
+    public int delete(Connection conn, Object obj)
             throws Exception {
         if (null == obj) {
             throw new NullPointerException("删除的对象不能为Null");
         }
 
-        return this.execute(buildDeleteSql(obj, tableName), conn);
+        return this.execute(buildDeleteSql(obj), conn);
     }
 
 
@@ -661,6 +737,7 @@ public class DBUtil {
      * @throws Exception
      */
     public void transCommit() throws Exception {
+        print("事务提交");
         conn.commit();
         closeConnection();
     }
@@ -672,6 +749,7 @@ public class DBUtil {
      * @throws Exception
      */
     public void transRollBack() throws Exception {
+        print("事务回滚");
         conn.rollback();
         closeConnection();
     }

@@ -1,5 +1,8 @@
 package com.chen.JeneralDB;
 
+import com.chen.JeneralDB.annotation.Column;
+import com.chen.JeneralDB.annotation.Table;
+import com.chen.JeneralDB.exception.RespositoryException;
 import com.chen.JeneralDB.jdbc.Query;
 import com.chen.JeneralDB.jdbc.SortDirection;
 
@@ -19,33 +22,29 @@ public final class SqlBuilder {
 
     public static String buildInsertSql(Object obj)
             throws IllegalAccessException {
-        return buildInsertSql(obj, null);
-    }
-
-
-    public static String buildInsertSql(Object obj, String tableName)
-            throws IllegalAccessException {
         StringBuilder columns = new StringBuilder(" insert into ");
-        StringBuilder values = new StringBuilder(" ) values (");
+        StringBuilder values  = new StringBuilder(" ) values (");
 
-        Class<?> t = obj.getClass();
-        Field[] fields = t.getDeclaredFields();
-        columns.append(null == tableName ? t.getSimpleName() : tableName);
+        Class<?> tclass = obj.getClass();
+        Field[]  fields = tclass.getDeclaredFields();
+
+        if (tclass.isAnnotationPresent(Table.class))
+            columns.append(tclass.getAnnotation(Table.class).value());
+        else
+            columns.append(tclass.getSimpleName());
         columns.append(" ( ");
 
         int size = fields.length, columnNum = 0;
         for (Field field : fields) {
             field.setAccessible(true);
-            String columnName = field.getName();
+            String columnName = field.isAnnotationPresent(Column.class) ? field.getAnnotation(Column.class).value() : field.getName();
             String columnType = field.getType().getTypeName();
-            Object value = field.get(obj);
+            Object value      = field.get(obj);
 
-            if (null == value) {
+            if (null == value)
                 continue;
-            }
 
             columns.append(columnName);
-
             addValueToValues(values, columnName, columnType, value);
 
             if (columnNum++ < size - 1) {
@@ -54,13 +53,11 @@ public final class SqlBuilder {
             }
         }
 
-        if (columns.charAt(columns.length() - 1) == ',') {
+        if (columns.charAt(columns.length() - 1) == ',')
             columns = columns.deleteCharAt(columns.length() - 1);
-        }
 
-        if (values.charAt(values.length() - 1) == ',') {
+        if (values.charAt(values.length() - 1) == ',')
             values = values.deleteCharAt(values.length() - 1);
-        }
 
         values.append(" ) ");
         columns.append(values);
@@ -89,49 +86,50 @@ public final class SqlBuilder {
     }
 
 
-    public static String buildUpdateSql(Object obj) throws Exception {
-        return buildUpdateSql(obj, null);
-    }
-
-
-    public static String buildUpdateSql(Object obj, String tableName)
+    public static String buildUpdateSql(Object obj)
             throws Exception {
-        Class<?> t = obj.getClass();
-        Field[] fields = t.getDeclaredFields();
-        String tName = null != tableName ? tableName : t.getSimpleName();
+        Class<?> tClass = obj.getClass();
+        Field[]  fields = tClass.getDeclaredFields();
+        String   tName  = tClass.isAnnotationPresent(Table.class) ? tClass.getAnnotation(Table.class).value() : tClass.getSimpleName();
+
         StringBuilder update = new StringBuilder(" update " + tName);
 
         for (int i = 0, size = fields.length; i < size; i++) {
             Field field = fields[i];
-            String columnName = field.getName();
+            String columnName = field.isAnnotationPresent(Column.class) ? field.getAnnotation(Column.class).value() : field.getName();
             String columnType = field.getType().getTypeName();
+
             field.setAccessible(true);
             Object value = field.get(obj);
 
-            if (i == 0) {
+            if (i == 0)
                 update.append(" set ");
-            }
 
             update.append(columnName + " = ");
             addValueToValues(update, columnName, columnType, value);
 
-            if (i < size - 1) {
+            if (i < size - 1)
                 update.append(", ");
-            }
         }
 
-        String pk = DBFactory.getInstance().getAllPkNamesOfTable(tName)[0];
+        String pk    = null;
         Object value = null;
 
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
+        for (Field field : fields) {
             field.setAccessible(true);
 
-            if (field.getName().equals(pk)) {
+            if (field.isAnnotationPresent(Column.class)
+                    && field.getAnnotation(Column.class).index() == Column.index.PRIMARYKEY)
+                pk = field.getName();
+
+            if (null != pk) {
                 value = field.get(obj);
                 break;
             }
         }
+
+        if (null == pk)
+            throw new RespositoryException(tName + "表没有主键，无法完成自主更新操作");
 
         if (null != value) {
             update.append(" where " + pk + " = ");
@@ -144,32 +142,30 @@ public final class SqlBuilder {
 
     public static String buildDeleteSql(Object obj)
             throws Exception {
-        return buildDeleteSql(obj, null);
-    }
+        Class<?> tClass = obj.getClass();
+        Field[]  fields = tClass.getDeclaredFields();
+        String   tName  = tClass.isAnnotationPresent(Table.class) ? tClass.getAnnotation(Table.class).value() : tClass.getSimpleName();;
 
-
-    public static String buildDeleteSql(Object obj, String tableName)
-            throws Exception {
-        Class<?> t = obj.getClass();
-        Field[] fields = t.getDeclaredFields();
-        String tName = null != tableName ? tableName : t.getSimpleName();
         StringBuilder delete = new StringBuilder("delete from " + tName);
 
-        String pk = DBFactory.getInstance().getAllPkNamesOfTable(tName)[0];
-        delete.append(" where " + pk);
-
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
-            String columnName = field.getName();
-            Object value = null;
-
+        String pk = null;
+        for (Field field : fields) {
             field.setAccessible(true);
-            if (columnName.equals(pk)) {
-                value = field.get(obj);
+
+            if (field.isAnnotationPresent(Column.class)
+                    && field.getAnnotation(Column.class).index() == Column.index.PRIMARYKEY)
+                pk = field.getName();
+
+            if (null != pk) {
+                delete.append(" where " + pk);
+                Object value = field.get(obj);
                 delete.append(" = " + value);
                 break;
             }
         }
+
+        if (null == pk)
+            throw new RespositoryException(tName + "表没有主键，无法完成自主删除");
 
         return delete.toString();
     }
@@ -219,7 +215,7 @@ public final class SqlBuilder {
 
                 String key = (String) iterator.next();
                 String val = eq.get(key);
-                sql.append(key + " = '" + val + "'");
+                sql.append(key + " = " + val);
             }
         }
 
@@ -239,7 +235,7 @@ public final class SqlBuilder {
 
                 String key = (String) iterator.next();
                 String val = neq.get(key);
-                sql.append(key + " != '" + val + "'");
+                sql.append(key + " != " + val);
             }
         }
 
@@ -259,7 +255,7 @@ public final class SqlBuilder {
 
                 String key = (String) iterator.next();
                 String val = like.get(key);
-                sql.append(key + " like '%" + val + "%'");
+                sql.append(key + " like '" + val + "'");
             }
         }
 
@@ -279,7 +275,7 @@ public final class SqlBuilder {
 
                 String key = (String) iterator.next();
                 String val = notLikes.get(key);
-                sql.append(key + " not like '%" + val + "%'");
+                sql.append(key + " not like '" + val + "'");
             }
         }
 
@@ -299,15 +295,15 @@ public final class SqlBuilder {
 
                 String key = (String) iterator.next();
                 Object[] val = In.get(key);
-                sql.append(key + " in ( '");
+                sql.append(key + " in ( ");
                 for (int i = 0; i < val.length; i++) {
                     if (i > 0) {
-                        sql.append("' , '");
+                        sql.append(" , ");
                     }
 
                     sql.append(val[i].toString());
                 }
-                sql.append("' ) ");
+                sql.append(" ) ");
             }
         }
 
@@ -327,15 +323,15 @@ public final class SqlBuilder {
 
                 String key = (String) iterator.next();
                 Object[] val = notIn.get(key);
-                sql.append(key + " not in ( '");
+                sql.append(key + " not in ( ");
                 for (int i = 0; i < val.length; i++) {
                     if (i > 0) {
-                        sql.append("' , '");
+                        sql.append(" , ");
                     }
 
                     sql.append(val[i].toString());
                 }
-                sql.append("' ) ");
+                sql.append(" ) ");
             }
         }
 

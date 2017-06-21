@@ -1,22 +1,31 @@
 package com.creheart.domain;
 
+import com.chen.JeneralDB.annotation.Column;
+import com.chen.JeneralDB.annotation.Table;
 import java.util.Date;
 
 /**
- * created by JeneralDB at 2017-03-27 08:44:56
+ * created by JeneralDB at 2017-06-21 10:26:47
  */
+@Table("web_member")
 public class WebMember {
 
+	@Column(value = "webMemberID", index = Column.index.PRIMARYKEY)
 	private long webMemberID;
 
+	@Column("tempVerifyMsisdn")
 	private String tempVerifyMsisdn;
 
+	@Column("tempVerifyCode")
 	private String tempVerifyCode;
 
+	@Column(value = "memberUserID")
 	private long memberUserID;
 
+	@Column("addTime")
 	private Date addTime;
 
+	@Column("tempVerifyTime")
 	private Date tempVerifyTime;
 
 	public void setWebMemberID(long webMemberID) {

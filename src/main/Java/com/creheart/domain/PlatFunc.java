@@ -1,34 +1,49 @@
 package com.creheart.domain;
 
+import com.chen.JeneralDB.annotation.Column;
+import com.chen.JeneralDB.annotation.Table;
 import java.util.Date;
 
 /**
- * created by JeneralDB at 2017-03-27 08:44:56
+ * created by JeneralDB at 2017-06-21 10:26:46
  */
+@Table("plat_func")
 public class PlatFunc {
 
+	@Column(value = "funcid", index = Column.index.PRIMARYKEY)
 	private long funcid;
 
+	@Column("funcName")
 	private String funcName;
 
+	@Column("funcIcon")
 	private String funcIcon;
 
+	@Column("funcUrl")
 	private String funcUrl;
 
+	@Column("parentFuncID")
 	private int parentFuncID;
 
+	@Column("orderNum")
 	private int orderNum;
 
+	@Column("levelNum")
 	private int levelNum;
 
+	@Column("menuFlag")
 	private int menuFlag;
 
+	@Column("remark")
 	private String remark;
 
+	@Column("description")
 	private String description;
 
+	@Column("addTime")
 	private Date addTime;
 
+	@Column("status")
 	private int status;
 
 	public void setFuncid(long funcid) {

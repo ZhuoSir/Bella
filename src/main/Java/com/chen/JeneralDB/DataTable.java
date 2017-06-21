@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
+ *
  * Created by sunny on 2016/11/29.
  */
 public class DataTable {
@@ -26,7 +27,7 @@ public class DataTable {
      */
     public DataTable() {
         columns = new ArrayList<>(0);
-        rows = new ArrayList<>();
+        rows = new ArrayList<>(0);
     }
 
     /**
@@ -51,7 +52,7 @@ public class DataTable {
      */
     public DataTable(ArrayList<String> columnNames) {
         int size = columnNames.size();
-        if (columnNames != null && size > 0) {
+        if (null != columnNames && size > 0) {
             this.columns = new ArrayList<>(size);
 
             for (int i = 0; i < size; i++) {
@@ -69,7 +70,7 @@ public class DataTable {
      * @param rowDatas    对象矩阵
      */
     public DataTable(String[] columnNames, Object[] rowDatas) throws Exception {
-        if (columnNames != null && columnNames.length > 0) {
+        if (null != columnNames && columnNames.length > 0) {
             if (columnNames.length != rowDatas.length) {
                 throw new Exception("行记录与列记录长度必须保持一致");
             }
@@ -106,13 +107,13 @@ public class DataTable {
         for (int i = 0; i < dataArr.length; i++) {
             Object obj = list.get(i);
             Class<?> ownerClass = obj.getClass();
-            Field[] fields = ownerClass.getDeclaredFields();
+            Field[] fields = ReflectUtil.getAllDeclaredFields(ownerClass);
 
             for (int j = 0; j < fields.length; j++) {
                 Field field = fields[j];
                 field.setAccessible(true);
                 Object value = field.get(obj);
-                dataArr[i][j] = value != null ? value : null;
+                dataArr[i][j] = value;
             }
         }
 
@@ -207,7 +208,7 @@ public class DataTable {
         String[] colArr;
         Object[] rowArr;
         Class<?> ownerClass = obj.getClass();
-        Field[] fields = ownerClass.getDeclaredFields();
+        Field[] fields = ReflectUtil.getAllDeclaredFields(ownerClass);
         {
             colArr = new String[fields.length];
             for (int i = 0; i < fields.length; i++) {
@@ -523,9 +524,9 @@ public class DataTable {
         List<Object[]> theRows = new ArrayList<>();
         int rowSize = this.getRowSize();
 
-        if (Start >= rowSize
-                || End >= rowSize) {
-            throw new ArrayIndexOutOfBoundsException("start,end不能超过row的size");
+        if (!(Start >= 0 && Start <= rowSize
+                && End >= 0 && End <= rowSize)) {
+            throw new ArrayIndexOutOfBoundsException("start,end必须在size范围内");
         }
 
         for (int i = Start, j = Start; i < End; i++) {
@@ -593,6 +594,7 @@ public class DataTable {
                 case "float":
                 case "Float":
                     defaultValue = 0f;
+                    break;
             }
 
             field.set(t, defaultValue);
@@ -667,9 +669,7 @@ public class DataTable {
             return null;
         }
 
-        Object[] rows = getRowAtIndex(y);
-
-        return rows[x];
+        return getRowAtIndex(y)[x];
     }
 
     /**

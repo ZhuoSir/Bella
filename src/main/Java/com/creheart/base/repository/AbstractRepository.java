@@ -3,7 +3,6 @@ package com.creheart.base.repository;
 import com.chen.JeneralDB.DBUtil;
 import com.chen.JeneralDB.DataTable;
 import com.chen.JeneralDB.jdbc.Query;
-import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,27 +36,15 @@ public abstract class AbstractRepository<T> {
     }
 
     public int save(T t) throws Exception {
-        return save(null, t);
-    }
-
-    public int save(String tableName, T t) throws Exception {
-        return dbUtil.save(t, tableName);
+        return save(t);
     }
 
     public int update(T t) throws Exception {
-       return update(null, t);
-    }
-
-    public int update(String tableName, T t) throws Exception {
-        return dbUtil.update(t, tableName);
+       return update(t);
     }
 
     public int delete(T t) throws Exception {
-        return delete(null, t);
-    }
-
-    public int delete(String tableName, T t) throws Exception {
-        return dbUtil.delete(t, tableName);
+        return delete(t);
     }
 
     public T query(String sql, Class<T> tClass) throws Exception {
