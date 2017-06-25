@@ -1,11 +1,11 @@
-package com.creheart.web.service;
+package com.creheart.platform.service;
 
 import com.chen.StringUtil;
 import com.creheart.domain.Member;
 import com.creheart.domain.MemberInfo;
 import com.creheart.platform.Const.MemberConst;
 import com.creheart.platform.repository.MemberInfoRepository;
-import com.creheart.web.repository.MemberRepository;
+import com.creheart.platform.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class MemberService {
 
     @Autowired
-    private MemberRepository     memberRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
     private MemberInfoRepository memberInfoRepository;

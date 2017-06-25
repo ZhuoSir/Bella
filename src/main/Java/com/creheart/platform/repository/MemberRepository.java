@@ -1,4 +1,4 @@
-package com.creheart.web.repository;
+package com.creheart.platform.repository;
 
 import com.chen.JeneralDB.jdbc.Query;
 import com.chen.StringUtil;

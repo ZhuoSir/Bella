@@ -63,6 +63,15 @@ public class BelLabel {
 		return linkCount;
 	}
 
+	public BelLabel() {
+	}
+
+	public BelLabel(String labelName, String iconUrl, String description) {
+		this.labelName = labelName;
+		this.iconUrl = iconUrl;
+		this.description = description;
+	}
+
 	public String toString() {
 		StringBuffer string = new StringBuffer();
 		string.append("labelID = ");

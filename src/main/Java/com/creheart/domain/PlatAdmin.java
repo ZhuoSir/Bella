@@ -87,6 +87,17 @@ public class PlatAdmin {
 		return addTime;
 	}
 
+	public PlatAdmin() {
+	}
+
+	public PlatAdmin(String adminName, String password, int adminType, int status, int creatorID) {
+		this.adminName = adminName;
+		this.password = password;
+		this.adminType = adminType;
+		this.status = status;
+		this.creatorID = creatorID;
+	}
+
 	public String toString() {
 		StringBuffer string = new StringBuffer();
 		string.append("ID = ");

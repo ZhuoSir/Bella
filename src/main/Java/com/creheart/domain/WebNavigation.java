@@ -65,7 +65,16 @@ public class WebNavigation {
 		return status;
 	}
 
-	public String toString() {
+    public WebNavigation() {
+    }
+
+    public WebNavigation(String title, int managerID, int status) {
+        this.title = title;
+        this.managerID = managerID;
+        this.status = status;
+    }
+
+    public String toString() {
 		StringBuffer string = new StringBuffer();
 		string.append("id = ");
 		string.append(this.id);
