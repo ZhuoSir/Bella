@@ -14,19 +14,7 @@ import java.util.List;
 @Component
 public class WebNaviRepository extends AbstractRepository<WebNavigation> {
 
-    private final String tableName = "web_navigation";
-
     private final String queryNaviAll = " select * from web_navigation ";
-
-    @Override
-    public int save(WebNavigation navigation) throws Exception {
-        return super.save(navigation);
-    }
-
-    @Override
-    public int update(WebNavigation navigation) throws Exception {
-        return super.update(navigation);
-    }
 
     public List<WebNavigation> getNavigationsInStatus(int status) throws Exception {
         String sql = queryNaviAll + " where status = " + status;

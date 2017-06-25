@@ -14,18 +14,6 @@ import java.util.List;
 @Component
 public class PlatRepository extends AbstractRepository<PlatFunc> {
 
-    private final String tableName = "plat_func";
-
-    @Override
-    public int save(PlatFunc platFunc) throws Exception {
-        return super.save(platFunc);
-    }
-
-    @Override
-    public int update(PlatFunc platFunc) throws Exception {
-        return super.update(platFunc);
-    }
-
     public List<PlatFunc> allPlatFuncs() throws Exception {
         String sql = "select * from plat_func order by funcid;";
         return getDbUtil().queryBeanList(sql, PlatFunc.class);

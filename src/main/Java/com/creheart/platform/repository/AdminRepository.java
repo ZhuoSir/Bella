@@ -15,14 +15,7 @@ import java.util.List;
 @Component
 public class AdminRepository extends AbstractRepository<PlatAdmin> {
 
-    private final String tableName = "plat_admin";
-
     private final String queryAdminSql = " select ID, adminName, adminType, status, creatorID, addTime from plat_admin ";
-
-    @Override
-    public int save(PlatAdmin platAdmin) throws Exception {
-        return super.save(platAdmin);
-    }
 
     public PlatAdmin queryAdminByName(final String name)
             throws Exception {

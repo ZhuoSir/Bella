@@ -36,15 +36,15 @@ public abstract class AbstractRepository<T> {
     }
 
     public int save(T t) throws Exception {
-        return save(t);
+        return dbUtil.save(t);
     }
 
     public int update(T t) throws Exception {
-       return update(t);
+       return dbUtil.update(t);
     }
 
     public int delete(T t) throws Exception {
-        return delete(t);
+        return dbUtil.delete(t);
     }
 
     public T query(String sql, Class<T> tClass) throws Exception {

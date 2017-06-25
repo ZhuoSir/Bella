@@ -36,16 +36,6 @@ public class LabelRepository extends AbstractRepository<BelLabel> {
         return queryList(sql, BelLabel.class, number);
     }
 
-    @Override
-    public int save(BelLabel label) throws Exception {
-        return super.save(label);
-    }
-
-    @Override
-    public int update(BelLabel label) throws Exception {
-        return super.update(label);
-    }
-
     public int[] deletBellabel(int id) throws Exception {
         String sql1 = " delete from post_relate_label where labelID = " + id + ";";
         String sql2 = " delete from " + labelTable + " where id = " + id + ";";
