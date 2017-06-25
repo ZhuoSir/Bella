@@ -5,8 +5,6 @@ import com.creheart.base.repository.AbstractRepository;
 import com.creheart.domain.WebInfo;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 /**
  *
  * Created by sunny-chen on 2017/5/27.

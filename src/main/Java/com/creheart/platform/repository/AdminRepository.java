@@ -1,7 +1,5 @@
 package com.creheart.platform.repository;
 
-import com.chen.JeneralDB.DataTable;
-import com.chen.JeneralDB.jdbc.Query;
 import com.creheart.base.repository.AbstractRepository;
 import com.creheart.domain.PlatAdmin;
 import org.springframework.stereotype.Component;

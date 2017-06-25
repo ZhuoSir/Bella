@@ -5,7 +5,6 @@ import com.chen.JeneralDB.jdbc.Query;
 import com.chen.StringUtil;
 import com.creheart.base.repository.AbstractRepository;
 import com.creheart.domain.BelPost;
-import com.creheart.platform.Const.Constance;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
