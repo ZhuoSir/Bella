@@ -107,4 +107,12 @@ public class PostService {
     public List<BelReplyVo> queryReplyOfPostInDel(int postID) throws Exception {
         return replyPostRepository.queryReplysOfPost(postID, Constance.ReplyStatusDel);
     }
+
+    /**
+     * 删除指定帖子的特定回复
+     *
+     * */
+    public int deleteTheReplyOfThePost(String postID, String replyIDs) throws Exception {
+        return replyPostRepository.deleteTheReplysInThePost(replyIDs, postID);
+    }
 }
