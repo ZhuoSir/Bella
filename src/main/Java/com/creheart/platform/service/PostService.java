@@ -82,8 +82,8 @@ public class PostService {
         sql.append(" and bp.status = ? and bp.createTime between ? and ?;");
 
         DataTable dt = postRepository.query(sql.toString(), title, author, status,
-                DateUtil.coupleOfMonthsAgo(1, "yyyy-MM-dd"),
-                DateUtil.tomorrow("yyyy-MM-dd"));
+                DateUtil.coupleOfMonthsAgo(1, DateUtil.YEAR_MONTH_DAY_PATTERN),
+                DateUtil.tomorrow(DateUtil.YEAR_MONTH_DAY_PATTERN));
 
         return null != dt ? dt.toBeanList(BelPostVo.class) : null;
     }

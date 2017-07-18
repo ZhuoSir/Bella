@@ -16,7 +16,13 @@ public class DateUtil {
     /**
      * 默认时间格式
      * */
-    private static final String defaultPattern = "yyyy-MM-dd HH:mm:ss";
+    public static final String DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * 年月日格式
+     * */
+    public static final String YEAR_MONTH_DAY_PATTERN = "yyyy-MM-dd";
+
 
     /**
      * 获取当前时间
@@ -230,7 +236,7 @@ public class DateUtil {
      * */
     public static String dateToString(Date date, String pattern) {
         if (!StringUtil.isNotNullOrEmpty(pattern))
-            pattern = defaultPattern;
+            pattern = DEFAULT_PATTERN;
 
         return new SimpleDateFormat(pattern).format(date);
     }
@@ -239,6 +245,6 @@ public class DateUtil {
      * 字符串转日期
      * */
     public static Date strToDate(String str) throws ParseException {
-        return new SimpleDateFormat(defaultPattern).parse(str);
+        return new SimpleDateFormat(DEFAULT_PATTERN).parse(str);
     }
 }

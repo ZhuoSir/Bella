@@ -23,11 +23,6 @@ public class WebManageService {
 
     private final String WebNavigation = "web_navigation";
 
-    private final String WebInfo = "web_info";
-
-    @Autowired
-    private PlatformService platformService;
-
     @Autowired
     private WebInfoRepository webInfoRepository;
 
