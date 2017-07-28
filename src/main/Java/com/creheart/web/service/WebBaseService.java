@@ -1,8 +1,10 @@
 package com.creheart.web.service;
 
+import com.chen.DateUtil;
 import com.chen.JeneralDB.DBUtil;
 import com.creheart.domain.WebNavigation;
 import com.creheart.platform.Const.Constance;
+import com.creheart.platform.bean.vo.BelPostVo;
 import com.creheart.platform.repository.WebNaviRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +13,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * index首页所需业务逻辑
+ * web基本所需业务逻辑
  *
  * Created by sunny-chen on 2017/7/27.
  */
 @Service
-public class IndexService {
+public class WebBaseService {
 
-    private Logger log = Logger.getLogger(IndexService.class);
+    private Logger log = Logger.getLogger(WebBaseService.class);
 
     @Autowired
     private WebNaviRepository webNaviRepository;
@@ -48,10 +50,9 @@ public class IndexService {
      *
      * */
     public Long countOfMemberLinkLabel(Long memberID) {
-        DBUtil dbUtil = DBUtil.getInstance();
         String sql = " select count(RID) from member_link_label where memberID = ? ";
         try {
-            return (Long) dbUtil.querySingleOne(sql, memberID);
+            return (Long) DBUtil.getInstance().querySingleOne(sql, memberID);
         } catch (Exception e) {
             e.printStackTrace();log.error(e);
             log.info("获取用户：" + memberID + "关注标签数量失败");
@@ -67,10 +68,9 @@ public class IndexService {
      *
      * */
     public Long countOfMemberLinkPost(Long memberID) {
-        DBUtil dbUtil = DBUtil.getInstance();
         String sql = " select count(id) from member_link_post where memberID = ? ";
         try {
-            return (Long) dbUtil.querySingleOne(sql, memberID);
+            return (Long) DBUtil.getInstance().querySingleOne(sql, memberID);
         } catch (Exception e) {
             e.printStackTrace();log.error(e);
             log.info("获取用户：" + memberID + "关注帖子数量失败");
@@ -86,14 +86,36 @@ public class IndexService {
      *
      * */
     public Long countOfMemberLinkMem(Long memberID) {
-        DBUtil dbUtil = DBUtil.getInstance();
         String sql = " select count(id) from member_link_mem where memberID = ? ";
         try {
-            return (Long) dbUtil.querySingleOne(sql, memberID);
+            return (Long) DBUtil.getInstance().querySingleOne(sql, memberID);
         } catch (Exception e) {
             e.printStackTrace();log.error(e);
             log.info("获取用户：" + memberID + "关注用户数量失败");
             return 0L;
         }
+    }
+
+
+    /**
+     * 首页近期热议：<br>
+     * <a>获取一周之内回复数量排行前十的帖子</a>
+     *
+     * */
+    public List<BelPostVo> popularPostsInOneWeek() {
+        String sql = " select b.postID, b.title, m.nickName, m.headPicFileUrl " +
+                "from bel_post b, member m where b.authorID = m.ID and b.createTime > ? " +
+                "order by b.replyTimes; ";
+
+        List<BelPostVo> ret = null;
+        try {
+            ret = DBUtil.getInstance().queryBeanList(sql, BelPostVo.class, DateUtil.oneWeekAgo());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e);
+            log.info("获取近期热议失败！");
+        }
+
+        return ret;
     }
 }
