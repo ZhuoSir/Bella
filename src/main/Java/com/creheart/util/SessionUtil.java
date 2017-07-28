@@ -13,7 +13,7 @@ import java.util.Enumeration;
  *
  * Created by sunny-chen on 2017/3/12.
  */
-public class SessonUtil {
+public class SessionUtil {
 
     public static void setAttributeInSession(String attrName, Object attribute) {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();

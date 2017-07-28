@@ -7,35 +7,35 @@ package com.creheart.web.vo;
 public class UserFollowVo {
 
     // 关注标签数量
-    private int followLabelCount;
+    private long followLabelCount;
 
     // 关注用户数量
-    private int followUserCount;
+    private long followUserCount;
 
     // 收藏帖子
-    private int storePostCount;
+    private long storePostCount;
 
-    public int getFollowLabelCount() {
+    public long getFollowLabelCount() {
         return followLabelCount;
     }
 
-    public void setFollowLabelCount(int followLabelCount) {
+    public void setFollowLabelCount(long followLabelCount) {
         this.followLabelCount = followLabelCount;
     }
 
-    public int getFollowUserCount() {
+    public long getFollowUserCount() {
         return followUserCount;
     }
 
-    public void setFollowUserCount(int followUserCount) {
+    public void setFollowUserCount(long followUserCount) {
         this.followUserCount = followUserCount;
     }
 
-    public int getStorePostCount() {
+    public long getStorePostCount() {
         return storePostCount;
     }
 
-    public void setStorePostCount(int storePostCount) {
+    public void setStorePostCount(long storePostCount) {
         this.storePostCount = storePostCount;
     }
 }

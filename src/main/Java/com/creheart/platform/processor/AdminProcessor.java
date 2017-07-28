@@ -3,11 +3,10 @@ package com.creheart.platform.processor;
 import com.creheart.platform.bean.Msg;
 import com.creheart.platform.exception.ServiceException;
 import com.creheart.platform.service.AdminService;
-import com.creheart.util.SessonUtil;
+import com.creheart.util.SessionUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -31,7 +30,7 @@ public class AdminProcessor {
 
     @RequestMapping(value = "/login")
     public
-    @ResponseBody String login(String username, String pwd, ModelMap modelMap) {
+    @ResponseBody String login(String username, String pwd) {
         Msg msg = new Msg();
 
         try {
@@ -60,7 +59,7 @@ public class AdminProcessor {
 
     @RequestMapping(value = "/logout")
     public String logout() {
-        SessonUtil.removeAttributeInCurrentSession("platAdmin");
+        SessionUtil.removeAttributeInCurrentSession("platAdmin");
         return "redirect:/Admin/main.do";
     }
 }

@@ -9,6 +9,7 @@ public class App {
 
     @Test
     public void createEntityfromDataBase() throws Exception {
-        DBFactory.getInstance().createEntityFromDataBase();
+//        DBFactory.getInstance().createEntityFromDataBase();
+        DBFactory.getInstance().createEntitysByTableNames("member_link_mem");
     }
 }

@@ -5,7 +5,7 @@ import com.creheart.domain.PlatAdmin;
 import com.creheart.platform.exception.PlatformException;
 import com.creheart.platform.exception.ServiceException;
 import com.creheart.platform.repository.AdminRepository;
-import com.creheart.util.SessonUtil;
+import com.creheart.util.SessionUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class AdminService {
     public void loginService(final String userName) {
         try {
             PlatAdmin admin = adminRepository.queryAdminByName(userName);
-            SessonUtil.setAttributeInSession("platAdmin", admin);
+            SessionUtil.setAttributeInSession("platAdmin", admin);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e);

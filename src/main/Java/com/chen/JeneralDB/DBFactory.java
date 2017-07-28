@@ -70,6 +70,16 @@ public class DBFactory {
      *
      * @param tableNames 表名
      */
+    public void createEntitysByTableNames(String... tableNames) throws Exception {
+        createEntitysByTableNames(Arrays.asList(tableNames));
+    }
+
+
+    /**
+     * 指定表生成实体类
+     *
+     * @param tableNames 表名
+     */
     public void createEntitysByTableNames(List<String> tableNames)
             throws Exception {
         createEntitysByTableNames(tableNames, null, null);

@@ -51,4 +51,10 @@ public class AdminServiceTest extends BaseJunit{
             log.info(e.getMessage());
         }
     }
+
+    @Test
+    public void testISExistAdmin() {
+        boolean result = adminService.isExistOfAdmin(3);
+        System.out.println(result);
+    }
 }

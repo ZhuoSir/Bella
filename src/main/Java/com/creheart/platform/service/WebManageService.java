@@ -111,7 +111,10 @@ public class WebManageService {
      *
      * */
     public void createNewNavigation(String title, int manageID, int status) throws Exception {
-        WebNavigation navi = new WebNavigation(title, manageID, status);
+        WebNavigation navi = new WebNavigation();
+        navi.setTitle(title);
+        navi.setManagerID(manageID);
+        navi.setStatus(status);
         navi.setCreateTime(new Date());
 
         webNaviRepository.save(navi);

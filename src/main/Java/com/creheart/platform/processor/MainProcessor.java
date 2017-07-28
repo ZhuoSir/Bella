@@ -1,10 +1,9 @@
 package com.creheart.platform.processor;
 
-import com.chen.JeneralDB.cache.CacheManager;
 import com.creheart.domain.PlatFunc;
 import com.creheart.platform.bean.PlatMenu;
 import com.creheart.platform.service.PlatformService;
-import com.creheart.util.SessonUtil;
+import com.creheart.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -80,13 +79,13 @@ public class MainProcessor {
 
     @RequestMapping("/clearCache")
     public String clearCache() {
-        CacheManager.getInstance().clearAll();
+//        CacheUtils.getXmlConfigCacheManager()
         return "redirect:/Admin/main/blank.do";
     }
 
     @RequestMapping("/clearSession")
     public String clearSession() {
-        SessonUtil.clearAllAttrInSession();
+        SessionUtil.clearAllAttrInSession();
         return "redirect:/Admin/main.do";
     }
 

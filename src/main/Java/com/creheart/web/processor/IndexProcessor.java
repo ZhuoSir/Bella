@@ -1,6 +1,8 @@
 package com.creheart.web.processor;
 
+import com.creheart.domain.Member;
 import com.creheart.domain.WebNavigation;
+import com.creheart.util.SessionUtil;
 import com.creheart.web.service.IndexService;
 import com.creheart.web.vo.UserFollowVo;
 import org.apache.log4j.Logger;
@@ -39,8 +41,12 @@ public class IndexProcessor {
         modelMap.addAttribute("defaultNavi", defaultNavi);
 
         // 获取用户关注数量
-        UserFollowVo userFollowVo = indexService.userFollowVoInMain();
-        modelMap.addAttribute("userFollowVo", userFollowVo);
+        UserFollowVo userFollowVo = new UserFollowVo();
+        Member member = (Member) SessionUtil.getAttributeInCurrentSession("currentMember");
+        userFollowVo.setFollowUserCount(indexService.countOfMemberLinkMem(member.getID()));
+        userFollowVo.setStorePostCount(indexService.countOfMemberLinkPost(member.getID()));
+        userFollowVo.setFollowLabelCount(indexService.countOfMemberLinkLabel(member.getID()));
+        modelMap.addAttribute("userFolloVo", userFollowVo);
 
         return "/web/main";
     }

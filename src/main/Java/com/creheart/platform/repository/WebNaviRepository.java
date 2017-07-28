@@ -17,8 +17,8 @@ public class WebNaviRepository extends AbstractRepository<WebNavigation> {
     private final String queryNaviAll = " select * from web_navigation ";
 
     public List<WebNavigation> getNavigationsInStatus(int status) throws Exception {
-        String sql = queryNaviAll + " where status = " + status;
-        return queryList(sql, WebNavigation.class);
+        String sql = queryNaviAll + " where status = ? order by orderNum;";
+        return queryList(sql, WebNavigation.class, status);
     }
 
     public int delete(final int id) throws Exception {
