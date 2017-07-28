@@ -3,7 +3,7 @@ package com.creheart.web.processor;
 import com.creheart.domain.Member;
 import com.creheart.domain.WebNavigation;
 import com.creheart.util.SessionUtil;
-import com.creheart.web.service.IndexService;
+import com.creheart.web.service.WebBaseService;
 import com.creheart.web.vo.UserFollowVo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,17 @@ public class IndexProcessor {
     private Logger log = Logger.getLogger(IndexProcessor.class);
 
     @Autowired
-    private IndexService indexService;
+    private WebBaseService webBaseService;
 
     @RequestMapping
     public String index(ModelMap modelMap) {
 
+        // 获取当前用户对象
+        Member user = (Member) SessionUtil.getAttributeInCurrentSession("user");
+        modelMap.addAttribute("user", user);
+
         // 获取所有显示状态导航
-        List<WebNavigation> webNavigationList = indexService.webNaviListOnShow();
+        List<WebNavigation> webNavigationList = webBaseService.webNaviListOnShow();
         modelMap.addAttribute("WebNavis", webNavigationList);
 
         // 设置默认导航，第一个显示
@@ -42,10 +46,9 @@ public class IndexProcessor {
 
         // 获取用户关注数量
         UserFollowVo userFollowVo = new UserFollowVo();
-        Member member = (Member) SessionUtil.getAttributeInCurrentSession("currentMember");
-        userFollowVo.setFollowUserCount(indexService.countOfMemberLinkMem(member.getID()));
-        userFollowVo.setStorePostCount(indexService.countOfMemberLinkPost(member.getID()));
-        userFollowVo.setFollowLabelCount(indexService.countOfMemberLinkLabel(member.getID()));
+        userFollowVo.setFollowUserCount(webBaseService.countOfMemberLinkMem(user.getID()));
+        userFollowVo.setStorePostCount(webBaseService.countOfMemberLinkPost(user.getID()));
+        userFollowVo.setFollowLabelCount(webBaseService.countOfMemberLinkLabel(user.getID()));
         modelMap.addAttribute("userFolloVo", userFollowVo);
 
         return "/web/main";
