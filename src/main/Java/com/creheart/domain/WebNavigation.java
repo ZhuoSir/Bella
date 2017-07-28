@@ -5,7 +5,7 @@ import com.chen.JeneralDB.annotation.Table;
 import java.util.Date;
 
 /**
- * created by JeneralDB at 2017-06-21 10:26:47
+ * created by JeneralDB at 2017-07-27 05:47:25
  */
 @Table("web_navigation")
 public class WebNavigation {
@@ -24,6 +24,12 @@ public class WebNavigation {
 
 	@Column("status")
 	private int status;
+
+	@Column("orderNum")
+	private int orderNum;
+
+	@Column("url")
+	private String url;
 
 	public void setId(int id) {
 		this.id = id;
@@ -65,16 +71,23 @@ public class WebNavigation {
 		return status;
 	}
 
-    public WebNavigation() {
-    }
+	public void setOrderNum(int orderNum) {
+		this.orderNum = orderNum;
+	}
 
-    public WebNavigation(String title, int managerID, int status) {
-        this.title = title;
-        this.managerID = managerID;
-        this.status = status;
-    }
+	public int getOrderNum() {
+		return orderNum;
+	}
 
-    public String toString() {
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public String toString() {
 		StringBuffer string = new StringBuffer();
 		string.append("id = ");
 		string.append(this.id);
@@ -90,6 +103,12 @@ public class WebNavigation {
 		string.append(";");
 		string.append("status = ");
 		string.append(this.status);
+		string.append(";");
+		string.append("orderNum = ");
+		string.append(this.orderNum);
+		string.append(";");
+		string.append("url = ");
+		string.append(this.url);
 		string.append(";");
 		return string.toString();
 	}
