@@ -105,7 +105,7 @@ public class WebBaseService {
     public List<BelPostVo> popularPostsInOneWeek() {
         String sql = " select b.postID, b.title, m.nickName, m.headPicFileUrl " +
                 "from bel_post b, member m where b.authorID = m.ID and b.createTime > ? " +
-                "order by b.replyTimes; ";
+                "order by b.replyTimes limit 10; ";
 
         List<BelPostVo> ret = null;
         try {
