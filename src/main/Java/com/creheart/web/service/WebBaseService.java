@@ -50,7 +50,7 @@ public class WebBaseService {
      *
      * */
     public Long countOfMemberLinkLabel(Long memberID) {
-        String sql = " select count(RID) from member_link_label where memberID = ? ";
+        String sql = " select count(RID) from member_link_label where memberID = ?; ";
         try {
             return (Long) DBUtil.getInstance().querySingleOne(sql, memberID);
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class WebBaseService {
      *
      * */
     public Long countOfMemberLinkPost(Long memberID) {
-        String sql = " select count(id) from member_link_post where memberID = ? ";
+        String sql = " select count(id) from member_link_post where memberID = ?; ";
         try {
             return (Long) DBUtil.getInstance().querySingleOne(sql, memberID);
         } catch (Exception e) {
@@ -86,7 +86,7 @@ public class WebBaseService {
      *
      * */
     public Long countOfMemberLinkMem(Long memberID) {
-        String sql = " select count(id) from member_link_mem where memberID = ? ";
+        String sql = " select count(id) from member_link_mem where memberID = ?; ";
         try {
             return (Long) DBUtil.getInstance().querySingleOne(sql, memberID);
         } catch (Exception e) {
@@ -109,7 +109,14 @@ public class WebBaseService {
 
         List<BelPostVo> ret = null;
         try {
-            ret = DBUtil.getInstance().queryBeanList(sql, BelPostVo.class, DateUtil.oneWeekAgo());
+            DBUtil dbUtil = DBUtil.getInstance();
+            ret = dbUtil.queryBeanList(sql, BelPostVo.class, DateUtil.oneWeekAgo());
+            if (null == ret || ret.isEmpty()) {
+                ret = dbUtil.queryBeanList(sql, BelPostVo.class, DateUtil.coupleOfMonthsAgo(1));
+            }
+            if (null == ret || ret.isEmpty()) {
+                ret = dbUtil.queryBeanList(sql, BelPostVo.class, DateUtil.coupleOfYearsAgo(1));
+            }
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e);
@@ -118,4 +125,5 @@ public class WebBaseService {
 
         return ret;
     }
+
 }

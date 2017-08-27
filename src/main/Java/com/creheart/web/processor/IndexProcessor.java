@@ -2,6 +2,7 @@ package com.creheart.web.processor;
 
 import com.creheart.domain.Member;
 import com.creheart.domain.WebNavigation;
+import com.creheart.platform.bean.vo.BelPostVo;
 import com.creheart.util.SessionUtil;
 import com.creheart.web.service.WebBaseService;
 import com.creheart.web.vo.UserFollowVo;
@@ -35,7 +36,7 @@ public class IndexProcessor {
 
         // 获取所有显示状态导航
         List<WebNavigation> webNavigationList = webBaseService.webNaviListOnShow();
-        modelMap.addAttribute("WebNavis", webNavigationList);
+        modelMap.addAttribute("webNavis", webNavigationList);
 
         // 设置默认导航，第一个显示
         WebNavigation defaultNavi = null;
@@ -44,14 +45,19 @@ public class IndexProcessor {
         }
         modelMap.addAttribute("defaultNavi", defaultNavi);
 
+        // 近期流行帖子
+        List<BelPostVo> hotPosts = webBaseService.popularPostsInOneWeek();
+        modelMap.addAttribute("hotPosts", hotPosts);
+
         // 获取用户关注数量
+        Long ID = 3L;
         UserFollowVo userFollowVo = new UserFollowVo();
-        userFollowVo.setFollowUserCount(webBaseService.countOfMemberLinkMem(user.getID()));
-        userFollowVo.setStorePostCount(webBaseService.countOfMemberLinkPost(user.getID()));
-        userFollowVo.setFollowLabelCount(webBaseService.countOfMemberLinkLabel(user.getID()));
+        userFollowVo.setFollowUserCount(webBaseService.countOfMemberLinkMem(ID));
+        userFollowVo.setStorePostCount(webBaseService.countOfMemberLinkPost(ID));
+        userFollowVo.setFollowLabelCount(webBaseService.countOfMemberLinkLabel(ID));
         modelMap.addAttribute("userFolloVo", userFollowVo);
 
-        return "/web/main";
+        return "/web/index";
     }
 
 
