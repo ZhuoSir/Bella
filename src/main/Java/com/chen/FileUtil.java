@@ -10,6 +10,8 @@ public class FileUtil {
 
     private FileUtil() {}
 
+    public static final String defaultEncoding = "UTF-8";
+
     /**
      * 读取文本文件内容
      * @param pathAndName 带有完整绝对路径的文件名
@@ -17,7 +19,7 @@ public class FileUtil {
      */
     public static String readText(final String pathAndName)
             throws Exception {
-        return readText(pathAndName, "");
+        return readText(pathAndName, null);
     }
 
 
@@ -29,8 +31,8 @@ public class FileUtil {
      */
     public static String readText(final String pathAndName, String encoding)
             throws Exception {
-        if (null == encoding)
-            throw new Exception("参数encoding（字符串格式）不能为null");
+        if (StringUtil.isNullOrEmpty(encoding))
+            encoding = defaultEncoding;
 
         encoding = encoding.trim();
 

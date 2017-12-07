@@ -2,6 +2,7 @@ package com.chen.JeneralDB;
 
 
 import com.chen.JeneralDB.jdbc.Query;
+import com.chen.ReflectUtil;
 
 import java.lang.reflect.Field;
 import java.sql.*;
@@ -230,7 +231,7 @@ public class DBUtil {
 
             rs = preStmt.executeQuery();
             print("执行sql: " + sql);
-            Field[] fields = beanClass.getDeclaredFields();
+            Field[] fields = ReflectUtil.getAllDeclaredFields(beanClass);
 
             for (Field f : fields) {
                 f.setAccessible(true);
@@ -301,7 +302,7 @@ public class DBUtil {
                 T t = beanClass.newInstance();
                 for (int i = 0; i < columnArr.length; i++) {
                     try {
-                        Field field = beanClass.getDeclaredField(columnArr[i]);
+                        Field field = ReflectUtil.getDeclaredField(beanClass, columnArr[i]);
                         field.setAccessible(true);
                         Object value = resultSet.getObject(columnArr[i]);
                         setValue(t, field, value);
