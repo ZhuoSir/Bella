@@ -1,7 +1,7 @@
 package test;
 
 import com.creheart.domain.WebNavigation;
-import com.creheart.web.service.IndexService;
+import com.creheart.web.service.WebBaseService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class IndexServiceTest extends BaseJunit {
 
     @Autowired
-    private IndexService indexService;
+    private WebBaseService indexService;
 
     @Test
     public void testWebNaviOnShow() {
@@ -31,5 +31,10 @@ public class IndexServiceTest extends BaseJunit {
         System.out.println(indexService.countOfMemberLinkLabel(3L));
         System.out.println(indexService.countOfMemberLinkMem(4L));
         System.out.println(indexService.countOfMemberLinkPost(3L));
+    }
+
+    @Test
+    public void test2() {
+        System.out.println(indexService.popularPostsInOneWeek());
     }
 }

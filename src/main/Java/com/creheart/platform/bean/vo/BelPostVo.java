@@ -27,4 +27,14 @@ public class BelPostVo extends BelPost {
     public String getNickName() {
         return nickName;
     }
+
+    private String headPicFileUrl;
+
+    public String getHeadPicFileUrl() {
+        return headPicFileUrl;
+    }
+
+    public void setHeadPicFileUrl(String headPicFileUrl) {
+        this.headPicFileUrl = headPicFileUrl;
+    }
 }
